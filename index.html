@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARDBRUT — neubrutalist CSS</title>
+<meta name="description" content="Opinionated neubrutalist CSS. Two button kinds. Full markdown. Auto dark mode + toggle.">
+<link rel="stylesheet" href="hardbrut.css">
+<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}</style>
+<script>
+(function(){
+  var h = document.documentElement;
+  // Read stored pref or system default
+  var t = localStorage.getItem('theme');
+  if (!t) {
+    t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  }
+  h.setAttribute('data-theme', t);
+  // Listen for system changes (if no manual override stored)
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', function(e){
+    if (!localStorage.getItem('theme')) {
+      h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+  };
+})();
+</script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="./" class="navbar-brand">HARDBRUT</a>
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <ul class="navbar-links">
+      <li><a href="#cards" aria-current="page">Cards</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#forms">Forms</a></li>
+      <li><a href="#markdown">Markdown</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
+    <button class="navbar-toggle" aria-label="Menu" onclick="this.parentElement.previousElementSibling.classList.toggle('open')">MENU</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>HARDBRUT</h1>
+  <p>Neubrutalist CSS. Two button kinds. Full markdown. Shadows always present — gone only during press. Dark mode auto + toggle.</p>
+  <div class="cluster" style="justify-content:center">
+    <a href="hardbrut.css" class="btn">Download</a>
+    <a href="ANDROID.md" class="btn btn-cancel">Android Guide</a>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="section" id="cards">
+  <h2>CARDS</h2>
+  <div class="grid">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h4>Simple Card</h4>
+          <p class="text-muted text-sm">One card. No variants. Shadow always.</p>
+          <span class="badge">badge</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h4>With Footer</h4>
+          <p class="text-muted text-sm">Puts actions at the bottom.</p>
+        </div>
+        <div class="card-footer">
+          <button>Save</button>
+          <button class="cancel">Dismiss</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h4>Just Body</h4>
+          <p class="text-muted text-sm">Content only. Border. Shadow.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="details">
+  <h2>DETAILS / SUMMARY</h2>
+  <details>
+    <summary>What is HARDBRUT</summary>
+    <p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation. Auto dark mode via system preference, plus a manual toggle (☀ button in the navbar) that persists to localStorage.</p>
+  </details>
+  <details open>
+    <summary>Rules (pre-opened)</summary>
+    <ul>
+      <li>Zero border-radius — ever</li>
+      <li>Every element has its shadow. Always. Except during press.</li>
+      <li>Two button kinds: default (yellow) + cancel (white)</li>
+      <li>All buttons animate identically</li>
+      <li>Full markdown element coverage</li>
+      <li>Dark mode: auto (system) + manual toggle (persisted)</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Size</summary>
+    <p>~16KB uncompressed. ~3.5KB gzipped. Zero webfonts — Impact for display, system stack for body.</p>
+  </details>
+</section>
+
+<section class="section" id="buttons">
+  <h2>BUTTONS</h2>
+  <p>Two kinds. Same size. Same animation. Bare <code>&lt;button&gt;</code> is yellow (default). <code>.cancel</code> for white (dismiss).</p>
+  <div class="cluster" style="margin-bottom:1rem">
+    <button>Submit</button>
+    <button class="cancel">Cancel</button>
+    <a href="#" class="btn">Link Btn</a>
+    <a href="#" class="btn btn-cancel">Link Cancel</a>
+    <button disabled>Disabled</button>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h4>Example: confirm delete</h4>
+      <p class="text-muted text-sm">Default for action. Cancel for escape.</p>
+      <div class="cluster">
+        <button>Delete</button>
+        <button class="cancel">Keep it</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="forms">
+  <h2>FORMS</h2>
+  <p>Inputs always have shadow. Focus gets heavier one. Checkbox & radio always have shadows — no interaction-only shadows.</p>
+  <div class="grid">
+    <div class="col-6">
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your name">
+        <div class="field-hint">Required.</div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com">
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="field">
+        <label for="msg">Message</label>
+        <textarea id="msg" placeholder="Write something..."></textarea>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="field">
+        <label><input type="checkbox"> I agree to the terms</label>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="field">
+        <label><input type="radio" name="opt" checked> Option A</label>
+        <label><input type="radio" name="opt"> Option B</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="cluster">
+        <button>Submit</button>
+        <button class="cancel">Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="markdown">
+  <h2>MARKDOWN COVERAGE</h2>
+
+  <h3>Headings</h3>
+  <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>
+  <h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
+
+  <h3>Inline formatting</h3>
+  <p><strong>Bold</strong> — <b>bold</b> — <em>italic</em> — <i>italic</i> — <del>strikethrough</del> — <s>strikethrough</s> — <u>underline</u> — <ins>insert</ins> — <mark>highlighted</mark> — <small>small</small> — H<sub>2</sub>O — E=mc<sup>2</sup> — <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
+
+  <h3>Links & code</h3>
+  <p>This is <a href="#">a link</a>. Inline: <code>git push</code>. Keys: <kbd>Ctrl+C</kbd>.</p>
+
+  <h3>Code block</h3>
+  <pre><code>fn main() {
+    // HARDBRUT — two buttons, one card, always shadow
+    let f = "hardbrut";
+    println!("{f} loaded");
+}</code></pre>
+
+  <h3>Blockquote</h3>
+  <blockquote>6px black left border. Italic. White background. Perfect for pull quotes in articles.</blockquote>
+
+  <h3>Lists</h3>
+  <ul><li>Unordered item one</li><li>Unordered item two<ul><li>Nested</li><li>Nested</li></ul></li><li>Item three</li></ul>
+  <ol><li>Ordered item one</li><li>Ordered item two</li><li>Ordered item three</li></ol>
+
+  <h3>Definition list</h3>
+  <dl><dt>HARDBRUT</dt><dd>Neubrutalist CSS. Opinionated. No choices.</dd><dt>Always-shadow rule</dt><dd>Every element keeps its shadow. Only gone during press.</dd></dl>
+
+  <h3>Horizontal rule</h3><hr>
+
+  <h3>Table</h3>
+  <table>
+    <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Border</td><td>3px solid</td><td>Always black</td></tr>
+      <tr><td>Shadow</td><td>5px 5px 0</td><td>Hard. No blur.</td></tr>
+      <tr><td>Radius</td><td>0</td><td>Zero. Always.</td></tr>
+      <tr><td>Buttons</td><td>2 kinds</td><td>Default + cancel</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Figure</h3>
+  <figure>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120'%3E%3Crect fill='%23ffd23f' width='400' height='120' stroke='%23000' stroke-width='4'/%3E%3Ctext x='20' y='70' font-family='Impact' font-size='18' fill='%23000'%3EIMAGE%3C/text%3E%3C/svg%3E" alt="Placeholder">
+    <figcaption>Images get a border and shadow. Caption below.</figcaption>
+  </figure>
+
+  <h3>Callout / Message / Badge</h3>
+  <div class="callout">Yellow callout. Bold. Hard shadow. Always.</div>
+  <div class="message">Smaller message. Same yellow. Same rules.</div>
+  <p>Status: <span class="badge">active</span></p>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>HARDBRUT — zero dependencies, no choices. <a href="hardbrut.css">Download</a> · <a href="ANDROID.md">Android guide</a></p>
+</footer>
+
+</body>
+</html>
