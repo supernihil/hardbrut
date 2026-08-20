@@ -1,32 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-accent="yellow">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HARDBRUT — neubrutalist CSS</title>
-<meta name="description" content="Opinionated neubrutalist CSS. Two button kinds. Full markdown. Auto dark mode + toggle.">
+<title>HARDBRUT — neubrutalist CSS framework</title>
+<meta name="description" content="Opinionated neubrutalist CSS framework. Two button kinds. Full markdown. Auto dark mode + toggle. 6 accent colors.">
 <link rel="stylesheet" href="hardbrut.css">
 <style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}</style>
 <script>
 (function(){
   var h = document.documentElement;
-  // Read stored pref or system default
+  // Theme
   var t = localStorage.getItem('theme');
-  if (!t) {
-    t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-  }
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
   h.setAttribute('data-theme', t);
-  // Listen for system changes (if no manual override stored)
   window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', function(e){
-    if (!localStorage.getItem('theme')) {
-      h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-    }
+    if (!localStorage.getItem('theme')) h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
   });
   window.toggleTheme = function(){
     var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     h.setAttribute('data-theme', cur);
     localStorage.setItem('theme', cur);
   };
+  // Accent color
+  var a = localStorage.getItem('accent') || 'yellow';
+  h.setAttribute('data-accent', a);
+  window.setAccent = function(c){
+    h.setAttribute('data-accent', c);
+    localStorage.setItem('accent', c);
+    document.querySelectorAll('.accent-swatch').forEach(function(s){
+      s.classList.toggle('active', s.getAttribute('data-accent') === c);
+    });
+  };
+  // On load, mark active swatch
+  window.addEventListener('DOMContentLoaded', function(){
+    document.querySelector('.accent-swatch[data-accent="' + a + '"]').classList.add('active');
+  });
 })();
 </script>
 </head>
@@ -36,11 +45,10 @@
   <a href="./" class="navbar-brand">HARDBRUT</a>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <ul class="navbar-links">
-      <li><a href="#cards" aria-current="page">Cards</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#buttons">Buttons</a></li>
-      <li><a href="#forms">Forms</a></li>
-      <li><a href="#markdown">Markdown</a></li>
+      <li><a href="#about" aria-current="page">About</a></li>
+      <li><a href="#elements">Elements</a></li>
+      <li><a href="#android">Android</a></li>
+      <li><a href="#download">Download</a></li>
     </ul>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
     <button class="navbar-toggle" aria-label="Menu" onclick="this.parentElement.previousElementSibling.classList.toggle('open')">MENU</button>
@@ -49,17 +57,66 @@
 
 <header class="hero">
   <h1>HARDBRUT</h1>
-  <p>Neubrutalist CSS. Two button kinds. Full markdown. Shadows always present — gone only during press. Dark mode auto + toggle.</p>
-  <div class="cluster" style="justify-content:center">
-    <a href="hardbrut.css" class="btn">Download</a>
-    <a href="ANDROID.md" class="btn btn-cancel">Android Guide</a>
+  <p>An opinionated neubrutalist CSS framework. Two button kinds. Full markdown support. Dark mode with toggle. Pick your accent color.</p>
+  <div class="cluster" style="justify-content:center;margin-bottom:var(--space)">
+    <a href="hardbrut.css" class="btn">Download CSS</a>
+    <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
+  </div>
+  <div class="accent-swatches" style="justify-content:center">
+    <button class="accent-swatch" data-accent="yellow" onclick="setAccent('yellow')" title="Yellow" aria-label="Yellow accent"></button>
+    <button class="accent-swatch" data-accent="red" onclick="setAccent('red')" title="Red" aria-label="Red accent"></button>
+    <button class="accent-swatch" data-accent="blue" onclick="setAccent('blue')" title="Blue" aria-label="Blue accent"></button>
+    <button class="accent-swatch" data-accent="green" onclick="setAccent('green')" title="Green" aria-label="Green accent"></button>
+    <button class="accent-swatch" data-accent="pink" onclick="setAccent('pink')" title="Pink" aria-label="Pink accent"></button>
+    <button class="accent-swatch" data-accent="purple" onclick="setAccent('purple')" title="Purple" aria-label="Purple accent"></button>
   </div>
 </header>
 
 <main class="container">
 
-<section class="section" id="cards">
-  <h2>CARDS</h2>
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <h2>ABOUT</h2>
+
+  <div class="grid">
+    <div class="col-6">
+      <h3>What</h3>
+      <p>HARDBRUT is a tiny, opinionated CSS framework in the neubrutalist style. Zero border-radius. Hard shadows (5px 5px 0, no blur). Thick 3px borders. Bold uppercase typography. Full coverage of every HTML element that comes out of a markdown renderer.</p>
+    </div>
+    <div class="col-6">
+      <h3>Rules</h3>
+      <ul>
+        <li>Zero border-radius — ever</li>
+        <li>Every shadow stays. Only gone during a press animation</li>
+        <li>Two button kinds: default + cancel</li>
+        <li>All buttons animate identically</li>
+        <li>6 accent colors to choose from (pick one)</li>
+        <li>Dark mode: auto (system) + manual toggle (persists)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Size</h3>
+  <p>~18KB uncompressed. ~3.5KB gzipped. Zero webfonts needed (Inter via Google Fonts). Impact/display fonts removed — everything uses Inter at different weights. No build step. One file. Drop it in and go.</p>
+
+  <h3>Colors</h3>
+  <p>The accent color drives buttons, badges, callouts, messages, link hovers, selection. Pick one:</p>
+  <div class="accent-swatches" style="margin-bottom:var(--space)">
+    <button class="accent-swatch" data-accent="yellow" onclick="setAccent('yellow')" aria-label="Yellow"></button>
+    <button class="accent-swatch" data-accent="red" onclick="setAccent('red')" aria-label="Red"></button>
+    <button class="accent-swatch" data-accent="blue" onclick="setAccent('blue')" aria-label="Blue"></button>
+    <button class="accent-swatch" data-accent="green" onclick="setAccent('green')" aria-label="Green"></button>
+    <button class="accent-swatch" data-accent="pink" onclick="setAccent('pink')" aria-label="Pink"></button>
+    <button class="accent-swatch" data-accent="purple" onclick="setAccent('purple')" aria-label="Purple"></button>
+  </div>
+  <p class="text-sm text-muted">Set via <code>data-accent</code> on <code>&lt;html&gt;</code>. Persists to localStorage.</p>
+</section>
+
+<!-- ===== ELEMENTS ===== -->
+<section class="section" id="elements">
+  <h2>ELEMENTS</h2>
+
+  <h3>Cards</h3>
   <div class="grid">
     <div class="col-4">
       <div class="card">
@@ -74,7 +131,7 @@
       <div class="card">
         <div class="card-body">
           <h4>With Footer</h4>
-          <p class="text-muted text-sm">Puts actions at the bottom.</p>
+          <p class="text-muted text-sm">Footer puts actions at the bottom.</p>
         </div>
         <div class="card-footer">
           <button>Save</button>
@@ -91,34 +148,9 @@
       </div>
     </div>
   </div>
-</section>
 
-<section class="section" id="details">
-  <h2>DETAILS / SUMMARY</h2>
-  <details>
-    <summary>What is HARDBRUT</summary>
-    <p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation. Auto dark mode via system preference, plus a manual toggle (☀ button in the navbar) that persists to localStorage.</p>
-  </details>
-  <details open>
-    <summary>Rules (pre-opened)</summary>
-    <ul>
-      <li>Zero border-radius — ever</li>
-      <li>Every element has its shadow. Always. Except during press.</li>
-      <li>Two button kinds: default (yellow) + cancel (white)</li>
-      <li>All buttons animate identically</li>
-      <li>Full markdown element coverage</li>
-      <li>Dark mode: auto (system) + manual toggle (persisted)</li>
-    </ul>
-  </details>
-  <details>
-    <summary>Size</summary>
-    <p>~16KB uncompressed. ~3.5KB gzipped. Zero webfonts — Impact for display, system stack for body.</p>
-  </details>
-</section>
-
-<section class="section" id="buttons">
-  <h2>BUTTONS</h2>
-  <p>Two kinds. Same size. Same animation. Bare <code>&lt;button&gt;</code> is yellow (default). <code>.cancel</code> for white (dismiss).</p>
+  <h3>Buttons</h3>
+  <p>Two kinds. Same size. Same animation. Bare <code>&lt;button&gt;</code> uses the accent color. <code>.cancel</code> is white (dismiss, back, secondary).</p>
   <div class="cluster" style="margin-bottom:1rem">
     <button>Submit</button>
     <button class="cancel">Cancel</button>
@@ -136,11 +168,28 @@
       </div>
     </div>
   </div>
-</section>
 
-<section class="section" id="forms">
-  <h2>FORMS</h2>
-  <p>Inputs always have shadow. Focus gets heavier one. Checkbox & radio always have shadows — no interaction-only shadows.</p>
+  <h3>Details / Summary</h3>
+  <details>
+    <summary>What is HARDBRUT</summary>
+    <p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p>
+  </details>
+  <details open>
+    <summary>Features (pre-opened)</summary>
+    <ul>
+      <li>Two button kinds: default + cancel</li>
+      <li>Cards with hard shadows + hover lift</li>
+      <li>Details/summary accordion (zero JS)</li>
+      <li>Full markdown element coverage</li>
+      <li>12-column responsive grid</li>
+      <li>Sticky navbar</li>
+      <li>Auto dark mode + toggle</li>
+      <li>6 accent color presets</li>
+    </ul>
+  </details>
+
+  <h3>Forms</h3>
+  <p>Inputs always have shadow. Focus gets a heavier one. Checkbox & radio always have shadows — no interaction-only shadows.</p>
   <div class="grid">
     <div class="col-6">
       <div class="field">
@@ -179,67 +228,274 @@
       </div>
     </div>
   </div>
-</section>
 
-<section class="section" id="markdown">
-  <h2>MARKDOWN COVERAGE</h2>
-
-  <h3>Headings</h3>
+  <h3>Typography</h3>
   <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>
   <h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
 
-  <h3>Inline formatting</h3>
-  <p><strong>Bold</strong> — <b>bold</b> — <em>italic</em> — <i>italic</i> — <del>strikethrough</del> — <s>strikethrough</s> — <u>underline</u> — <ins>insert</ins> — <mark>highlighted</mark> — <small>small</small> — H<sub>2</sub>O — E=mc<sup>2</sup> — <abbr title="Cascading Style Sheets">CSS</abbr>.</p>
+  <p>A paragraph with <strong>bold</strong>, <em>italic</em>, <del>strikethrough</del>, <u>underline</u>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, and an <abbr title="abbreviation">abbr</abbr>.</p>
 
-  <h3>Links & code</h3>
-  <p>This is <a href="#">a link</a>. Inline: <code>git push</code>. Keys: <kbd>Ctrl+C</kbd>.</p>
+  <p>This is <a href="#">a link</a> in a sentence. Inline <code>code</code> and <kbd>Ctrl+K</kbd>.</p>
+
+  <blockquote>A blockquote with a 6px black left border and italic text. Perfect for pull quotes in articles or callouts in prose.</blockquote>
 
   <h3>Code block</h3>
-  <pre><code>fn main() {
-    // HARDBRUT — two buttons, one card, always shadow
-    let f = "hardbrut";
-    println!("{f} loaded");
-}</code></pre>
-
-  <h3>Blockquote</h3>
-  <blockquote>6px black left border. Italic. White background. Perfect for pull quotes in articles.</blockquote>
+  <pre><code>&lt;html data-accent="yellow"&gt;
+&lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;button&gt;Click me&lt;/button&gt;
+&lt;button class="cancel"&gt;Cancel&lt;/button&gt;</code></pre>
 
   <h3>Lists</h3>
   <ul><li>Unordered item one</li><li>Unordered item two<ul><li>Nested</li><li>Nested</li></ul></li><li>Item three</li></ul>
   <ol><li>Ordered item one</li><li>Ordered item two</li><li>Ordered item three</li></ol>
 
-  <h3>Definition list</h3>
   <dl><dt>HARDBRUT</dt><dd>Neubrutalist CSS. Opinionated. No choices.</dd><dt>Always-shadow rule</dt><dd>Every element keeps its shadow. Only gone during press.</dd></dl>
-
-  <h3>Horizontal rule</h3><hr>
 
   <h3>Table</h3>
   <table>
     <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
     <tbody>
-      <tr><td>Border</td><td>3px solid</td><td>Always black</td></tr>
+      <tr><td>Border</td><td>3px solid</td><td>Always black/ink</td></tr>
       <tr><td>Shadow</td><td>5px 5px 0</td><td>Hard. No blur.</td></tr>
       <tr><td>Radius</td><td>0</td><td>Zero. Always.</td></tr>
-      <tr><td>Buttons</td><td>2 kinds</td><td>Default + cancel</td></tr>
     </tbody>
   </table>
 
   <h3>Figure</h3>
   <figure>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120'%3E%3Crect fill='%23ffd23f' width='400' height='120' stroke='%23000' stroke-width='4'/%3E%3Ctext x='20' y='70' font-family='Impact' font-size='18' fill='%23000'%3EIMAGE%3C/text%3E%3C/svg%3E" alt="Placeholder">
-    <figcaption>Images get a border and shadow. Caption below.</figcaption>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120'%3E%3Crect fill='%23ffd23f' width='400' height='120' stroke='%23000' stroke-width='4'/%3E%3Ctext x='20' y='70' font-family='Inter' font-weight='900' font-size='18' fill='%23000'%3EIMAGE%3C/text%3E%3C/svg%3E" alt="Placeholder">
+    <figcaption>Images get a border + shadow. Caption below.</figcaption>
   </figure>
 
-  <h3>Callout / Message / Badge</h3>
-  <div class="callout">Yellow callout. Bold. Hard shadow. Always.</div>
-  <div class="message">Smaller message. Same yellow. Same rules.</div>
+  <h3>Callout, Message, Badge</h3>
+  <div class="callout">Callout. Bold. Accent color. Shadow always.</div>
+  <div class="message">Message. Same accent. Smaller padding.</div>
   <p>Status: <span class="badge">active</span></p>
+
+  <h3>Grid</h3>
+  <div class="grid" style="margin-bottom:var(--space-sm)">
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+  </div>
+  <p class="text-sm text-muted">12-column responsive grid. 6-col at 768px, stacks at 480px.</p>
+</section>
+
+<!-- ===== ANDROID ===== -->
+<section class="section" id="android">
+  <h2>ANDROID</h2>
+  <p>HARDBRUT translates directly to Jetpack Compose. Same rules: zero corner radius, hard shadows, two button kinds, always-shadow rule, single accent color.</p>
+
+  <h3>Token mapping</h3>
+  <table>
+    <thead><tr><th>CSS token</th><th>CSS value</th><th>Compose equivalent</th></tr></thead>
+    <tbody>
+      <tr><td><code>--ink</code></td><td>#000000</td><td><code>Color(0xFF000000)</code></td></tr>
+      <tr><td><code>--paper</code></td><td>#FFFFFF</td><td><code>Color(0xFFFFFFFF)</code></td></tr>
+      <tr><td><code>--bg</code></td><td>#FDFAF2</td><td><code>Color(0xFFFDFAF2)</code></td></tr>
+      <tr><td><code>--accent</code></td><td>varies</td><td>Use <code>data-accent</code> value</td></tr>
+      <tr><td><code>--border</code></td><td>3px solid</td><td><code>BorderStroke(3.dp, SolidColor(Color.Black))</code></td></tr>
+      <tr><td><code>--shadow</code></td><td>5px 5px 0 (no blur)</td><td>Draw a <code>Box</code> behind with <code>offset(5.dp, 5.dp)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Hard shadow helper</h3>
+  <p>Android <code>Modifier.shadow()</code> does not support zero blur radius. Use this extension to draw a perfectly hard shadow:</p>
+  <pre><code>fun Modifier.hardShadow(size: Dp, color: Color = Color.Black): Modifier = this.then(
+    drawBehind {
+        drawRect(
+            color = color,
+            topLeft = Offset(size.toPx(), size.toPx()),
+            size = Size(this.size.width, this.size.height)
+        )
+    }
+)
+// Usage: Modifier.hardShadow(5.dp)</code></pre>
+
+  <h3>Buttons</h3>
+  <pre><code>@Composable
+fun HardbrutButton(
+    onClick: () -> Unit,
+    accent: Color,
+    accentInk: Color,
+    kind: ButtonKind = ButtonKind.Default,
+    enabled: Boolean = true,
+    content: @Composable RowScope.() -> Unit
+) {
+    val shadowDp = when (kind) {
+        ButtonKind.Default -> 5.dp
+        ButtonKind.Cancel -> 3.dp
+    }
+    val bg = when (kind) {
+        ButtonKind.Default -> accent
+        ButtonKind.Cancel -> Color.White
+    }
+    val fg = when (kind) {
+        ButtonKind.Default -> accentInk
+        ButtonKind.Cancel -> Color.Black
+    }
+    Row(
+        modifier = Modifier
+            .hardShadow(shadowDp)
+            .border(3.dp, Color.Black)
+            .background(bg)
+            .clickable(enabled = enabled) { onClick() }
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ProvideTextStyle(TextStyle(
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 15.sp,
+            textTransform = TextTransform.Uppercase,
+            letterSpacing = 0.3.sp,
+            color = fg
+        )) { content() }
+    }
+}
+enum class ButtonKind { Default, Cancel }</code></pre>
+
+  <h3>Cards</h3>
+  <pre><code>@Composable
+fun HardbrutCard(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = modifier
+            .hardShadow(5.dp)
+            .border(3.dp, Color.Black)
+            .background(Color.White)
+            .padding(24.dp)
+    ) { content() }
+}</code></pre>
+
+  <h3>Inputs</h3>
+  <p>Always carry a shadow (3dp). Focus moves it to 5dp. Use <code>BasicTextField</code> with a custom <code>Box</code> wrapper.</p>
+  <pre><code>@Composable
+fun HardbrutTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String = "",
+    placeholder: String = ""
+) {
+    var focused by remember { mutableStateOf(false) }
+    Column {
+        if (label.isNotEmpty()) Text(label.uppercase(),
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 13.sp, letterSpacing = 0.4.sp)
+        BasicTextField(
+            value, onValueChange,
+            modifier = Modifier
+                .hardShadow(if (focused) 5.dp else 3.dp)
+                .border(3.dp, Color.Black)
+                .background(Color.White)
+                .onFocusChanged { focused = it.isFocused }
+                .padding(horizontal = 14.dp, vertical = 11.dp)
+                .heightIn(min = 46.dp),
+            decorationBox = { inner ->
+                if (value.isEmpty()) Text(placeholder, color = Color.Gray)
+                inner()
+            }
+        )
+    }
+}</code></pre>
+
+  <h3>Checkbox / Radio</h3>
+  <p>Always carry 3dp shadow. Same as web: custom composables, not Material3 defaults.</p>
+
+  <h3>Badge / Callout</h3>
+  <pre><code>@Composable
+fun HardbrutBadge(text: String, accent: Color, accentInk: Color) {
+    Text(text.uppercase(),
+        fontFamily = FontFamily.Monospace,
+        fontSize = 12.sp, letterSpacing = 0.6.sp,
+        color = accentInk,
+        modifier = Modifier
+            .hardShadow(3.dp)
+            .border(2.dp, Color.Black)
+            .background(accent)
+            .padding(horizontal = 10.dp, vertical = 3.dp)
+    )
+}</code></pre>
+
+  <h3>Spacing</h3>
+  <p>All spacing is one of: 12dp (tight), 24dp (normal), 40dp (wide). Never use arbitrary values.</p>
+</section>
+
+<!-- ===== DOWNLOAD ===== -->
+<section class="section" id="download">
+  <h2>DOWNLOAD</h2>
+  <div class="card">
+    <div class="card-body">
+      <h4>Get it</h4>
+      <p class="text-muted">One CSS file. Drop it in. Zero build step.</p>
+      <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
+      <div class="cluster" style="margin-top:var(--space-sm)">
+        <a href="hardbrut.css" class="btn">hardbrut.css (18KB)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel">hardbrut.min.css (14KB)</a>
+        <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <h3>Quick start</h3>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en" data-accent="yellow"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class="navbar"&gt;
+    &lt;a href="./" class="navbar-brand"&gt;Site&lt;/a&gt;
+    &lt;ul class="navbar-links"&gt;
+      &lt;li&gt;&lt;a href="#" aria-current="page"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+  &lt;main class="container"&gt;
+    &lt;h1&gt;Hello World&lt;/h1&gt;
+    &lt;p&gt;This is HARDBRUT.&lt;/p&gt;
+    &lt;button&gt;Click me&lt;/button&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <h3>Accent colors</h3>
+  <p>Set <code>data-accent</code> on <code>&lt;html&gt;</code> to one of: <code>yellow</code>, <code>red</code>, <code>blue</code>, <code>green</code>, <code>pink</code>, <code>purple</code>. Default is <code>yellow</code>.</p>
+
+  <h3>Theme toggle</h3>
+  <p>Add this script for a manual dark mode toggle (persists to localStorage):</p>
+  <pre><code>&lt;script&gt;
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+  };
+})();
+&lt;/script&gt;
+&lt;button class="theme-toggle" onclick="toggleTheme()"&gt;☀&lt;/button&gt;</code></pre>
+
+  <h3>Accent picker</h3>
+  <pre><code>&lt;script&gt;
+window.setAccent = function(c){
+  document.documentElement.setAttribute('data-accent', c);
+  localStorage.setItem('accent', c);
+};
+&lt;/script&gt;
+&lt;button class="accent-swatch" data-accent="red" onclick="setAccent('red')"&gt;&lt;/button&gt;</code></pre>
 </section>
 
 </main>
 
 <footer class="site-footer">
-  <p>HARDBRUT — zero dependencies, no choices. <a href="hardbrut.css">Download</a> · <a href="ANDROID.md">Android guide</a></p>
+  <p>HARDBRUT — zero dependencies, no choices. <a href="hardbrut.css">Download</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a></p>
 </footer>
 
 </body>
