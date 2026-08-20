@@ -24,7 +24,11 @@
   --shadow: 5px 5px 0 var(--ink);
   --shadow-sm: 3px 3px 0 var(--ink);
   --shadow-lg: 7px 7px 0 var(--ink);
-  --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* Body text — a plain system sans. The embedded Inter 900 is for DISPLAY
+     only (headings, buttons, navbar, brand, labels); it is never used for
+     running text or form fields, which would render every weight as 900. */
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Fira Code", Menlo, Consolas, monospace;
   --space: 1.5rem;
   --space-sm: 0.75rem;
@@ -43,7 +47,7 @@ html{scroll-behavior:smooth;font-size:16px;-webkit-text-size-adjust:100%}
 body{font:1.0625rem/1.65 var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
 
 /* ---- MARKDOWN ELEMENTS ---- */
-h1,h2,h3,h4,h5,h6{font-family:var(--font);text-transform:uppercase;letter-spacing:-0.02em;line-height:1.1;margin:var(--space-lg) 0 var(--space-sm);font-weight:900}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-display);text-transform:uppercase;letter-spacing:-0.02em;line-height:1.1;margin:var(--space-lg) 0 var(--space-sm);font-weight:900}
 h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child{margin-top:0}
 h1{font-size:clamp(2rem,5vw,3.5rem)}
 h2{font-size:clamp(1.5rem,3.5vw,2.5rem)}
@@ -80,13 +84,13 @@ figure{margin:var(--space) 0}
 figcaption{font-size:0.85rem;color:var(--muted);margin-top:var(--space-sm)}
 table{width:100%;border-collapse:collapse;margin-bottom:var(--space);border:var(--border);box-shadow:var(--shadow)}
 th,td{border:2px solid var(--ink);padding:0.5rem 0.75rem;text-align:left}
-th{background:var(--ink);color:var(--paper);font-weight:900;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.03em}
+th{background:var(--ink);color:var(--paper);font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.03em}
 tr:nth-child(even) td{background:var(--paper)}
 tr:nth-child(odd) td{background:var(--bg)}
 abbr[title]{text-decoration:underline dotted;text-underline-offset:3px;cursor:help}
 details{border:var(--border);box-shadow:var(--shadow-sm);margin-bottom:var(--space-sm);background:var(--paper);transition:box-shadow 0.1s ease}
 details[open]{box-shadow:var(--shadow)}
-summary{padding:var(--space-sm) var(--space);cursor:pointer;font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;list-style:none;display:flex;align-items:center;gap:0.5rem;user-select:none}
+summary{padding:var(--space-sm) var(--space);cursor:pointer;font-family:var(--font-display);font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;list-style:none;display:flex;align-items:center;gap:0.5rem;user-select:none}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"+";font-size:1.1rem;font-weight:400;display:inline-block;width:1.2em;text-align:center}
 details[open]>summary::before{content:"−"}
@@ -108,10 +112,10 @@ details>:not(summary):first-child{padding-top:var(--space-sm)}
 
 /* ---- NAVBAR ---- */
 .navbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm);padding:var(--space-sm) var(--space);background:var(--paper);border-bottom:4px solid var(--ink);position:sticky;top:0;z-index:100}
-.navbar-brand{font-weight:900;font-size:2.2rem;text-transform:uppercase;text-decoration:none;letter-spacing:-0.05em;line-height:1.5;color:var(--ink)}
+.navbar-brand{font-family:var(--font-display);font-weight:900;font-size:2.2rem;text-transform:uppercase;text-decoration:none;letter-spacing:-0.05em;line-height:1.5;color:var(--ink)}
 .navbar-brand:hover{background:none;text-decoration:underline;text-underline-offset:4px}
 .navbar-links{display:flex;list-style:none;gap:0.25rem;padding:0;margin:0}
-.navbar-links a{display:inline-block;padding:0.4rem 0.7rem;text-decoration:none;font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;border:2px solid transparent;color:var(--ink)}
+.navbar-links a{display:inline-block;padding:0.4rem 0.7rem;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;border:2px solid transparent;color:var(--ink)}
 .navbar-links a:hover,.navbar-links a[aria-current]{background:var(--accent);border-color:var(--ink);box-shadow:var(--shadow-sm);color:var(--accent-ink)}
 @media(max-width:640px){.navbar-links{flex-direction:column;width:100%;display:none}.navbar-links.open{display:flex}}
 .navbar-toggle{display:none;background:var(--paper);border:var(--border);padding:0.5rem;font:1rem var(--font-mono);cursor:pointer;color:var(--ink);box-shadow:var(--shadow-sm)}
@@ -119,7 +123,7 @@ details>:not(summary):first-child{padding-top:var(--space-sm)}
 @media(max-width:640px){.navbar-toggle{display:block}}
 
 /* ---- BUTTONS ---- */
-button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;text-decoration:none;cursor:pointer;border:var(--border);white-space:nowrap;line-height:1;transition:transform 0.1s ease,box-shadow 0.1s ease;background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;font-family:var(--font-display);font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;text-decoration:none;cursor:pointer;border:var(--border);white-space:nowrap;line-height:1;transition:transform 0.1s ease,box-shadow 0.1s ease;background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
 button.cancel,.btn-cancel{background:var(--paper);color:var(--ink);box-shadow:var(--shadow-sm)}
 button:disabled,.btn:disabled{opacity:0.45;cursor:not-allowed}
 button:hover,.btn:hover,button.cancel:hover,.btn-cancel:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
@@ -141,7 +145,7 @@ button.cancel:disabled:hover,.btn-cancel:disabled:hover,.btn-cancel:disabled:act
 input[type="text"],input[type="email"],input[type="password"],input[type="search"],input[type="url"],input[type="number"],input[type="tel"],textarea,select{display:block;width:100%;padding:0.7rem 0.85rem;font:0.95rem var(--font);border:var(--border);background:var(--paper);color:var(--ink);min-height:46px;box-shadow:var(--shadow-sm);transition:box-shadow 0.1s ease}
 input:focus,textarea:focus,select:focus{outline:0;box-shadow:var(--shadow)}
 textarea{min-height:120px;resize:vertical}
-label{display:block;font-weight:900;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.35rem}
+label{display:block;font-family:var(--font-display);font-weight:900;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.35rem}
 .field{margin-bottom:var(--space-sm)}
 .field-hint{font-size:0.8rem;color:var(--muted);margin-top:0.25rem}
 input[type="checkbox"],input[type="radio"]{appearance:none;display:inline-block;width:22px;height:22px;border:var(--border);background:var(--paper);box-shadow:var(--shadow-sm);vertical-align:-5px;margin-right:0.4rem;cursor:pointer;position:relative}
