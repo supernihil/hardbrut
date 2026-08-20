@@ -35,7 +35,7 @@
   --space-lg: 2.5rem;
 }
 [data-accent="yellow"]{--accent:#ffd23f;--accent-ink:#000}
-[data-accent="red"]{--accent:#ff4444;--accent-ink:#fff}
+[data-accent="red"]{--accent:#ff4444;--accent-ink:#000}
 [data-accent="blue"]{--accent:#4488ff;--accent-ink:#fff}
 [data-accent="green"]{--accent:#44cc44;--accent-ink:#000}
 [data-accent="pink"]{--accent:#ff66aa;--accent-ink:#000}
@@ -112,7 +112,7 @@ details>:not(summary):first-child{padding-top:var(--space-sm)}
 
 /* ---- NAVBAR ---- */
 .navbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm);padding:var(--space-sm) var(--space);background:var(--paper);border-bottom:4px solid var(--ink);position:sticky;top:0;z-index:100}
-.navbar-brand{font-weight:900;font-size:2.2rem;text-transform:uppercase;text-decoration:none;letter-spacing:-0.05em;line-height:1.5;padding:0 0.5rem;border:var(--border);background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
+.navbar-brand{font-family:var(--font-display);font-weight:900;font-size:2.2rem;text-transform:uppercase;text-decoration:none;letter-spacing:-0.05em;line-height:1.5;padding:0 0.5rem;border:var(--border);background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
 .navbar-brand:hover{text-decoration:underline;text-underline-offset:4px}
 .navbar-links{display:flex;list-style:none;gap:0.25rem;padding:0;margin:0}
 .navbar-links a{display:inline-block;padding:0.4rem 0.7rem;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;border:2px solid transparent;color:var(--ink)}
