@@ -136,7 +136,8 @@ details>:not(summary):first-child{padding-top:var(--space-sm)}
 .navbar-links a{display:inline-block;padding:0.4rem 0.7rem;text-decoration:none;font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.03em;border:2px solid transparent;color:var(--ink)}
 .navbar-links a:hover,.navbar-links a[aria-current]{background:var(--accent);border-color:var(--ink);box-shadow:var(--shadow-sm);color:var(--accent-ink)}
 @media(max-width:640px){.navbar-links{flex-direction:column;width:100%;display:none}.navbar-links.open{display:flex}}
-.navbar-toggle{display:none;background:none;border:var(--border);padding:0.5rem;font:1rem var(--font-mono);cursor:pointer;color:var(--ink)}
+.navbar-toggle{display:none;background:var(--paper);border:var(--border);padding:0.5rem;font:1rem var(--font-mono);cursor:pointer;color:var(--ink);box-shadow:var(--shadow-sm)}
+.navbar-toggle:hover{background:var(--accent);color:var(--accent-ink)}
 @media(max-width:640px){.navbar-toggle{display:block}}
 
 /* ---- BUTTONS — two kinds, unified animations. ---- */
@@ -267,7 +268,7 @@ input[type="radio"]:checked::after{content:"";position:absolute;inset:4px;backgr
   :root:not([data-theme="light"]) .navbar-brand{color:var(--ink)}
   :root:not([data-theme="light"]) .navbar-links a{color:var(--ink)}
   :root:not([data-theme="light"]) .navbar-links a[aria-current]{color:var(--accent-ink)}
-  :root:not([data-theme="light"]) button:not(.cancel):not(.theme-toggle),:root:not([data-theme="light"]) .btn:not(.btn-cancel):not(.theme-toggle){color:var(--accent-ink)}
+  :root:not([data-theme="light"]) button:not(.cancel):not(.theme-toggle):not(.navbar-toggle),:root:not([data-theme="light"]) .btn:not(.btn-cancel):not(.theme-toggle){color:var(--accent-ink)}
   :root:not([data-theme="light"]) button.cancel,:root:not([data-theme="light"]) .btn-cancel{color:var(--ink)}
   :root:not([data-theme="light"]) .theme-toggle{color:var(--ink);background:var(--paper)}
   :root:not([data-theme="light"]) .theme-toggle:hover{color:var(--accent-ink);background:var(--accent)}
@@ -291,7 +292,7 @@ input[type="radio"]:checked::after{content:"";position:absolute;inset:4px;backgr
 [data-theme="dark"] .navbar-brand{color:var(--ink)}
 [data-theme="dark"] .navbar-links a{color:var(--ink)}
 [data-theme="dark"] .navbar-links a[aria-current]{color:var(--accent-ink)}
-[data-theme="dark"] button:not(.cancel):not(.theme-toggle),[data-theme="dark"] .btn:not(.btn-cancel):not(.theme-toggle){color:var(--accent-ink)}
+[data-theme="dark"] button:not(.cancel):not(.theme-toggle):not(.navbar-toggle),[data-theme="dark"] .btn:not(.btn-cancel):not(.theme-toggle){color:var(--accent-ink)}
 [data-theme="dark"] button.cancel,[data-theme="dark"] .btn-cancel{color:var(--ink)}
 [data-theme="dark"] .theme-toggle{color:var(--ink);background:var(--paper)}
 [data-theme="dark"] .theme-toggle:hover{color:var(--accent-ink);background:var(--accent)}
