@@ -10,7 +10,6 @@
 <script>
 (function(){
   var h = document.documentElement;
-  // Theme
   var t = localStorage.getItem('theme');
   if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
   h.setAttribute('data-theme', t);
@@ -22,7 +21,6 @@
     h.setAttribute('data-theme', cur);
     localStorage.setItem('theme', cur);
   };
-  // Accent color
   var a = localStorage.getItem('accent') || 'yellow';
   h.setAttribute('data-accent', a);
   window.setAccent = function(c){
@@ -32,7 +30,6 @@
       s.classList.toggle('active', s.getAttribute('data-accent') === c);
     });
   };
-  // On load, mark active swatch
   window.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.accent-swatch[data-accent="' + a + '"]').classList.add('active');
   });
@@ -44,10 +41,10 @@
 <nav class="navbar">
   <a href="./" class="navbar-brand">HARDBRUT</a>
   <ul class="navbar-links" id="navbar-links">
-    <li><a href="#about" aria-current="page">About</a></li>
+    <li><a href="#start" aria-current="page">Start</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="#elements">Elements</a></li>
     <li><a href="#android">Android</a></li>
-    <li><a href="#download">Download</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
@@ -74,10 +71,78 @@
 
 <main class="container">
 
+<!-- ===== START (DOWNLOAD + QUICK START) ===== -->
+<section class="section" id="start">
+  <h2>DOWNLOAD</h2>
+  <div class="card">
+    <div class="card-body">
+      <h4>Get it</h4>
+      <p class="text-muted">One CSS file. Drop it in. Zero build step. Font embedded inline — zero network requests.</p>
+      <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
+      <div class="cluster" style="margin-top:var(--space-sm)">
+        <a href="hardbrut.css" class="btn">hardbrut.css (48KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel">hardbrut.min.css (47KB, minified)</a>
+        <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
+      </div>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. The CSS rules alone are ~4KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
+    </div>
+  </div>
+
+  <h3>Quick start</h3>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en" data-accent="yellow"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class="navbar"&gt;
+    &lt;a href="./" class="navbar-brand"&gt;Site&lt;/a&gt;
+    &lt;ul class="navbar-links"&gt;
+      &lt;li&gt;&lt;a href="#" aria-current="page"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+  &lt;main class="container"&gt;
+    &lt;h1&gt;Hello World&lt;/h1&gt;
+    &lt;p&gt;This is HARDBRUT.&lt;/p&gt;
+    &lt;button&gt;Click me&lt;/button&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <h3>Accent colors</h3>
+  <p>Set <code>data-accent</code> on <code>&lt;html&gt;</code> to one of: <code>yellow</code>, <code>red</code>, <code>blue</code>, <code>green</code>, <code>pink</code>, <code>purple</code>. Default is <code>yellow</code>.</p>
+
+  <h3>Theme toggle</h3>
+  <pre><code>&lt;button class="theme-toggle" onclick="toggleTheme()"&gt;☀&lt;/button&gt;
+&lt;script&gt;
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+  };
+})();
+&lt;/script&gt;</code></pre>
+
+  <h3>Accent picker</h3>
+  <pre><code>&lt;button class="accent-swatch" data-accent="red" onclick="setAccent('red')"&gt;&lt;/button&gt;
+&lt;script&gt;
+window.setAccent = function(c){
+  document.documentElement.setAttribute('data-accent', c);
+  localStorage.setItem('accent', c);
+};
+&lt;/script&gt;</code></pre>
+</section>
+
 <!-- ===== ABOUT ===== -->
 <section class="section" id="about">
   <h2>ABOUT</h2>
-
   <div class="grid">
     <div class="col-6">
       <h3>What</h3>
@@ -95,9 +160,6 @@
       </ul>
     </div>
   </div>
-
-  <h3>Size</h3>
-  <p>~18KB uncompressed. ~3.5KB gzipped. Zero webfonts needed (Inter via Google Fonts). Impact/display fonts removed — everything uses Inter at different weights. No build step. One file. Drop it in and go.</p>
 
   <h3>Colors</h3>
   <p>The accent color drives buttons, badges, callouts, messages, link hovers, selection. Pick one:</p>
@@ -119,33 +181,16 @@
   <h3>Cards</h3>
   <div class="grid">
     <div class="col-4">
-      <div class="card">
-        <div class="card-body">
-          <h4>Simple Card</h4>
-          <p class="text-muted text-sm">One card. No variants. Shadow always.</p>
-          <span class="badge">badge</span>
-        </div>
-      </div>
+      <div class="card"><div class="card-body"><h4>Simple Card</h4><p class="text-muted text-sm">One card. No variants. Shadow always.</p><span class="badge">badge</span></div></div>
     </div>
     <div class="col-4">
       <div class="card">
-        <div class="card-body">
-          <h4>With Footer</h4>
-          <p class="text-muted text-sm">Footer puts actions at the bottom.</p>
-        </div>
-        <div class="card-footer">
-          <button>Save</button>
-          <button class="cancel">Dismiss</button>
-        </div>
+        <div class="card-body"><h4>With Footer</h4><p class="text-muted text-sm">Footer puts actions at the bottom.</p></div>
+        <div class="card-footer"><button>Save</button><button class="cancel">Dismiss</button></div>
       </div>
     </div>
     <div class="col-4">
-      <div class="card">
-        <div class="card-body">
-          <h4>Just Body</h4>
-          <p class="text-muted text-sm">Content only. Border. Shadow.</p>
-        </div>
-      </div>
+      <div class="card"><div class="card-body"><h4>Just Body</h4><p class="text-muted text-sm">Content only. Border. Shadow.</p></div></div>
     </div>
   </div>
 
@@ -162,81 +207,29 @@
     <div class="card-body">
       <h4>Example: confirm delete</h4>
       <p class="text-muted text-sm">Default for action. Cancel for escape.</p>
-      <div class="cluster">
-        <button>Delete</button>
-        <button class="cancel">Keep it</button>
-      </div>
+      <div class="cluster"><button>Delete</button><button class="cancel">Keep it</button></div>
     </div>
   </div>
 
   <h3>Details / Summary</h3>
-  <details>
-    <summary>What is HARDBRUT</summary>
-    <p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p>
-  </details>
-  <details open>
-    <summary>Features (pre-opened)</summary>
-    <ul>
-      <li>Two button kinds: default + cancel</li>
-      <li>Cards with hard shadows + hover lift</li>
-      <li>Details/summary accordion (zero JS)</li>
-      <li>Full markdown element coverage</li>
-      <li>12-column responsive grid</li>
-      <li>Sticky navbar</li>
-      <li>Auto dark mode + toggle</li>
-      <li>6 accent color presets</li>
-    </ul>
-  </details>
+  <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
+  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
 
   <h3>Forms</h3>
   <p>Inputs always have shadow. Focus gets a heavier one. Checkbox & radio always have shadows — no interaction-only shadows.</p>
   <div class="grid">
-    <div class="col-6">
-      <div class="field">
-        <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Your name">
-        <div class="field-hint">Required.</div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="you@example.com">
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="field">
-        <label for="msg">Message</label>
-        <textarea id="msg" placeholder="Write something..."></textarea>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="field">
-        <label><input type="checkbox"> I agree to the terms</label>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="field">
-        <label><input type="radio" name="opt" checked> Option A</label>
-        <label><input type="radio" name="opt"> Option B</label>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="cluster">
-        <button>Submit</button>
-        <button class="cancel">Reset</button>
-      </div>
-    </div>
+    <div class="col-6"><div class="field"><label for="name">Name</label><input type="text" id="name" placeholder="Your name"><div class="field-hint">Required.</div></div></div>
+    <div class="col-6"><div class="field"><label for="email">Email</label><input type="email" id="email" placeholder="you@example.com"></div></div>
+    <div class="col-12"><div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="Write something..."></textarea></div></div>
+    <div class="col-6"><div class="field"><label><input type="checkbox"> I agree to the terms</label></div></div>
+    <div class="col-6"><div class="field"><label><input type="radio" name="opt" checked> Option A</label><label><input type="radio" name="opt"> Option B</label></div></div>
+    <div class="col-12"><div class="cluster"><button>Submit</button><button class="cancel">Reset</button></div></div>
   </div>
 
   <h3>Typography</h3>
-  <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>
-  <h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
-
+  <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
   <p>A paragraph with <strong>bold</strong>, <em>italic</em>, <del>strikethrough</del>, <u>underline</u>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, and an <abbr title="abbreviation">abbr</abbr>.</p>
-
   <p>This is <a href="#">a link</a> in a sentence. Inline <code>code</code> and <kbd>Ctrl+K</kbd>.</p>
-
   <blockquote>A blockquote with a 6px black left border and italic text. Perfect for pull quotes in articles or callouts in prose.</blockquote>
 
   <h3>Code block</h3>
@@ -248,7 +241,6 @@
   <h3>Lists</h3>
   <ul><li>Unordered item one</li><li>Unordered item two<ul><li>Nested</li><li>Nested</li></ul></li><li>Item three</li></ul>
   <ol><li>Ordered item one</li><li>Ordered item two</li><li>Ordered item three</li></ol>
-
   <dl><dt>HARDBRUT</dt><dd>Neubrutalist CSS. Opinionated. No choices.</dd><dt>Always-shadow rule</dt><dd>Every element keeps its shadow. Only gone during press.</dd></dl>
 
   <h3>Table</h3>
@@ -300,197 +292,67 @@
   </table>
 
   <h3>Hard shadow helper</h3>
-  <p>Android <code>Modifier.shadow()</code> does not support zero blur radius. Use this extension to draw a perfectly hard shadow:</p>
+  <p>Android <code>Modifier.shadow()</code> does not support zero blur radius. Use this extension:</p>
   <pre><code>fun Modifier.hardShadow(size: Dp, color: Color = Color.Black): Modifier = this.then(
     drawBehind {
-        drawRect(
-            color = color,
-            topLeft = Offset(size.toPx(), size.toPx()),
-            size = Size(this.size.width, this.size.height)
-        )
+        drawRect(color = color, topLeft = Offset(size.toPx(), size.toPx()),
+            size = Size(this.size.width, this.size.height))
     }
-)
-// Usage: Modifier.hardShadow(5.dp)</code></pre>
+)</code></pre>
 
   <h3>Buttons</h3>
   <pre><code>@Composable
-fun HardbrutButton(
-    onClick: () -> Unit,
-    accent: Color,
-    accentInk: Color,
-    kind: ButtonKind = ButtonKind.Default,
-    enabled: Boolean = true,
-    content: @Composable RowScope.() -> Unit
-) {
-    val shadowDp = when (kind) {
-        ButtonKind.Default -> 5.dp
-        ButtonKind.Cancel -> 3.dp
-    }
-    val bg = when (kind) {
-        ButtonKind.Default -> accent
-        ButtonKind.Cancel -> Color.White
-    }
-    val fg = when (kind) {
-        ButtonKind.Default -> accentInk
-        ButtonKind.Cancel -> Color.Black
-    }
-    Row(
-        modifier = Modifier
-            .hardShadow(shadowDp)
-            .border(3.dp, Color.Black)
-            .background(bg)
-            .clickable(enabled = enabled) { onClick() }
-            .padding(horizontal = 24.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ProvideTextStyle(TextStyle(
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 15.sp,
-            textTransform = TextTransform.Uppercase,
-            letterSpacing = 0.3.sp,
-            color = fg
-        )) { content() }
+fun HardbrutButton(onClick: () -> Unit, accent: Color, accentInk: Color,
+    kind: ButtonKind = ButtonKind.Default, enabled: Boolean = true,
+    content: @Composable RowScope.() -> Unit) {
+    val shadowDp = when (kind) { ButtonKind.Default -> 5.dp; ButtonKind.Cancel -> 3.dp }
+    val bg = when (kind) { ButtonKind.Default -> accent; ButtonKind.Cancel -> Color.White }
+    val fg = when (kind) { ButtonKind.Default -> accentInk; ButtonKind.Cancel -> Color.Black }
+    Row(Modifier.hardShadow(shadowDp).border(3.dp, Color.Black).background(bg)
+        .clickable(enabled) { onClick() }.padding(horizontal = 24.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+        ProvideTextStyle(TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 15.sp,
+            textTransform = TextTransform.Uppercase, letterSpacing = 0.3.sp, color = fg)) { content() }
     }
 }
 enum class ButtonKind { Default, Cancel }</code></pre>
 
   <h3>Cards</h3>
   <pre><code>@Composable
-fun HardbrutCard(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Column(
-        modifier = modifier
-            .hardShadow(5.dp)
-            .border(3.dp, Color.Black)
-            .background(Color.White)
-            .padding(24.dp)
-    ) { content() }
+fun HardbrutCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
+    Column(modifier.hardShadow(5.dp).border(3.dp, Color.Black)
+        .background(Color.White).padding(24.dp)) { content() }
 }</code></pre>
 
   <h3>Inputs</h3>
-  <p>Always carry a shadow (3dp). Focus moves it to 5dp. Use <code>BasicTextField</code> with a custom <code>Box</code> wrapper.</p>
   <pre><code>@Composable
-fun HardbrutTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String = "",
-    placeholder: String = ""
-) {
+fun HardbrutTextField(value: String, onValueChange: (String) -> Unit,
+    label: String = "", placeholder: String = "") {
     var focused by remember { mutableStateOf(false) }
     Column {
         if (label.isNotEmpty()) Text(label.uppercase(),
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 13.sp, letterSpacing = 0.4.sp)
-        BasicTextField(
-            value, onValueChange,
-            modifier = Modifier
-                .hardShadow(if (focused) 5.dp else 3.dp)
-                .border(3.dp, Color.Black)
-                .background(Color.White)
-                .onFocusChanged { focused = it.isFocused }
-                .padding(horizontal = 14.dp, vertical = 11.dp)
-                .heightIn(min = 46.dp),
+            fontWeight = FontWeight.ExtraBold, fontSize = 13.sp, letterSpacing = 0.4.sp)
+        BasicTextField(value, onValueChange,
+            Modifier.hardShadow(if (focused) 5.dp else 3.dp).border(3.dp, Color.Black)
+                .background(Color.White).onFocusChanged { focused = it.isFocused }
+                .padding(horizontal = 14.dp, vertical = 11.dp).heightIn(min = 46.dp),
             decorationBox = { inner ->
-                if (value.isEmpty()) Text(placeholder, color = Color.Gray)
-                inner()
-            }
-        )
+                if (value.isEmpty()) Text(placeholder, color = Color.Gray); inner()
+            })
     }
 }</code></pre>
-
-  <h3>Checkbox / Radio</h3>
-  <p>Always carry 3dp shadow. Same as web: custom composables, not Material3 defaults.</p>
 
   <h3>Badge / Callout</h3>
   <pre><code>@Composable
 fun HardbrutBadge(text: String, accent: Color, accentInk: Color) {
-    Text(text.uppercase(),
-        fontFamily = FontFamily.Monospace,
-        fontSize = 12.sp, letterSpacing = 0.6.sp,
-        color = accentInk,
-        modifier = Modifier
-            .hardShadow(3.dp)
-            .border(2.dp, Color.Black)
-            .background(accent)
-            .padding(horizontal = 10.dp, vertical = 3.dp)
-    )
+    Text(text.uppercase(), fontFamily = FontFamily.Monospace, fontSize = 12.sp,
+        letterSpacing = 0.6.sp, color = accentInk,
+        modifier = Modifier.hardShadow(3.dp).border(2.dp, Color.Black)
+            .background(accent).padding(horizontal = 10.dp, vertical = 3.dp))
 }</code></pre>
 
   <h3>Spacing</h3>
   <p>All spacing is one of: 12dp (tight), 24dp (normal), 40dp (wide). Never use arbitrary values.</p>
-</section>
-
-<!-- ===== DOWNLOAD ===== -->
-<section class="section" id="download">
-  <h2>DOWNLOAD</h2>
-  <div class="card">
-    <div class="card-body">
-      <h4>Get it</h4>
-      <p class="text-muted">One CSS file. Drop it in. Zero build step.</p>
-      <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
-      <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn">hardbrut.css (48KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel">hardbrut.min.css (47KB, minified)</a>
-        <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
-      </div>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. The CSS rules alone are ~4KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
-    </div>
-  </div>
-
-  <h3>Quick start</h3>
-  <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en" data-accent="yellow"&gt;
-&lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
-  &lt;link rel="stylesheet" href="hardbrut.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;nav class="navbar"&gt;
-    &lt;a href="./" class="navbar-brand"&gt;Site&lt;/a&gt;
-    &lt;ul class="navbar-links"&gt;
-      &lt;li&gt;&lt;a href="#" aria-current="page"&gt;Home&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/nav&gt;
-  &lt;main class="container"&gt;
-    &lt;h1&gt;Hello World&lt;/h1&gt;
-    &lt;p&gt;This is HARDBRUT.&lt;/p&gt;
-    &lt;button&gt;Click me&lt;/button&gt;
-  &lt;/main&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-
-  <h3>Accent colors</h3>
-  <p>Set <code>data-accent</code> on <code>&lt;html&gt;</code> to one of: <code>yellow</code>, <code>red</code>, <code>blue</code>, <code>green</code>, <code>pink</code>, <code>purple</code>. Default is <code>yellow</code>.</p>
-
-  <h3>Theme toggle</h3>
-  <p>Add this script for a manual dark mode toggle (persists to localStorage):</p>
-  <pre><code>&lt;script&gt;
-(function(){
-  var h = document.documentElement;
-  var t = localStorage.getItem('theme');
-  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-  h.setAttribute('data-theme', t);
-  window.toggleTheme = function(){
-    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    h.setAttribute('data-theme', cur);
-    localStorage.setItem('theme', cur);
-  };
-})();
-&lt;/script&gt;
-&lt;button class="theme-toggle" onclick="toggleTheme()"&gt;☀&lt;/button&gt;</code></pre>
-
-  <h3>Accent picker</h3>
-  <pre><code>&lt;script&gt;
-window.setAccent = function(c){
-  document.documentElement.setAttribute('data-accent', c);
-  localStorage.setItem('accent', c);
-};
-&lt;/script&gt;
-&lt;button class="accent-swatch" data-accent="red" onclick="setAccent('red')"&gt;&lt;/button&gt;</code></pre>
 </section>
 
 </main>
