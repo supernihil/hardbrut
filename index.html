@@ -432,10 +432,11 @@ fun HardbrutBadge(text: String, accent: Color, accentInk: Color) {
       <p class="text-muted">One CSS file. Drop it in. Zero build step.</p>
       <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
       <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn">hardbrut.css (18KB)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel">hardbrut.min.css (14KB)</a>
+        <a href="hardbrut.css" class="btn">hardbrut.css (17KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel">hardbrut.min.css (16KB, minified)</a>
         <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
       </div>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight) is embedded inline as base64 woff2 — 13KB of the total. The CSS rules alone are ~4KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
     </div>
   </div>
 
