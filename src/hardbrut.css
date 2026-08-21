@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HARDBRUT v0.8 — Neubrutalist CSS. Zero imports. Fonts embedded inline.
+   HARDBRUT v0.9 — Neubrutalist CSS. Zero imports. Fonts embedded inline.
    ========================================================================== */
 
 /* ---- EMBEDDED FONT (Inter 900, latin only — for headings) ---- */
@@ -14,6 +14,7 @@
 
 /* ---- TOKENS ---- */
 :root {
+  color-scheme: light;
   --ink: #000;
   --paper: #fff;
   --bg: #fdfaf2;
@@ -82,7 +83,7 @@ img,svg,video,iframe{max-width:100%;height:auto;display:block}
 img{border:2px solid var(--ink);box-shadow:var(--shadow-sm)}
 figure{margin:var(--space) 0}
 figcaption{font-size:0.85rem;color:var(--muted);margin-top:var(--space-sm)}
-table{width:100%;border-collapse:collapse;margin-bottom:var(--space);border:var(--border);box-shadow:var(--shadow)}
+table{width:100%;max-width:100%;border-collapse:collapse;margin-bottom:var(--space);border:var(--border);box-shadow:var(--shadow);display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 th,td{border:2px solid var(--ink);padding:0.5rem 0.75rem;text-align:left}
 th{background:var(--ink);color:var(--paper);font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:0.82rem;letter-spacing:0.03em}
 tr:nth-child(even) td{background:var(--paper)}
@@ -123,7 +124,7 @@ details>:not(summary):first-child{padding-top:var(--space-sm)}
 @media(max-width:640px){.navbar-toggle{display:block}}
 
 /* ---- BUTTONS ---- */
-button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;font-family:var(--font-display);font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;text-decoration:none;cursor:pointer;border:var(--border);white-space:nowrap;line-height:1;transition:transform 0.1s ease,box-shadow 0.1s ease;background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.75rem 1.5rem;font-family:var(--font-display);font-weight:900;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;text-decoration:none;cursor:pointer;border:var(--border);text-align:center;overflow-wrap:break-word;line-height:1.2;transition:transform 0.1s ease,box-shadow 0.1s ease;background:var(--accent);color:var(--accent-ink);box-shadow:var(--shadow)}
 button.cancel,.btn-cancel{background:var(--paper);color:var(--ink);box-shadow:var(--shadow-sm)}
 button:disabled,.btn:disabled{opacity:0.45;cursor:not-allowed}
 button:hover,.btn:hover,button.cancel:hover,.btn-cancel:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
@@ -199,9 +200,10 @@ input[type="radio"]:checked::after{content:"";position:absolute;inset:4px;backgr
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--ink:#f0f0e8;--paper:#1a1a18;--bg:#121210;--muted:#a0a090}
 }
-[data-theme="dark"]{--ink:#f0f0e8;--paper:#1a1a18;--bg:#121210;--muted:#a0a090}
-[data-theme="light"]{--ink:#000;--paper:#fff;--bg:#fdfaf2;--muted:#666}
+[data-theme="dark"]{--ink:#f0f0e8;--paper:#1a1a18;--bg:#121210;--muted:#a0a090;color-scheme:dark}
+[data-theme="light"]{--ink:#000;--paper:#fff;--bg:#fdfaf2;--muted:#666;color-scheme:light}
 @media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark}
   :root:not([data-theme="light"]) body{color:var(--ink);background:var(--bg)}
   :root:not([data-theme="light"]) a:hover{color:var(--accent-ink)}
   :root:not([data-theme="light"]) ::selection{color:var(--accent-ink)}
@@ -217,7 +219,6 @@ input[type="radio"]:checked::after{content:"";position:absolute;inset:4px;backgr
   :root:not([data-theme="light"]) .theme-toggle{color:var(--ink);background:var(--paper)}
   :root:not([data-theme="light"]) .theme-toggle:hover{color:var(--accent-ink);background:var(--accent)}
   :root:not([data-theme="light"]) .badge,:root:not([data-theme="light"]) .callout,:root:not([data-theme="light"]) .message{color:var(--accent-ink)}
-  :root:not([data-theme="light"]) th{color:var(--accent-ink)}
   :root:not([data-theme="light"]) tr:nth-child(even) td{background:var(--paper)}
   :root:not([data-theme="light"]) tr:nth-child(odd) td{background:var(--bg)}
   :root:not([data-theme="light"]) input[type="checkbox"],:root:not([data-theme="light"]) input[type="radio"]{background:var(--paper)}
@@ -237,7 +238,6 @@ input[type="radio"]:checked::after{content:"";position:absolute;inset:4px;backgr
 [data-theme="dark"] .theme-toggle{color:var(--ink);background:var(--paper)}
 [data-theme="dark"] .theme-toggle:hover{color:var(--accent-ink);background:var(--accent)}
 [data-theme="dark"] .badge,[data-theme="dark"] .callout,[data-theme="dark"] .message{color:var(--accent-ink)}
-[data-theme="dark"] th{color:var(--accent-ink)}
 [data-theme="dark"] tr:nth-child(even) td{background:var(--paper)}
 [data-theme="dark"] tr:nth-child(odd) td{background:var(--bg)}
 [data-theme="dark"] input[type="checkbox"],[data-theme="dark"] input[type="radio"]{background:var(--paper)}
