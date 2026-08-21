@@ -57,6 +57,7 @@
     <li><a href="#start" aria-current="page">Start</a></li>
     <li><a href="#elements">Elements</a></li>
     <li><a href="#android">Android</a></li>
+    <li><a href="playbook.html">Playbook</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
@@ -66,7 +67,7 @@
 
 <header class="hero">
   <h1>HARDBRUT</h1>
-  <p><a href="https://github.com/supernihil/hardbrut/tree/v0.9" class="badge">v0.9</a></p>
+  <p><a href="https://github.com/supernihil/hardbrut/tree/v0.10" class="badge">v0.10</a></p>
   <p>An opinionated neubrutalist CSS framework. Two button kinds. Full markdown support. Dark mode with toggle. Pick your accent color.</p>
   <div class="cluster" style="justify-content:center;margin-bottom:var(--space)">
     <a href="hardbrut.css" class="btn" download>Download CSS</a>
@@ -116,13 +117,19 @@
       <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
       <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
       <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn" download>hardbrut.css (52KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (51KB, minified)</a>
+        <a href="hardbrut.css" class="btn" download>hardbrut.css (53KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (52KB, minified)</a>
       </div>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~4KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~5KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (21KB)</a> — same rules, system font stack only.</p>
       <details style="margin-top:var(--space-sm)">
         <summary>Previous versions</summary>
         <div class="stack">
+          <div class="cluster">
+            <span class="badge">v0.9</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.min.css" download>hardbrut.min.css</a>
+          </div>
           <div class="cluster">
             <span class="badge">v0.8</span>
             <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/hardbrut.css" download>hardbrut.css</a>
@@ -276,6 +283,7 @@ window.setAccent = function(c){
     <div class="col-12"><div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="Write something..."></textarea></div></div>
     <div class="col-6"><div class="field"><label><input type="checkbox"> I agree to the terms</label></div></div>
     <div class="col-6"><div class="field"><label><input type="radio" name="opt" checked> Option A</label><label><input type="radio" name="opt"> Option B</label></div></div>
+    <div class="col-6"><div class="field"><label><input type="checkbox" class="switch" checked> Notifications</label></div></div>
     <div class="col-12"><div class="cluster"><button>Submit</button><button class="cancel">Reset</button></div></div>
   </div>
 
@@ -309,6 +317,14 @@ window.setAccent = function(c){
   <div class="callout">Callout. Bold. Accent color. Shadow always.</div>
   <div class="message">Message. Same accent. Smaller padding.</div>
   <p>Status: <span class="badge">active</span></p>
+
+  <h3>Chips</h3>
+  <p>Selectable pills — filter presets, topic tags. Toggle <code>aria-pressed</code>, CSS does the rest.</p>
+  <div class="cluster">
+    <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">All</button>
+    <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Open</button>
+    <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Archived</button>
+  </div>
 
   <h3>Grid</h3>
   <div class="grid" style="margin-bottom:var(--space-sm)">
@@ -401,17 +417,30 @@ fun HardbrutCard(modifier: Modifier = Modifier, content: @Composable ColumnScope
 fun HardbrutTextField(value: String, onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier, label: String = "", placeholder: String = "")</code></pre></details>
 
-  <details><summary>HardbrutCheckbox / HardbrutRadio</summary>
+  <details><summary>HardbrutCheckbox / HardbrutRadio / HardbrutSwitch</summary>
   <pre><code>@Composable
 fun HardbrutCheckbox(checked: Boolean, onCheckedChange: (Boolean) -> Unit)
 @Composable
-fun HardbrutRadio(selected: Boolean, onClick: () -> Unit)</code></pre></details>
+fun HardbrutRadio(selected: Boolean, onClick: () -> Unit)
+@Composable
+fun HardbrutSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit,
+    accent: Color, accentInk: Color)</code></pre></details>
 
-  <details><summary>HardbrutBadge / HardbrutCallout</summary>
+  <details><summary>HardbrutBadge / HardbrutChip / HardbrutCallout</summary>
   <pre><code>@Composable
 fun HardbrutBadge(text: String, accent: Color, accentInk: Color)
 @Composable
+fun HardbrutChip(text: String, selected: Boolean, onClick: () -> Unit,
+    accent: Color, accentInk: Color)
+@Composable
 fun HardbrutCallout(text: String, accent: Color, accentInk: Color)</code></pre></details>
+
+  <details><summary>HardbrutListRow</summary>
+  <pre><code>@Composable
+fun HardbrutListRow(title: String, subtitle: String? = null,
+    avatarText: String? = null, onClick: (() -> Unit)? = null,
+    trailing: @Composable (RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier)</code></pre></details>
 
   <details><summary>HardbrutDetails</summary>
   <pre><code>@Composable
@@ -425,7 +454,7 @@ fun HardbrutDetails(summary: String, expanded: Boolean,
 </main>
 
 <footer class="site-footer">
-  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.9">v0.9</a> — zero dependencies, no choices. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Android</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
+  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.10">v0.10</a> — zero dependencies, no choices. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Android</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
 </footer>
 
 </body>

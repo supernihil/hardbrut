@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="yellow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARDBRUT Playbook — dev guide for web + Android</title>
+<meta name="description" content="Practical recipes for building real screens with HARDBRUT: conversation lists, chat views, settings forms, dashboards — CSS and Jetpack Compose.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="hardbrut.css">
+<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}.recipe-demo{margin-bottom:var(--space-sm)}</style>
+<script>
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  function updateThemeToggle(){
+    var btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    var isDark = h.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '☀' : '☾';
+    btn.setAttribute('aria-pressed', String(isDark));
+  }
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', function(e){
+    if (!localStorage.getItem('theme')) {
+      h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      updateThemeToggle();
+    }
+  });
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+    updateThemeToggle();
+  };
+  var a = localStorage.getItem('accent') || 'yellow';
+  h.setAttribute('data-accent', a);
+  window.addEventListener('DOMContentLoaded', updateThemeToggle);
+})();
+</script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="./" class="navbar-brand">HARDBRUT</a>
+  <ul class="navbar-links" id="navbar-links">
+    <li><a href="index.html#start">Start</a></li>
+    <li><a href="index.html#elements">Elements</a></li>
+    <li><a href="index.html#android">Android</a></li>
+    <li><a href="playbook.html" aria-current="page">Playbook</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
+    <button class="navbar-toggle" aria-label="Menu" onclick="document.getElementById('navbar-links').classList.toggle('open')">MENU</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>PLAYBOOK</h1>
+  <p>Dev guide for building real screens with HARDBRUT — web and Android. For the full element catalog, see <a href="index.html#elements">Elements</a>.</p>
+</header>
+
+<main class="container">
+
+<!-- ===== CSS ===== -->
+<section class="section" id="css">
+  <h2>CSS</h2>
+  <p>Recipes for composing HARDBRUT's primitives into real screens. Every recipe below is copy-pasteable — no build step, no config.</p>
+
+  <h3>Setup</h3>
+  <pre><code>&lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;!-- or, if you don't want the embedded font: --&gt;
+&lt;link rel="stylesheet" href="hardbrut.nofont.css"&gt;</code></pre>
+  <p class="text-sm text-muted">Dark mode + accent picker wiring: see <a href="index.html#start">Start</a> on the main site — it's ~15 lines of vanilla JS, already on every page here.</p>
+
+  <h3>Recipe: conversation list</h3>
+  <p><code>.list-row</code> stacked directly — no wrapper needed. Title and subtitle truncate on their own; give the container a <code>max-width</code> if you want a fixed-width panel.</p>
+  <div class="recipe-demo" style="max-width:28rem">
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">JD</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Jane Doe</span>
+        <span class="list-row-subtitle">Let's ship it Thursday</span>
+      </span>
+      <span class="list-row-meta"><span>14:02</span><span class="badge">2</span></span>
+    </a>
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">MK</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Mo Khan</span>
+        <span class="list-row-subtitle">Sounds good to me</span>
+      </span>
+      <span class="list-row-meta"><span>Yesterday</span></span>
+    </a>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;a href="/thread/1" class="list-row"&gt;
+  &lt;span class="list-row-avatar"&gt;JD&lt;/span&gt;
+  &lt;span class="list-row-body"&gt;
+    &lt;span class="list-row-title"&gt;Jane Doe&lt;/span&gt;
+    &lt;span class="list-row-subtitle"&gt;Let's ship it Thursday&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="list-row-meta"&gt;
+    &lt;span&gt;14:02&lt;/span&gt;
+    &lt;span class="badge"&gt;2&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/a&gt;</code></pre>
+  </details>
+
+  <h3>Recipe: chat view</h3>
+  <p>Wrap messages in <code>.chat</code>. Add <code>.chat-msg-self</code> to flip a message to the right and switch its bubble to the accent color — no dark-mode CSS needed, it reuses the same accent/accent-ink pairing as buttons and badges.</p>
+  <div class="recipe-demo chat" style="max-width:28rem">
+    <div class="chat-msg">
+      <span class="chat-avatar">MK</span>
+      <div><div class="chat-bubble">Ready when you are</div><span class="chat-time">14:00</span></div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <span class="chat-avatar">JD</span>
+      <div><div class="chat-bubble">Shipping now</div><span class="chat-time">14:02</span></div>
+    </div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="chat"&gt;
+  &lt;div class="chat-msg"&gt;
+    &lt;span class="chat-avatar"&gt;MK&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Ready when you are&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:00&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="chat-msg chat-msg-self"&gt;
+    &lt;span class="chat-avatar"&gt;JD&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Shipping now&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:02&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h3>Recipe: settings screen</h3>
+  <p>A card holding a form. Switches for on/off preferences, chips for a filter row, two button kinds for save/cancel — never more than that.</p>
+  <div class="recipe-demo card">
+    <div class="card-body">
+      <h4>Notifications</h4>
+      <div class="field"><label><input type="checkbox" class="switch" checked> Email me about replies</label></div>
+      <div class="field"><label><input type="checkbox" class="switch"> Weekly digest</label></div>
+      <div class="field">
+        <label>Mute topics</label>
+        <div class="cluster">
+          <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Billing</button>
+          <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Marketing</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button>Save</button>
+      <button class="cancel">Cancel</button>
+    </div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h4&gt;Notifications&lt;/h4&gt;
+    &lt;div class="field"&gt;
+      &lt;label&gt;&lt;input type="checkbox" class="switch" checked&gt; Email me about replies&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;label&gt;&lt;input type="checkbox" class="switch"&gt; Weekly digest&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;label&gt;Mute topics&lt;/label&gt;
+      &lt;div class="cluster"&gt;
+        &lt;button class="chip" aria-pressed="true" onclick="..."&gt;Billing&lt;/button&gt;
+        &lt;button class="chip" aria-pressed="false" onclick="..."&gt;Marketing&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-footer"&gt;
+    &lt;button&gt;Save&lt;/button&gt;
+    &lt;button class="cancel"&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h3>Recipe: dashboard tiles</h3>
+  <p>The 12-column <code>.grid</code> plus <code>.card</code>. Stacks to 6 columns at 768px, 1 column at 480px — automatically, no extra markup.</p>
+  <div class="recipe-demo grid">
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Open threads</p><h3 style="margin:0">128</h3></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Avg. response</p><h3 style="margin:0">4m</h3></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Unread</p><h3 style="margin:0">7</h3></div></div></div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="grid"&gt;
+  &lt;div class="col-4"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;p class="text-sm text-muted text-uppercase"&gt;Open threads&lt;/p&gt;
+        &lt;h3 style="margin:0"&gt;128&lt;/h3&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- repeat .col-4 for each tile --&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h3>Rules of thumb</h3>
+  <ul>
+    <li>Reach for <code>.list-row</code> and <code>.chat</code> as-is — don't wrap them in <code>.card</code>, they already carry their own border/shadow.</li>
+    <li><code>.list-row-title</code> / <code>.list-row-subtitle</code> truncate to one line by design. If you need full text, don't use them — use plain text inside <code>.list-row-body</code>.</li>
+    <li>Selected/toggled state always means "filled with <code>--accent</code>, text in <code>--accent-ink</code>" — <code>.chip[aria-pressed="true"]</code>, <code>.switch:checked</code>, buttons, badges all follow the same rule. Don't invent a second "selected" color.</li>
+    <li>Every shadow-bearing element (<code>.card</code>, <code>.list-row</code>, buttons, chips, switches) keeps its shadow always — it only disappears on <code>:active</code>. Don't strip shadows for a "flatter" look; that's a different framework.</li>
+  </ul>
+</section>
+
+<!-- ===== ANDROID ===== -->
+<section class="section" id="android">
+  <h2>ANDROID</h2>
+  <p>Same rules, Jetpack Compose. For the full composable list and token mapping, see <a href="index.html#android">Android</a> on the main site.</p>
+
+  <h3>Setup</h3>
+  <pre><code>// 1. Drop Hardbrut.kt into your project (one file, one dependency: Compose)
+// 2. Pick an accent pair
+val (accent, accentInk) = HardbrutTokens.AccentYellow</code></pre>
+  <p class="text-sm text-muted">Compose has no CSS-like text-transform — every composable that takes a raw <code>String</code> (badge, chip, list row) uppercases it internally. If you build custom content with <code>Text()</code> yourself (e.g. inside <code>HardbrutButton</code>), uppercase the label at the call site.</p>
+
+  <h3>Recipe: primary + cancel buttons</h3>
+  <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
+
+Row(horizontalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    HardbrutButton(onClick = { /* save */ }, accent = accent, accentInk = accentInk) {
+        Text("SAVE")
+    }
+    HardbrutButton(
+        onClick = { /* dismiss */ },
+        accent = accent, accentInk = accentInk,
+        kind = ButtonKind.Cancel
+    ) { Text("CANCEL") }
+}</code></pre>
+
+  <h3>Recipe: conversation list</h3>
+  <p><code>HardbrutListRow</code> mirrors the CSS <code>.list-row</code> — avatar, title, subtitle (single-line, ellipsized), and a trailing slot for a timestamp or badge.</p>
+  <pre><code>LazyColumn(verticalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    items(threads) { thread ->
+        HardbrutListRow(
+            title = thread.name,
+            subtitle = thread.lastMessage,
+            avatarText = thread.initials,
+            onClick = { openThread(thread.id) },
+            trailing = {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(thread.time, fontSize = 12.sp, color = HardbrutTokens.Muted)
+                    if (thread.unread > 0) {
+                        HardbrutBadge(thread.unread.toString())
+                    }
+                }
+            }
+        )
+    }
+}</code></pre>
+
+  <h3>Recipe: settings screen</h3>
+  <p>Switches and chips read the same accent pair as everything else — pass it down once.</p>
+  <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
+var emailOn by remember { mutableStateOf(true) }
+var digestOn by remember { mutableStateOf(false) }
+var mutedTopic by remember { mutableStateOf&lt;String?&gt;(null) }
+
+HardbrutCard {
+    Text("NOTIFICATIONS", fontWeight = FontWeight.ExtraBold)
+    Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        HardbrutSwitch(emailOn, { emailOn = it }, accent, accentInk)
+        Spacer(Modifier.width(8.dp))
+        Text("Email me about replies")
+    }
+    Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        HardbrutChip("Billing", selected = mutedTopic == "billing",
+            onClick = { mutedTopic = "billing" }, accent = accent, accentInk = accentInk)
+        HardbrutChip("Marketing", selected = mutedTopic == "marketing",
+            onClick = { mutedTopic = "marketing" }, accent = accent, accentInk = accentInk)
+    }
+}</code></pre>
+
+  <h3>Recipe: dashboard tiles</h3>
+  <pre><code>Row(horizontalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    listOf("Open threads" to "128", "Avg. response" to "4m", "Unread" to "7")
+        .forEach { (label, value) ->
+            HardbrutCard(modifier = Modifier.weight(1f)) {
+                Text(label.uppercase(), fontSize = 12.sp, color = HardbrutTokens.Muted)
+                Text(value, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
+            }
+        }
+}</code></pre>
+
+  <h3>Dark mode</h3>
+  <p><code>Hardbrut.kt</code> ships light-only tokens today — there's no <code>HardbrutTokens</code> dark variant yet. If your app supports dark mode, branch on <code>isSystemInDarkTheme()</code> and swap the three theme-dependent tokens, mirroring the CSS <code>[data-theme="dark"]</code> block:</p>
+  <pre><code>val isDark = isSystemInDarkTheme()
+val ink = if (isDark) Color(0xFFF0F0E8) else HardbrutTokens.Ink
+val paper = if (isDark) Color(0xFF1A1A18) else HardbrutTokens.Paper
+val background = if (isDark) Color(0xFF121210) else HardbrutTokens.Background
+// accent / accentInk stay the same in both themes — same as the web version</code></pre>
+  <p class="text-sm text-muted">Every composable takes <code>accent</code>/<code>accentInk</code> as parameters rather than reading a global, so swapping ink/paper/background at the call site is enough — nothing internal needs to change.</p>
+
+  <h3>Rules of thumb</h3>
+  <ul>
+    <li>Every composable takes <code>accent</code>/<code>accentInk</code> explicitly — there's no global theme object to reach for. Pick a <code>HardbrutTokens.Accent*</code> pair once per screen and thread it through.</li>
+    <li><code>HardbrutButton</code> uses a custom black-15%-alpha ripple, not the platform default — don't override <code>indication</code> yourself unless you're deliberately deviating from the spec in <code>ANDROID.md</code>.</li>
+    <li>Android's <code>Modifier.shadow()</code> can't do zero blur — every HARDBRUT composable uses <code>Modifier.hardShadow()</code> instead (drawn as a flat offset rect). Don't mix in <code>Modifier.shadow()</code>; the blur will look inconsistent next to everything else.</li>
+    <li>No dedicated tabs, dialog, or segmented-progress composables yet — use <code>AlertDialog</code> / your own <code>TabRow</code> styled with <code>HardbrutTokens</code>, same as any native pattern not covered here.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>HARDBRUT — <a href="index.html">Home</a> · <a href="index.html#elements">Elements</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a></p>
+</footer>
+
+</body>
+</html>
