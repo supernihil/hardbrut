@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # HARDBRUT build — bundles the Inter 900 latin font into hardbrut.css (and
-# minified + gzipped variants) from src/hardbrut.css.
+# minified + gzipped variants) from src/hardbrut.css. Also emits a
+# hardbrut.nofont.css variant (same rules, no @font-face / no embedded font,
+# --font-display just falls through to the system stack) for consumers who
+# don't want the ~24KB font payload.
 #
 # The template (src/hardbrut.css) carries the literal placeholder __FONT_B64__
 # inside its @font-face src: url(). This script reads the vendored font
@@ -63,4 +66,24 @@ echo "wrote hardbrut.min.css ($(wc -c < hardbrut.min.css) bytes)"
 gzip -9 -c hardbrut.min.css > hardbrut.min.css.gz
 echo "wrote hardbrut.min.css.gz ($(wc -c < hardbrut.min.css.gz) bytes)"
 
-echo "done — hardbrut.css carries the embedded Inter 900 (zero external requests)."
+# ---- no-font variant: same template, @font-face block stripped ----
+CSS_NOFONT="$(sed '/@font-face{/,/^}/d' "$TEMPLATE" \
+  | sed '/EMBEDDED FONT/d' \
+  | sed "s/Fonts embedded inline\./No embedded font — system font stack only./")"
+
+if grep -q '__FONT_B64__' <<< "$CSS_NOFONT"; then
+  echo "ERROR: __FONT_B64__ placeholder leaked into the no-font variant" >&2
+  exit 1
+fi
+
+printf '%s' "$CSS_NOFONT" > hardbrut.nofont.css
+echo "wrote hardbrut.nofont.css ($(wc -c < hardbrut.nofont.css) bytes)"
+
+MIN_NOFONT="$(printf '%s' "$CSS_NOFONT" | sed -E 's@/\*[^*]*\*+([^/*][^*]*\*+)*/@ @g' | tr -s '[:space:]' ' ' | sed -E 's/[[:space:]]*([{};,>:])[[:space:]]*/\1/g; s/[[:space:]]+/ /g')"
+printf '%s' "$MIN_NOFONT" > hardbrut.nofont.min.css
+echo "wrote hardbrut.nofont.min.css ($(wc -c < hardbrut.nofont.min.css) bytes)"
+
+gzip -9 -c hardbrut.nofont.min.css > hardbrut.nofont.min.css.gz
+echo "wrote hardbrut.nofont.min.css.gz ($(wc -c < hardbrut.nofont.min.css.gz) bytes)"
+
+echo "done — hardbrut.css carries the embedded Inter 900 (zero external requests). hardbrut.nofont.css skips the font entirely."

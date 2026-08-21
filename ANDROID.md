@@ -42,11 +42,12 @@ val DisplayFont = FontFamily(
     Font(R.font.anton, FontWeight.Bold) // or sans-serif-black
 )
 
-// Heading style: uppercase, tight spacing, Impact-like
+// Heading style: tight spacing, Impact-like. Compose has no CSS-like
+// text-transform — call .uppercase() on the string at the call site
+// (every example below already does this).
 val HeadingStyle = TextStyle(
     fontFamily = DisplayFont,
     fontWeight = FontWeight.Bold,
-    textTransform = TextTransform.Uppercase,
     letterSpacing = (-0.5).sp,
     lineHeight = 1.1.em
 )
@@ -61,11 +62,10 @@ val BodyStyle = TextStyle(
 // Muted text
 val MutedStyle = BodyStyle.copy(color = Color(0xFF666666))
 
-// Mono (for badges, code)
+// Mono (for badges, code) — callers pass .uppercase() text, see HardbrutBadge below
 val MonoStyle = TextStyle(
     fontFamily = FontFamily.Monospace,
     fontSize = 12.sp,
-    textTransform = TextTransform.Uppercase,
     letterSpacing = 0.6.sp
 )
 ```
