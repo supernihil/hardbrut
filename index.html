@@ -92,7 +92,7 @@
         <li>Zero border-radius — ever</li>
         <li>Every shadow stays. Only gone during a press animation</li>
         <li>Two button kinds: default + cancel</li>
-        <li>All buttons animate identically</li>
+        <li>All buttons animate identically — and are all the same height</li>
         <li>6 accent colors to choose from</li>
         <li>Dark mode: auto (system) + manual toggle (persists)</li>
       </ul>
@@ -116,8 +116,8 @@
       <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
       <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
       <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn" download>hardbrut.css (49KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (48KB, minified)</a>
+        <a href="hardbrut.css" class="btn" download>hardbrut.css (52KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (51KB, minified)</a>
       </div>
       <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~4KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
       <details style="margin-top:var(--space-sm)">
@@ -215,18 +215,59 @@ window.setAccent = function(c){
   </div>
 
   <h3>Buttons</h3>
-  <p>Two kinds. Bare <code>&lt;button&gt;</code> uses the accent color. <code>.cancel</code> is white.</p>
+  <p>Two kinds. Bare <code>&lt;button&gt;</code> uses the accent color. <code>.cancel</code> is white. Every button-like control — including icon toggles — shares one height token (<code>--control-h</code>), so mixed rows always line up.</p>
   <div class="cluster" style="margin-bottom:1rem">
     <button>Submit</button>
     <button class="cancel">Cancel</button>
     <a href="#" class="btn">Link Btn</a>
     <a href="#" class="btn btn-cancel">Link Cancel</a>
     <button disabled>Disabled</button>
+    <button class="theme-toggle" aria-label="Example icon button" title="Icon button — same height as the rest">☾</button>
+  </div>
+
+  <h3>List rows</h3>
+  <p>For a list of clickable rows — conversations, notifications, search results. Truncates gracefully; no configuration.</p>
+  <div style="max-width:32rem">
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">JD</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Jane Doe</span>
+        <span class="list-row-subtitle">Sounds good, see you at the shadow — no blur, remember?</span>
+      </span>
+      <span class="list-row-meta"><span>14:02</span><span class="badge">3</span></span>
+    </a>
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">MK</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Mo Khan</span>
+        <span class="list-row-subtitle">Pushed the border-radius audit. Found zero, as expected.</span>
+      </span>
+      <span class="list-row-meta"><span>Yesterday</span></span>
+    </a>
+  </div>
+
+  <h3>Chat</h3>
+  <p>Two-sided message view. Add <code>.chat-msg-self</code> for outgoing messages — the bubble switches to the accent color automatically, in both themes.</p>
+  <div class="chat" style="max-width:32rem">
+    <div class="chat-msg">
+      <span class="chat-avatar">MK</span>
+      <div>
+        <div class="chat-bubble">Ship it with hard shadows only, right?</div>
+        <span class="chat-time">14:00</span>
+      </div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <span class="chat-avatar">JD</span>
+      <div>
+        <div class="chat-bubble">Always. Zero blur, zero radius.</div>
+        <span class="chat-time">14:02</span>
+      </div>
+    </div>
   </div>
 
   <h3>Details / Summary</h3>
   <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
-  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
+  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
 
   <h3>Forms</h3>
   <div class="grid">
