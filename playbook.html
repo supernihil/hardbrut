@@ -215,6 +215,104 @@
     <li>Selected/toggled state always means "filled with <code>--accent</code>, text in <code>--accent-ink</code>" — <code>.chip[aria-pressed="true"]</code>, <code>.switch:checked</code>, buttons, badges all follow the same rule. Don't invent a second "selected" color.</li>
     <li>Every shadow-bearing element (<code>.card</code>, <code>.list-row</code>, buttons, chips, switches) keeps its shadow always — it only disappears on <code>:active</code>. Don't strip shadows for a "flatter" look; that's a different framework.</li>
   </ul>
+
+  <h3>Reference: every element, in one place</h3>
+  <p>Live demos with full markup live under <a href="index.html#elements">Elements</a> — this is the copy-paste version, grouped by kind, nothing skipped.</p>
+
+  <h4>Typography</h4>
+  <dl>
+    <dt><code>h1</code>–<code>h6</code></dt><dd>Uppercase, display font, auto-scaling via <code>clamp()</code> on h1–h3. <code>&lt;h2&gt;Title&lt;/h2&gt;</code></dd>
+    <dt><code>strong</code> / <code>b</code>, <code>em</code> / <code>i</code></dt><dd>Bold and italic — either tag works, same rule.</dd>
+    <dt><code>del</code> / <code>s</code>, <code>u</code> / <code>ins</code></dt><dd>Strikethrough and underline — either tag in each pair works.</dd>
+    <dt><code>mark</code></dt><dd>Accent-color highlight. <code>&lt;mark&gt;highlighted&lt;/mark&gt;</code></dd>
+    <dt><code>small</code>, <code>sub</code>, <code>sup</code></dt><dd>Smaller text, subscript, superscript — standard semantics.</dd>
+    <dt><code>abbr[title]</code></dt><dd>Dotted underline, native tooltip. <code>&lt;abbr title="Cascading Style Sheets"&gt;CSS&lt;/abbr&gt;</code></dd>
+    <dt><code>code</code>, <code>kbd</code>, <code>samp</code></dt><dd>Inline mono with a border — code, keyboard input, program output. All three look identical, semantics differ.</dd>
+    <dt><code>pre</code></dt><dd>Bordered, shadowed, horizontally scrollable code block. Wrap a <code>&lt;code&gt;</code> inside for syntax-block styling.</dd>
+    <dt><code>blockquote</code></dt><dd>6px left border, italic. For pull quotes.</dd>
+    <dt><code>hr</code></dt><dd>Full-width rule, thick border color.</dd>
+    <dt><code>figure</code> / <code>figcaption</code></dt><dd>Wraps an <code>img</code> (already bordered+shadowed) with a muted caption below.</dd>
+    <dt><code>ul</code>, <code>ol</code>, <code>dl</code></dt><dd>Standard lists, nested lists supported. <code>dl</code>/<code>dt</code>/<code>dd</code> for term/definition pairs — this reference is one.</dd>
+    <dt><code>table</code></dt><dd>Bordered, striped rows, header row inverted (ink bg). Scrolls horizontally on its own if too wide — never forces the page to.</dd>
+  </dl>
+
+  <h4>Layout</h4>
+  <dl>
+    <dt><code>.container</code></dt><dd>Max-width 1100px, centered, side padding. Wrap your page content in one.</dd>
+    <dt><code>.section</code></dt><dd>Vertical padding block — one per page section.</dd>
+    <dt><code>.grid</code> + <code>.col-1</code>…<code>.col-12</code></dt><dd>12-column grid. 6-col at 768px, 1-col at 480px, automatically.</dd>
+    <dt><code>.stack</code></dt><dd>Flex column with gap — vertical stacking.</dd>
+    <dt><code>.cluster</code></dt><dd>Flex row, wraps, with gap — the pattern behind every button row on this page.</dd>
+  </dl>
+
+  <h4>Buttons &amp; toggles</h4>
+  <dl>
+    <dt><code>button</code> / <code>.btn</code></dt><dd>Accent fill. <code>.cancel</code> / <code>.btn-cancel</code> for the white variant. Same height as every other control via <code>--control-h</code>.</dd>
+    <dt><code>input[type=checkbox].switch</code></dt><dd>Hard-edged sliding toggle. <code>&lt;input type="checkbox" class="switch"&gt;</code></dd>
+    <dt><code>.chip</code></dt><dd>Toggleable pill, driven by <code>aria-pressed</code>. <code>&lt;button class="chip" aria-pressed="true"&gt;Open&lt;/button&gt;</code></dd>
+    <dt><code>.theme-toggle</code>, <code>.navbar-toggle</code></dt><dd>The icon-button and mobile-menu-button patterns — see <a href="index.html#start">Start</a> for the wiring script.</dd>
+  </dl>
+
+  <h4>Containers</h4>
+  <dl>
+    <dt><code>.card</code> / <code>.card-body</code> / <code>.card-footer</code> / <code>.card-img</code></dt><dd>Bordered, shadowed box that lifts on hover. Footer for action rows.</dd>
+    <dt><code>.list-row</code></dt><dd>See the conversation-list recipe above.</dd>
+    <dt><code>.chat</code> / <code>.chat-msg</code> / <code>.chat-msg-self</code></dt><dd>See the chat-view recipe above.</dd>
+    <dt><code>details</code> / <code>summary</code></dt><dd>Native accordion, zero JS. <code>&lt;details&gt;&lt;summary&gt;Title&lt;/summary&gt;Body&lt;/details&gt;</code></dd>
+  </dl>
+
+  <h4>Forms</h4>
+  <dl>
+    <dt><code>input[type=text/email/…]</code>, <code>textarea</code></dt><dd>Bordered, shadow deepens on focus. <code>.field</code> wraps a label+input+hint group; <code>.field-hint</code> is the small muted line under it.</dd>
+    <dt><code>select</code></dt><dd>Same input styling as text fields, native dropdown.</dd>
+    <dt><code>input[type=checkbox]</code>, <code>input[type=radio]</code></dt><dd>Custom-drawn square/circle, no native chrome.</dd>
+    <dt><code>label</code></dt><dd>Bold, uppercase, small — wraps or pairs with <code>for=</code>.</dd>
+  </dl>
+
+  <h4>Feedback</h4>
+  <dl>
+    <dt><code>.badge</code></dt><dd>Small static accent pill, mono font. <code>&lt;span class="badge"&gt;3&lt;/span&gt;</code></dd>
+    <dt><code>.callout</code></dt><dd>Full-width accent block, bold text, for a highlighted note.</dd>
+    <dt><code>.message</code></dt><dd>Same as <code>.callout</code>, tighter padding — inline status messages.</dd>
+  </dl>
+
+  <h4>Interactive: tabs &amp; dialog</h4>
+  <p>Both shown live under <a href="index.html#elements">Elements</a>. Minimal wiring:</p>
+  <pre><code>&lt;div class="tab-list" role="tablist"&gt;
+  &lt;button class="tab" role="tab" aria-selected="true"
+    aria-controls="panel-a" id="tab-a" onclick="hbSelectTab(this,'panel-a')"&gt;One&lt;/button&gt;
+  &lt;button class="tab" role="tab" aria-selected="false"
+    aria-controls="panel-b" id="tab-b" onclick="hbSelectTab(this,'panel-b')"&gt;Two&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="tab-panel" role="tabpanel" id="panel-a" aria-labelledby="tab-a"&gt;...&lt;/div&gt;
+&lt;div class="tab-panel" role="tabpanel" id="panel-b" aria-labelledby="tab-b" hidden&gt;...&lt;/div&gt;
+
+&lt;script&gt;
+function hbSelectTab(btn, panelId){
+  btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
+    t.setAttribute('aria-selected', String(t === btn));
+    var panel = document.getElementById(t.getAttribute('aria-controls'));
+    if (panel) panel.hidden = (panel.id !== panelId);
+  });
+}
+&lt;/script&gt;
+
+&lt;!-- dialog: the native element does the rest --&gt;
+&lt;button onclick="document.getElementById('d').showModal()"&gt;Open&lt;/button&gt;
+&lt;dialog id="d"&gt;
+  &lt;h4&gt;Delete conversation?&lt;/h4&gt;
+  &lt;div class="cluster"&gt;
+    &lt;button onclick="document.getElementById('d').close()"&gt;Delete&lt;/button&gt;
+    &lt;button class="cancel" onclick="document.getElementById('d').close()"&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+
+  <h4>Colors &amp; utilities</h4>
+  <dl>
+    <dt><code>.accent-swatches</code> / <code>.accent-swatch</code></dt><dd>The accent picker UI — see <a href="index.html#start">Start</a> for the wiring.</dd>
+    <dt><code>.text-center</code>, <code>.text-uppercase</code>, <code>.text-muted</code>, <code>.text-sm</code></dt><dd>Text helpers, self-explanatory.</dd>
+    <dt><code>.sr-only</code></dt><dd>Visually hidden, still reachable by screen readers and keyboard focus.</dd>
+  </dl>
 </section>
 
 <!-- ===== ANDROID ===== -->
@@ -312,8 +410,66 @@ val background = if (isDark) Color(0xFF121210) else HardbrutTokens.Background
     <li>Every composable takes <code>accent</code>/<code>accentInk</code> explicitly — there's no global theme object to reach for. Pick a <code>HardbrutTokens.Accent*</code> pair once per screen and thread it through.</li>
     <li><code>HardbrutButton</code> uses a custom black-15%-alpha ripple, not the platform default — don't override <code>indication</code> yourself unless you're deliberately deviating from the spec in <code>ANDROID.md</code>.</li>
     <li>Android's <code>Modifier.shadow()</code> can't do zero blur — every HARDBRUT composable uses <code>Modifier.hardShadow()</code> instead (drawn as a flat offset rect). Don't mix in <code>Modifier.shadow()</code>; the blur will look inconsistent next to everything else.</li>
-    <li>No dedicated tabs, dialog, or segmented-progress composables yet — use <code>AlertDialog</code> / your own <code>TabRow</code> styled with <code>HardbrutTokens</code>, same as any native pattern not covered here.</li>
+    <li><code>HardbrutTabRow</code> and <code>HardbrutDialog</code> only handle chrome — panel switching (tabs) and dismiss wiring (dialog) are yours, same division of labor as the CSS versions. No dedicated segmented-progress composable yet; build your own row of filled/unfilled <code>Box</code>es if you need one.</li>
   </ul>
+
+  <h3>Reference: every composable, in one place</h3>
+  <p>Signatures live under <a href="index.html#android">Android → All composables</a> — this is the usage version, one minimal call per composable.</p>
+  <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
+
+// Button — two kinds, same call either way
+HardbrutButton(onClick = {}, accent = accent, accentInk = accentInk) { Text("SAVE") }
+HardbrutButton(onClick = {}, accent = accent, accentInk = accentInk,
+    kind = ButtonKind.Cancel) { Text("CANCEL") }
+
+// Card
+HardbrutCard { Text("Card content") }
+
+// Text field
+var name by remember { mutableStateOf("") }
+HardbrutTextField(value = name, onValueChange = { name = it },
+    label = "Name", placeholder = "Your name")
+
+// Checkbox / radio / switch
+var checked by remember { mutableStateOf(false) }
+HardbrutCheckbox(checked = checked, onCheckedChange = { checked = it })
+HardbrutRadio(selected = checked, onClick = { checked = true })
+HardbrutSwitch(checked = checked, onCheckedChange = { checked = it },
+    accent = accent, accentInk = accentInk)
+
+// Badge / chip / callout
+HardbrutBadge("3", accent = accent, accentInk = accentInk)
+HardbrutChip("Open", selected = true, onClick = {}, accent = accent, accentInk = accentInk)
+HardbrutCallout("Heads up — this can't be undone.", accent = accent, accentInk = accentInk)
+
+// List row — see the conversation-list recipe above for the full version
+HardbrutListRow(title = "Jane Doe", subtitle = "Let's ship it Thursday",
+    avatarText = "JD", onClick = { })
+
+// Tabs — panel switching is a plain when/if, same as CSS leaves [hidden] to you
+var tab by remember { mutableStateOf(0) }
+HardbrutTabRow(tabs = listOf("Overview", "Details"), selected = tab,
+    onSelect = { tab = it }, accent = accent, accentInk = accentInk)
+when (tab) {
+    0 -> Text("Overview panel")
+    1 -> Text("Details panel")
+}
+
+// Dialog
+var showDialog by remember { mutableStateOf(false) }
+if (showDialog) {
+    HardbrutDialog(onDismissRequest = { showDialog = false }) {
+        Text("Delete conversation?", fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+        HardbrutButton(onClick = { showDialog = false },
+            accent = accent, accentInk = accentInk) { Text("DELETE") }
+    }
+}
+
+// Details (expandable) — Compose has no &lt;details&gt;, state is yours
+var expanded by remember { mutableStateOf(false) }
+HardbrutDetails(summary = "What is HARDBRUT", expanded = expanded,
+    onToggle = { expanded = !expanded }) { Text("An opinionated design system.") }</code></pre>
 </section>
 
 </main>
