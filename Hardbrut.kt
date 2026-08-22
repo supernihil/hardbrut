@@ -76,7 +76,7 @@ fun Modifier.hardShadow(size: Dp, color: Color = HardbrutTokens.Ink): Modifier =
 enum class ButtonKind { Default, Cancel }
 
 @Composable
-@Suppress("DEPRECATION") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutButton(
     onClick: () -> Unit,
     accent: Color,
@@ -149,7 +149,7 @@ fun HardbrutCard(
 // LIST ROW — e.g. a conversation list. Mirrors CSS .list-row.
 // =====================================================================
 @Composable
-@Suppress("DEPRECATION") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutListRow(
     title: String,
     subtitle: String? = null,
@@ -361,7 +361,7 @@ fun HardbrutBadge(
 // CHIP — selectable/toggleable pill (filter preset, topic tag).
 // =====================================================================
 @Composable
-@Suppress("DEPRECATION") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutChip(
     text: String,
     selected: Boolean,
