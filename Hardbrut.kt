@@ -14,7 +14,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple.ripple
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,6 +76,7 @@ fun Modifier.hardShadow(size: Dp, color: Color = HardbrutTokens.Ink): Modifier =
 enum class ButtonKind { Default, Cancel }
 
 @Composable
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutButton(
     onClick: () -> Unit,
     accent: Color,
@@ -107,7 +109,7 @@ fun HardbrutButton(
             .clickable(
                 enabled = enabled,
                 interactionSource = interactionSource,
-                indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+                indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
             ) { onClick() }
             .padding(horizontal = 24.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.Center,
@@ -147,6 +149,7 @@ fun HardbrutCard(
 // LIST ROW — e.g. a conversation list. Mirrors CSS .list-row.
 // =====================================================================
 @Composable
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutListRow(
     title: String,
     subtitle: String? = null,
@@ -159,7 +162,7 @@ fun HardbrutListRow(
     val clickModifier = if (onClick != null) {
         Modifier.clickable(
             interactionSource = interactionSource,
-            indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+            indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
         ) { onClick() }
     } else Modifier
 
@@ -358,6 +361,7 @@ fun HardbrutBadge(
 // CHIP — selectable/toggleable pill (filter preset, topic tag).
 // =====================================================================
 @Composable
+@Suppress("DEPRECATION_ERROR") // rememberRipple: still the only ripple API that resolves against compose-bom 2024.09.02
 fun HardbrutChip(
     text: String,
     selected: Boolean,
@@ -381,7 +385,7 @@ fun HardbrutChip(
             .background(bg)
             .clickable(
                 interactionSource = interactionSource,
-                indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+                indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
             ) { onClick() }
             .padding(horizontal = 12.dp, vertical = 5.dp)
     )
