@@ -46,6 +46,13 @@
     document.querySelector('.accent-swatch[data-accent="' + a + '"]').classList.add('active');
     updateThemeToggle();
   });
+  window.hbSelectTab = function(btn, panelId){
+    btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
+      t.setAttribute('aria-selected', String(t === btn));
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = (panel.id !== panelId);
+    });
+  };
 })();
 </script>
 </head>
@@ -121,7 +128,7 @@
         <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (52KB, minified)</a>
       </div>
       <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~5KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (21KB)</a> — same rules, system font stack only.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (22KB)</a> — same rules, system font stack only.</p>
       <details style="margin-top:var(--space-sm)">
         <summary>Previous versions</summary>
         <div class="stack">
@@ -274,7 +281,7 @@ window.setAccent = function(c){
 
   <h3>Details / Summary</h3>
   <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
-  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
+  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Switches, chips, tabs, and a styled native dialog</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
 
   <h3>Forms</h3>
   <div class="grid">
@@ -284,14 +291,20 @@ window.setAccent = function(c){
     <div class="col-6"><div class="field"><label><input type="checkbox"> I agree to the terms</label></div></div>
     <div class="col-6"><div class="field"><label><input type="radio" name="opt" checked> Option A</label><label><input type="radio" name="opt"> Option B</label></div></div>
     <div class="col-6"><div class="field"><label><input type="checkbox" class="switch" checked> Notifications</label></div></div>
+    <div class="col-6"><div class="field"><label for="role">Role</label><select id="role"><option>Admin</option><option>Editor</option><option>Viewer</option></select></div></div>
     <div class="col-12"><div class="cluster"><button>Submit</button><button class="cancel">Reset</button></div></div>
   </div>
 
   <h3>Typography</h3>
   <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
-  <p>Paragraph with <strong>bold</strong>, <em>italic</em>, <del>strikethrough</del>, <u>underline</u>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, <abbr title="abbreviation">abbr</abbr>.</p>
-  <p>A <a href="#">link</a> in a sentence. Inline <code>code</code> and <kbd>Ctrl+K</kbd>.</p>
+  <p>Paragraph with <strong>bold</strong> (or <b>b</b>), <em>italic</em> (or <i>i</i>), <del>strikethrough</del> (or <s>s</s>), <u>underline</u> and <ins>ins</ins>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, <abbr title="abbreviation">abbr</abbr>.</p>
+  <p>A <a href="#">link</a> in a sentence. Inline <code>code</code>, <kbd>Ctrl+K</kbd>, and <samp>program output</samp>.</p>
   <blockquote>Blockquote with 6px black left border and italic text. Perfect for pull quotes.</blockquote>
+  <hr>
+  <figure>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='160'%3E%3Crect width='400' height='160' fill='%23cccccc'/%3E%3C/svg%3E" alt="Placeholder" width="400" height="160">
+    <figcaption>Figure caption — muted, small, sits below the border+shadow image.</figcaption>
+  </figure>
 
   <h3>Code</h3>
   <pre><code>&lt;html data-accent="yellow"&gt;
@@ -325,6 +338,34 @@ window.setAccent = function(c){
     <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Open</button>
     <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Archived</button>
   </div>
+
+  <h3>Tabs</h3>
+  <p>Panel switching is left to you — toggle each panel's <code>hidden</code> attribute. <code>.tab</code> uses the same accent-fill-means-selected rule as buttons/chips.</p>
+  <div class="tab-list" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="tab-panel-a" id="tab-a" onclick="hbSelectTab(this,'tab-panel-a')">Overview</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-panel-b" id="tab-b" onclick="hbSelectTab(this,'tab-panel-b')">Details</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-panel-c" id="tab-c" onclick="hbSelectTab(this,'tab-panel-c')">History</button>
+  </div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-a" aria-labelledby="tab-a">Overview panel. Plain content — no required wrapper.</div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-b" aria-labelledby="tab-b" hidden>Details panel.</div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-c" aria-labelledby="tab-c" hidden>History panel.</div>
+
+  <h3>Dialog</h3>
+  <p>The native <code>&lt;dialog&gt;</code> element, styled — <code>showModal()</code>/<code>close()</code>/backdrop/Esc-to-dismiss all come free from the browser.</p>
+  <button onclick="document.getElementById('demo-dialog').showModal()">Open dialog</button>
+  <dialog id="demo-dialog">
+    <h4>Delete conversation?</h4>
+    <p class="text-sm text-muted">This can't be undone.</p>
+    <div class="cluster">
+      <button onclick="document.getElementById('demo-dialog').close()">Delete</button>
+      <button class="cancel" onclick="document.getElementById('demo-dialog').close()">Cancel</button>
+    </div>
+  </dialog>
+
+  <h3>Utilities</h3>
+  <p><code>.text-center</code>, <code>.text-uppercase</code>, <code>.text-muted</code>, <code>.text-sm</code> — text helpers. <code>.stack</code> (column flex) and <code>.cluster</code> (wrapping row flex) — the layout helpers used throughout this page. <code>.sr-only</code> hides content visually while keeping it readable to screen readers.</p>
+  <p class="text-center text-uppercase text-sm">Centered · uppercase · small</p>
+  <a href="#start" class="sr-only">Skip to start (visually hidden, focusable)</a>
 
   <h3>Grid</h3>
   <div class="grid" style="margin-bottom:var(--space-sm)">
@@ -441,6 +482,16 @@ fun HardbrutListRow(title: String, subtitle: String? = null,
     avatarText: String? = null, onClick: (() -> Unit)? = null,
     trailing: @Composable (RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier)</code></pre></details>
+
+  <details><summary>HardbrutTabRow</summary>
+  <pre><code>@Composable
+fun HardbrutTabRow(tabs: List&lt;String&gt;, selected: Int, onSelect: (Int) -> Unit,
+    accent: Color, accentInk: Color)</code></pre></details>
+
+  <details><summary>HardbrutDialog</summary>
+  <pre><code>@Composable
+fun HardbrutDialog(onDismissRequest: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit)</code></pre></details>
 
   <details><summary>HardbrutDetails</summary>
   <pre><code>@Composable
