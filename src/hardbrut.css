@@ -194,6 +194,19 @@ input[type="checkbox"].switch:checked::after{background:var(--accent-ink);transf
 .chip:active{transform:translate(1px,1px);box-shadow:none}
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 
+/* ---- TABS ---- */
+.tab-list{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:var(--space)}
+.tab{padding:0.6rem 1.25rem;font-family:var(--font-display);font-weight:900;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.02em;background:var(--paper);color:var(--ink);border:2px solid var(--ink);cursor:pointer;box-shadow:var(--shadow-sm);transition:transform 0.1s ease,box-shadow 0.1s ease}
+.tab:hover{transform:translate(-1px,-1px);box-shadow:var(--shadow)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tab-panel[hidden]{display:none}
+
+/* ---- DIALOG ---- */
+dialog{border:var(--border);box-shadow:var(--shadow-lg);padding:var(--space);background:var(--paper);color:var(--ink);max-width:32rem;width:90vw;margin:auto}
+dialog::backdrop{background:rgba(0,0,0,0.5)}
+dialog>:first-child{margin-top:0}
+dialog>:last-child{margin-bottom:0}
+
 /* ---- HERO / FOOTER ---- */
 .hero{padding:var(--space-lg) var(--space);text-align:center;background:var(--paper);border-bottom:4px solid var(--ink)}
 .hero h1{margin:0 0 var(--space-sm)}
