@@ -124,11 +124,11 @@
       <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
       <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
       <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn" download>hardbrut.css (53KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (52KB, minified)</a>
+        <a href="hardbrut.css" class="btn" download>hardbrut.css (55KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (53KB, minified)</a>
       </div>
       <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~5KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (22KB)</a> — same rules, system font stack only.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (23KB)</a> — same rules, system font stack only.</p>
       <details style="margin-top:var(--space-sm)">
         <summary>Previous versions</summary>
         <div class="stack">
@@ -281,7 +281,7 @@ window.setAccent = function(c){
 
   <h3>Details / Summary</h3>
   <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
-  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Switches, chips, tabs, and a styled native dialog</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
+  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Switches, chips, tabs, a styled native dialog, progress bar + spinner</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
 
   <h3>Forms</h3>
   <div class="grid">
@@ -361,6 +361,19 @@ window.setAccent = function(c){
       <button class="cancel" onclick="document.getElementById('demo-dialog').close()">Cancel</button>
     </div>
   </dialog>
+
+  <h3>Progress &amp; Loading</h3>
+  <p>Determinate: <code>.progress</code> + <code>.progress-fill</code>, width set by you (percent, or drive it from a value/max pair). Segmented look via a repeating background — no discrete DOM elements needed.</p>
+  <div class="stack" style="margin-bottom:var(--space-sm)">
+    <div class="progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" style="width:70%"></div>
+    </div>
+    <div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" style="width:25%"></div>
+    </div>
+  </div>
+  <p>Indeterminate: <code>.spinner</code> — hard opacity steps, not a smooth spin, to match the zero-blur motion language. Fully static under <code>prefers-reduced-motion</code>.</p>
+  <div class="spinner" role="status" aria-label="Loading"><span></span><span></span><span></span><span></span></div>
 
   <h3>Utilities</h3>
   <p><code>.text-center</code>, <code>.text-uppercase</code>, <code>.text-muted</code>, <code>.text-sm</code> — text helpers. <code>.stack</code> (column flex) and <code>.cluster</code> (wrapping row flex) — the layout helpers used throughout this page. <code>.sr-only</code> hides content visually while keeping it readable to screen readers.</p>
@@ -492,6 +505,13 @@ fun HardbrutTabRow(tabs: List&lt;String&gt;, selected: Int, onSelect: (Int) -> U
   <pre><code>@Composable
 fun HardbrutDialog(onDismissRequest: () -> Unit,
     content: @Composable ColumnScope.() -> Unit)</code></pre></details>
+
+  <details><summary>HardbrutProgressBar / HardbrutSpinner</summary>
+  <pre><code>@Composable
+fun HardbrutProgressBar(progress: Float, modifier: Modifier = Modifier,
+    segments: Int = 12, accent: Color)
+@Composable
+fun HardbrutSpinner(modifier: Modifier = Modifier)</code></pre></details>
 
   <details><summary>HardbrutDetails</summary>
   <pre><code>@Composable
