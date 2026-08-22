@@ -14,7 +14,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple.ripple
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,7 +108,7 @@ fun HardbrutButton(
             .clickable(
                 enabled = enabled,
                 interactionSource = interactionSource,
-                indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+                indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
             ) { onClick() }
             .padding(horizontal = 24.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.Center,
@@ -159,7 +160,7 @@ fun HardbrutListRow(
     val clickModifier = if (onClick != null) {
         Modifier.clickable(
             interactionSource = interactionSource,
-            indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+            indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
         ) { onClick() }
     } else Modifier
 
@@ -381,7 +382,7 @@ fun HardbrutChip(
             .background(bg)
             .clickable(
                 interactionSource = interactionSource,
-                indication = ripple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
+                indication = rememberRipple(color = HardbrutTokens.Ink.copy(alpha = 0.15f))
             ) { onClick() }
             .padding(horizontal = 12.dp, vertical = 5.dp)
     )

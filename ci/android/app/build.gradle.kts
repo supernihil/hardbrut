@@ -38,4 +38,6 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
+    // rememberRipple() — for the custom black-15%-alpha press indication
+    implementation("androidx.compose.material:material-ripple")
 }
