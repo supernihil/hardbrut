@@ -214,6 +214,7 @@
     <li><code>.list-row-title</code> / <code>.list-row-subtitle</code> truncate to one line by design. If you need full text, don't use them — use plain text inside <code>.list-row-body</code>.</li>
     <li>Selected/toggled state always means "filled with <code>--accent</code>, text in <code>--accent-ink</code>" — <code>.chip[aria-pressed="true"]</code>, <code>.switch:checked</code>, buttons, badges all follow the same rule. Don't invent a second "selected" color.</li>
     <li>Every shadow-bearing element (<code>.card</code>, <code>.list-row</code>, buttons, chips, switches) keeps its shadow always — it only disappears on <code>:active</code>. Don't strip shadows for a "flatter" look; that's a different framework.</li>
+    <li>Motion is hard-edged, never smooth — button press is a translate + shadow snap, not an ease; <code>.spinner</code> steps opacity, it doesn't rotate. If you add your own animation, keep it a <code>steps()</code>/snap, not an eased tween.</li>
   </ul>
 
   <h3>Reference: every element, in one place</h3>
@@ -306,6 +307,12 @@ function hbSelectTab(btn, panelId){
     &lt;button class="cancel" onclick="document.getElementById('d').close()"&gt;Cancel&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
+
+  <h4>Progress &amp; loading</h4>
+  <dl>
+    <dt><code>.progress</code> / <code>.progress-fill</code></dt><dd>Determinate. Set the fill's width yourself (percent, or computed from a value/max pair). <code>&lt;div class="progress"&gt;&lt;div class="progress-fill" style="width:70%"&gt;&lt;/div&gt;&lt;/div&gt;</code></dd>
+    <dt><code>.spinner</code></dt><dd>Indeterminate — four steps, hard opacity pulse, no smooth rotation. Static automatically under <code>prefers-reduced-motion</code>. <code>&lt;div class="spinner"&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;</code></dd>
+  </dl>
 
   <h4>Colors &amp; utilities</h4>
   <dl>
@@ -469,7 +476,11 @@ if (showDialog) {
 // Details (expandable) — Compose has no &lt;details&gt;, state is yours
 var expanded by remember { mutableStateOf(false) }
 HardbrutDetails(summary = "What is HARDBRUT", expanded = expanded,
-    onToggle = { expanded = !expanded }) { Text("An opinionated design system.") }</code></pre>
+    onToggle = { expanded = !expanded }) { Text("An opinionated design system.") }
+
+// Progress bar (determinate) / spinner (indeterminate)
+HardbrutProgressBar(progress = 0.7f, accent = accent)
+HardbrutSpinner()</code></pre>
 </section>
 
 </main>
