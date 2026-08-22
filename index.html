@@ -148,11 +148,11 @@
       <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
       <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
       <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn" download>hardbrut.css (55KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (53KB, minified)</a>
+        <a href="hardbrut.css" class="btn" download>hardbrut.css (53KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (50KB, minified)</a>
       </div>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900, latin subset) is embedded as base64 — ~31KB of the total (23.9KB of binary font inflates to base64 text). CSS rules alone: ~23KB unminified, ~21KB minified — that's exactly what <code>hardbrut.nofont.css</code> below is. Once loaded, the file makes zero further network requests: no @import, no Google Fonts, no CDN.</p>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (23KB)</a> — same rules, system font stack only. Its own <code>.min.css</code> is ~21KB; minification only meaningfully shrinks the rules, since the embedded font is already binary and can't shrink further.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900, latin subset) is embedded as base64 — ~31KB of the total (23.9KB of binary font inflates to base64 text). CSS rules alone: ~21KB unminified, ~18KB minified — that's exactly what <code>hardbrut.nofont.css</code> below is. Once loaded, the file makes zero further network requests: no @import, no Google Fonts, no CDN.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (21KB)</a> — same rules, system font stack only. Its own <code>.min.css</code> is ~19KB; minification only meaningfully shrinks the rules, since the embedded font is already binary and can't shrink further.</p>
       <details style="margin-top:var(--space-sm)">
         <summary>Previous versions</summary>
         <div class="stack">
