@@ -6,6 +6,15 @@
 <title>HARDBRUT — neubrutalist CSS framework</title>
 <meta name="description" content="Opinionated neubrutalist CSS framework. Two button kinds. Full markdown. Auto dark mode + toggle. 6 accent colors.">
 <meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://supernihil.github.io/hardbrut/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HARDBRUT — neubrutalist CSS framework">
+<meta property="og:description" content="Opinionated neubrutalist CSS framework. Two button kinds. Full markdown. Auto dark mode + toggle. 6 accent colors.">
+<meta property="og:url" content="https://supernihil.github.io/hardbrut/">
+<meta property="og:image" content="https://supernihil.github.io/hardbrut/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="hardbrut.css">
 <style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}</style>
 <script>
@@ -44,7 +53,21 @@
   };
   window.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.accent-swatch[data-accent="' + a + '"]').classList.add('active');
-    updateThemeToggle();
+    var navLinks = document.querySelectorAll('.navbar-links a[href^="#"]');
+    var sections = document.querySelectorAll('main section[id]');
+    if (navLinks.length && sections.length && 'IntersectionObserver' in window) {
+      var byId = {};
+      navLinks.forEach(function(link){ byId[link.getAttribute('href').slice(1)] = link; });
+      var spy = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(function(link){ link.removeAttribute('aria-current'); });
+          var link = byId[entry.target.id];
+          if (link) link.setAttribute('aria-current', 'page');
+        });
+      }, { rootMargin: '-80px 0px -60% 0px' });
+      sections.forEach(function(s){ spy.observe(s); });
+    }
   });
   window.hbSelectTab = function(btn, panelId){
     btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
@@ -57,6 +80,7 @@
 </script>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <nav class="navbar">
   <a href="./" class="navbar-brand">HARDBRUT</a>
@@ -66,8 +90,8 @@
     <li><a href="#android">Android</a></li>
     <li><a href="playbook.html">Playbook</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:0.5rem">
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
+  <div class="cluster">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
     <button class="navbar-toggle" aria-label="Menu" onclick="document.getElementById('navbar-links').classList.toggle('open')">MENU</button>
   </div>
 </nav>
@@ -78,12 +102,12 @@
   <p>An opinionated neubrutalist CSS framework. Two button kinds. Full markdown support. Dark mode with toggle. Pick your accent color.</p>
   <div class="cluster" style="justify-content:center;margin-bottom:var(--space)">
     <a href="hardbrut.css" class="btn" download>Download CSS</a>
-    <a href="Hardbrut.kt" class="btn" download>Download Android</a>
+    <a href="Hardbrut.kt" class="btn" download>Download Kotlin</a>
     <a href="https://github.com/supernihil/hardbrut" class="btn btn-cancel">GitHub</a>
   </div>
 </header>
 
-<main class="container">
+<main class="container" id="main-content">
 
 <!-- ===== START ===== -->
 <section class="section" id="start">
@@ -127,8 +151,8 @@
         <a href="hardbrut.css" class="btn" download>hardbrut.css (55KB, with font)</a>
         <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (53KB, minified)</a>
       </div>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900 weight, latin subset) is embedded inline as base64 woff2 — ~24KB of the total. CSS rules alone ~5KB. Zero network requests. No @import, no Google Fonts, no CDN.</p>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (23KB)</a> — same rules, system font stack only.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900, latin subset) is embedded as base64 — ~31KB of the total (23.9KB of binary font inflates to base64 text). CSS rules alone: ~23KB unminified, ~21KB minified — that's exactly what <code>hardbrut.nofont.css</code> below is. Once loaded, the file makes zero further network requests: no @import, no Google Fonts, no CDN.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (23KB)</a> — same rules, system font stack only. Its own <code>.min.css</code> is ~21KB; minification only meaningfully shrinks the rules, since the embedded font is already binary and can't shrink further.</p>
       <details style="margin-top:var(--space-sm)">
         <summary>Previous versions</summary>
         <div class="stack">
@@ -228,25 +252,29 @@ window.setAccent = function(c){
 <section class="section" id="elements">
   <h2>ELEMENTS</h2>
 
-  <h3>Cards</h3>
+<nav aria-label="Elements sections" class="cluster" style="margin-bottom:var(--space)"><a href="#cards" class="chip">Cards</a><a href="#buttons" class="chip">Buttons</a><a href="#list-rows" class="chip">List rows</a><a href="#chat" class="chip">Chat</a><a href="#details-summary" class="chip">Details / Summary</a><a href="#forms" class="chip">Forms</a><a href="#typography" class="chip">Typography</a><a href="#code" class="chip">Code</a><a href="#lists" class="chip">Lists</a><a href="#table" class="chip">Table</a><a href="#callout-message-badge" class="chip">Callout, Message, Badge</a><a href="#chips" class="chip">Chips</a><a href="#tabs" class="chip">Tabs</a><a href="#dialog" class="chip">Dialog</a><a href="#progress-loading" class="chip">Progress & Loading</a><a href="#utilities" class="chip">Utilities</a><a href="#grid" class="chip">Grid</a></nav>
+
+
+  <h3 id="cards">Cards</h3>
   <div class="grid">
     <div class="col-4"><div class="card"><div class="card-body"><h4>Simple Card</h4><p class="text-muted text-sm">One card. No variants. Shadow always.</p><span class="badge">badge</span></div></div></div>
     <div class="col-4"><div class="card"><div class="card-body"><h4>With Footer</h4><p class="text-muted text-sm">Footer puts actions at the bottom.</p></div><div class="card-footer"><button>Save</button><button class="cancel">Dismiss</button></div></div></div>
     <div class="col-4"><div class="card"><div class="card-body"><h4>Just Body</h4><p class="text-muted text-sm">Content only. Border. Shadow.</p></div></div></div>
   </div>
 
-  <h3>Buttons</h3>
-  <p>Two kinds. Bare <code>&lt;button&gt;</code> uses the accent color. <code>.cancel</code> is white. Every button-like control — including icon toggles — shares one height token (<code>--control-h</code>), so mixed rows always line up.</p>
+  <h3 id="buttons">Buttons</h3>
+  <p>Two kinds. Bare <code>&lt;button&gt;</code> uses the accent color; add <code>.btn-cancel</code> for the white one — <code>.btn.btn-cancel</code> is the canonical pattern, works on any tag. On a bare <code>&lt;button&gt;</code> the shorter <code>.cancel</code> alias does the same thing. Every button-like control — including icon toggles — shares one height token (<code>--control-h</code>), so mixed rows always line up.</p>
   <div class="cluster" style="margin-bottom:1rem">
     <button>Submit</button>
-    <button class="cancel">Cancel</button>
+    <button class="btn btn-cancel">Cancel</button>
+    <button class="cancel">Cancel (alias)</button>
     <a href="#" class="btn">Link Btn</a>
     <a href="#" class="btn btn-cancel">Link Cancel</a>
     <button disabled>Disabled</button>
     <button class="theme-toggle" aria-label="Example icon button" title="Icon button — same height as the rest">☾</button>
   </div>
 
-  <h3>List rows</h3>
+  <h3 id="list-rows">List rows</h3>
   <p>For a list of clickable rows — conversations, notifications, search results. Truncates gracefully; no configuration.</p>
   <div style="max-width:32rem">
     <a href="#" class="list-row">
@@ -267,7 +295,7 @@ window.setAccent = function(c){
     </a>
   </div>
 
-  <h3>Chat</h3>
+  <h3 id="chat">Chat</h3>
   <p>Two-sided message view. Add <code>.chat-msg-self</code> for outgoing messages — the bubble switches to the accent color automatically, in both themes.</p>
   <div class="chat" style="max-width:32rem">
     <div class="chat-msg">
@@ -286,11 +314,11 @@ window.setAccent = function(c){
     </div>
   </div>
 
-  <h3>Details / Summary</h3>
+  <h3 id="details-summary">Details / Summary</h3>
   <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
   <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Switches, chips, tabs, a styled native dialog, progress bar + spinner</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
 
-  <h3>Forms</h3>
+  <h3 id="forms">Forms</h3>
   <div class="grid">
     <div class="col-6"><div class="field"><label for="name">Name</label><input type="text" id="name" placeholder="Your name"><div class="field-hint">Required.</div></div></div>
     <div class="col-6"><div class="field"><label for="email">Email</label><input type="email" id="email" placeholder="you@example.com"></div></div>
@@ -302,28 +330,29 @@ window.setAccent = function(c){
     <div class="col-12"><div class="cluster"><button>Submit</button><button class="cancel">Reset</button></div></div>
   </div>
 
-  <h3>Typography</h3>
-  <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>
+  <h3 id="typography">Typography</h3>
+  <p class="text-h1">Heading 1</p><p class="text-h2">Heading 2</p><p class="text-h3">Heading 3</p><p class="text-h4">Heading 4</p><p class="text-h5">Heading 5</p><p class="text-h6">Heading 6</p>
+  <p class="text-sm text-muted">Shown here as <code>.text-h1</code>…<code>.text-h6</code> (visual only) so this specimen doesn't inject a second real <code>&lt;h1&gt;</code> into the page outline — use the real <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code> tags for actual headings, same styles either way.</p>
   <p>Paragraph with <strong>bold</strong> (or <b>b</b>), <em>italic</em> (or <i>i</i>), <del>strikethrough</del> (or <s>s</s>), <u>underline</u> and <ins>ins</ins>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, <abbr title="abbreviation">abbr</abbr>.</p>
   <p>A <a href="#">link</a> in a sentence. Inline <code>code</code>, <kbd>Ctrl+K</kbd>, and <samp>program output</samp>.</p>
   <blockquote>Blockquote with 6px black left border and italic text. Perfect for pull quotes.</blockquote>
   <hr>
   <figure>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='160'%3E%3Crect width='400' height='160' fill='%23cccccc'/%3E%3C/svg%3E" alt="Placeholder" width="400" height="160">
+    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27400%27%20height%3D%27160%27%3E%3Cdefs%3E%3Cpattern%20id%3D%27p%27%20width%3D%2728%27%20height%3D%2728%27%20patternTransform%3D%27rotate%2845%29%27%20patternUnits%3D%27userSpaceOnUse%27%3E%3Crect%20width%3D%2728%27%20height%3D%2728%27%20fill%3D%27%23e8e8e8%27/%3E%3Crect%20width%3D%2714%27%20height%3D%2728%27%20fill%3D%27%23d4d4d4%27/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%27400%27%20height%3D%27160%27%20fill%3D%27url%28%23p%29%27/%3E%3Ctext%20x%3D%27200%27%20y%3D%2786%27%20font-family%3D%27Arial%2C%20sans-serif%27%20font-weight%3D%27900%27%20font-size%3D%2720%27%20letter-spacing%3D%271%27%20fill%3D%27%23000%27%20text-anchor%3D%27middle%27%3EYOUR%20IMAGE%20HERE%3C/text%3E%3C/svg%3E" alt="Diagonal-striped placeholder reading &quot;your image here&quot;" width="400" height="160">
     <figcaption>Figure caption — muted, small, sits below the border+shadow image.</figcaption>
   </figure>
 
-  <h3>Code</h3>
+  <h3 id="code">Code</h3>
   <pre><code>&lt;html data-accent="yellow"&gt;
 &lt;link rel="stylesheet" href="hardbrut.css"&gt;
 &lt;button&gt;Click me&lt;/button&gt;</code></pre>
 
-  <h3>Lists</h3>
+  <h3 id="lists">Lists</h3>
   <ul><li>Unordered one</li><li>Unordered two<ul><li>Nested</li></ul></li></ul>
   <ol><li>Ordered one</li><li>Ordered two</li></ol>
   <dl><dt>Term</dt><dd>Definition. Simple definition list.</dd></dl>
 
-  <h3>Table</h3>
+  <h3 id="table">Table</h3>
   <table>
     <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
     <tbody>
@@ -333,12 +362,12 @@ window.setAccent = function(c){
     </tbody>
   </table>
 
-  <h3>Callout, Message, Badge</h3>
+  <h3 id="callout-message-badge">Callout, Message, Badge</h3>
   <div class="callout">Callout. Bold. Accent color. Shadow always.</div>
   <div class="message">Message. Same accent. Smaller padding.</div>
   <p>Status: <span class="badge">active</span></p>
 
-  <h3>Chips</h3>
+  <h3 id="chips">Chips</h3>
   <p>Selectable pills — filter presets, topic tags. Toggle <code>aria-pressed</code>, CSS does the rest.</p>
   <div class="cluster">
     <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">All</button>
@@ -346,7 +375,7 @@ window.setAccent = function(c){
     <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Archived</button>
   </div>
 
-  <h3>Tabs</h3>
+  <h3 id="tabs">Tabs</h3>
   <p>Panel switching is left to you — toggle each panel's <code>hidden</code> attribute. <code>.tab</code> uses the same accent-fill-means-selected rule as buttons/chips.</p>
   <div class="tab-list" role="tablist">
     <button class="tab" role="tab" aria-selected="true" aria-controls="tab-panel-a" id="tab-a" onclick="hbSelectTab(this,'tab-panel-a')">Overview</button>
@@ -357,7 +386,7 @@ window.setAccent = function(c){
   <div class="tab-panel" role="tabpanel" id="tab-panel-b" aria-labelledby="tab-b" hidden>Details panel.</div>
   <div class="tab-panel" role="tabpanel" id="tab-panel-c" aria-labelledby="tab-c" hidden>History panel.</div>
 
-  <h3>Dialog</h3>
+  <h3 id="dialog">Dialog</h3>
   <p>The native <code>&lt;dialog&gt;</code> element, styled — <code>showModal()</code>/<code>close()</code>/backdrop/Esc-to-dismiss all come free from the browser.</p>
   <button onclick="document.getElementById('demo-dialog').showModal()">Open dialog</button>
   <dialog id="demo-dialog">
@@ -369,7 +398,7 @@ window.setAccent = function(c){
     </div>
   </dialog>
 
-  <h3>Progress &amp; Loading</h3>
+  <h3 id="progress-loading">Progress &amp; Loading</h3>
   <p>Determinate: <code>.progress</code> + <code>.progress-fill</code>, width set by you (percent, or drive it from a value/max pair). Segmented look via a repeating background — no discrete DOM elements needed.</p>
   <div class="stack" style="margin-bottom:var(--space-sm)">
     <div class="progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
@@ -382,12 +411,12 @@ window.setAccent = function(c){
   <p>Indeterminate: <code>.spinner</code> — hard opacity steps, not a smooth spin, to match the zero-blur motion language. Fully static under <code>prefers-reduced-motion</code>.</p>
   <div class="spinner" role="status" aria-label="Loading"><span></span><span></span><span></span><span></span></div>
 
-  <h3>Utilities</h3>
+  <h3 id="utilities">Utilities</h3>
   <p><code>.text-center</code>, <code>.text-uppercase</code>, <code>.text-muted</code>, <code>.text-sm</code> — text helpers. <code>.stack</code> (column flex) and <code>.cluster</code> (wrapping row flex) — the layout helpers used throughout this page. <code>.sr-only</code> hides content visually while keeping it readable to screen readers.</p>
   <p class="text-center text-uppercase text-sm">Centered · uppercase · small</p>
-  <a href="#start" class="sr-only">Skip to start (visually hidden, focusable)</a>
+  <p class="text-sm text-muted">This page's own skip-to-content link (press Tab from the top of the page) uses the same hide-until-focused technique.</p>
 
-  <h3>Grid</h3>
+  <h3 id="grid">Grid</h3>
   <div class="grid" style="margin-bottom:var(--space-sm)">
     <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
     <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
@@ -538,7 +567,7 @@ fun HardbrutDetails(summary: String, expanded: Boolean,
 </main>
 
 <footer class="site-footer">
-  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.11">v0.11</a> — zero dependencies, no choices. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Android</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
+  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.11">v0.11</a> — zero dependencies, no build step. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Kotlin</a> · <a href="playbook.html">Playbook</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
 </footer>
 
 </body>

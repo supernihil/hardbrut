@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="yellow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — HARDBRUT</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="hardbrut.css">
+<script>
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  var a = localStorage.getItem('accent') || 'yellow';
+  h.setAttribute('data-accent', a);
+})();
+</script>
+</head>
+<body>
+
+<header class="hero">
+  <h1>404</h1>
+  <p>This page doesn't exist. The mark, the border, and the shadow all stayed home.</p>
+  <div class="cluster" style="justify-content:center;margin-bottom:var(--space)">
+    <a href="./" class="btn">Back to HARDBRUT</a>
+    <a href="playbook.html" class="btn btn-cancel">Playbook</a>
+  </div>
+</header>
+
+<footer class="site-footer">
+  <p>HARDBRUT — <a href="https://github.com/supernihil/hardbrut">GitHub</a></p>
+</footer>
+
+</body>
+</html>

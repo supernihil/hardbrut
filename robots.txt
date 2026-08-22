@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://supernihil.github.io/hardbrut/sitemap.xml

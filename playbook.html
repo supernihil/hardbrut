@@ -6,6 +6,15 @@
 <title>HARDBRUT Playbook — dev guide for web + Android</title>
 <meta name="description" content="Practical recipes for building real screens with HARDBRUT: conversation lists, chat views, settings forms, dashboards — CSS and Jetpack Compose.">
 <meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://supernihil.github.io/hardbrut/playbook.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HARDBRUT Playbook — dev guide for web + Android">
+<meta property="og:description" content="Practical recipes for building real screens with HARDBRUT: conversation lists, chat views, settings forms, dashboards — CSS and Jetpack Compose.">
+<meta property="og:url" content="https://supernihil.github.io/hardbrut/playbook.html">
+<meta property="og:image" content="https://supernihil.github.io/hardbrut/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="hardbrut.css">
 <style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}.recipe-demo{margin-bottom:var(--space-sm)}</style>
 <script>
@@ -35,11 +44,11 @@
   };
   var a = localStorage.getItem('accent') || 'yellow';
   h.setAttribute('data-accent', a);
-  window.addEventListener('DOMContentLoaded', updateThemeToggle);
 })();
 </script>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <nav class="navbar">
   <a href="./" class="navbar-brand">HARDBRUT</a>
@@ -49,8 +58,8 @@
     <li><a href="index.html#android">Android</a></li>
     <li><a href="playbook.html" aria-current="page">Playbook</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:0.5rem">
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">☀</button>
+  <div class="cluster">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
     <button class="navbar-toggle" aria-label="Menu" onclick="document.getElementById('navbar-links').classList.toggle('open')">MENU</button>
   </div>
 </nav>
@@ -60,7 +69,7 @@
   <p>Dev guide for building real screens with HARDBRUT — web and Android. For the full element catalog, see <a href="index.html#elements">Elements</a>.</p>
 </header>
 
-<main class="container">
+<main class="container" id="main-content">
 
 <!-- ===== CSS ===== -->
 <section class="section" id="css">
@@ -248,7 +257,7 @@
 
   <h4>Buttons &amp; toggles</h4>
   <dl>
-    <dt><code>button</code> / <code>.btn</code></dt><dd>Accent fill. <code>.cancel</code> / <code>.btn-cancel</code> for the white variant. Same height as every other control via <code>--control-h</code>.</dd>
+    <dt><code>button</code> / <code>.btn</code></dt><dd>Accent fill. <code>.btn.btn-cancel</code> is the canonical white variant (works on any tag); <code>.cancel</code> is a shorthand alias for a bare <code>&lt;button&gt;</code>. Same height as every other control via <code>--control-h</code>.</dd>
     <dt><code>input[type=checkbox].switch</code></dt><dd>Hard-edged sliding toggle. <code>&lt;input type="checkbox" class="switch"&gt;</code></dd>
     <dt><code>.chip</code></dt><dd>Toggleable pill, driven by <code>aria-pressed</code>. <code>&lt;button class="chip" aria-pressed="true"&gt;Open&lt;/button&gt;</code></dd>
     <dt><code>.theme-toggle</code>, <code>.navbar-toggle</code></dt><dd>The icon-button and mobile-menu-button patterns — see <a href="index.html#start">Start</a> for the wiring script.</dd>
@@ -486,7 +495,7 @@ HardbrutSpinner()</code></pre>
 </main>
 
 <footer class="site-footer">
-  <p>HARDBRUT — <a href="index.html">Home</a> · <a href="index.html#elements">Elements</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a></p>
+  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.11">v0.11</a> — zero dependencies, no build step. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Kotlin</a> · <a href="playbook.html">Playbook</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
 </footer>
 
 </body>

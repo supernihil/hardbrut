@@ -59,7 +59,7 @@ echo "wrote hardbrut.css ($(wc -c < hardbrut.css) bytes)"
 if command -v pnpm >/dev/null 2>&1; then
   : # keep it dependency-free: use our own naive minifier below
 fi
-MIN="$(printf '%s' "$CSS" | sed -E 's@/\*[^*]*\*+([^/*][^*]*\*+)*/@ @g' | tr -s '[:space:]' ' ' | sed -E 's/[[:space:]]*([{};,>:])[[:space:]]*/\1/g; s/[[:space:]]+/ /g')"
+MIN="$(printf '%s' "$CSS" | sed -E ':a;N;$!ba;s@/\*[^*]*\*+([^/*][^*]*\*+)*/@ @g' | tr -s '[:space:]' ' ' | sed -E 's/[[:space:]]*([{};,>:])[[:space:]]*/\1/g; s/[[:space:]]+/ /g')"
 printf '%s' "$MIN" > hardbrut.min.css
 echo "wrote hardbrut.min.css ($(wc -c < hardbrut.min.css) bytes)"
 
@@ -79,7 +79,7 @@ fi
 printf '%s' "$CSS_NOFONT" > hardbrut.nofont.css
 echo "wrote hardbrut.nofont.css ($(wc -c < hardbrut.nofont.css) bytes)"
 
-MIN_NOFONT="$(printf '%s' "$CSS_NOFONT" | sed -E 's@/\*[^*]*\*+([^/*][^*]*\*+)*/@ @g' | tr -s '[:space:]' ' ' | sed -E 's/[[:space:]]*([{};,>:])[[:space:]]*/\1/g; s/[[:space:]]+/ /g')"
+MIN_NOFONT="$(printf '%s' "$CSS_NOFONT" | sed -E ':a;N;$!ba;s@/\*[^*]*\*+([^/*][^*]*\*+)*/@ @g' | tr -s '[:space:]' ' ' | sed -E 's/[[:space:]]*([{};,>:])[[:space:]]*/\1/g; s/[[:space:]]+/ /g')"
 printf '%s' "$MIN_NOFONT" > hardbrut.nofont.min.css
 echo "wrote hardbrut.nofont.min.css ($(wc -c < hardbrut.nofont.min.css) bytes)"
 

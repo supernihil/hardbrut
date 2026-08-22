@@ -173,6 +173,16 @@ def main():
     html = re.sub(r"hardbrut\.nofont\.css \(\d+KB\)", f'hardbrut.nofont.css ({sizes["nofont"]}KB)', html)
     write("index.html", html)
 
+    # playbook.html shares the same footer component (same markup) — same version link.
+    playbook = read("playbook.html")
+    playbook = replace_exactly_one(
+        playbook,
+        rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}">v{re.escape(current)}<',
+        f'href="https://github.com/{REPO}/tree/v{next_ver}">v{next_ver}<',
+        "playbook footer badge",
+    )
+    write("playbook.html", playbook)
+
     readme = read("README.md")
     readme = re.sub(r"Current version: \*\*v[\d.]+\*\*", f"Current version: **v{next_ver}**", readme)
     write("README.md", readme)
