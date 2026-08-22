@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  css:
+    name: CSS build + validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild CSS from src/hardbrut.css
+        run: ./build.sh
+
+      - name: Fail if committed CSS is stale relative to src/hardbrut.css
+        # Catches the exact class of bug that shipped in v0.8: a fix landed
+        # in the built hardbrut.css directly, src/hardbrut.css was never
+        # updated, and the next ./build.sh silently reverted it.
+        run: git diff --exit-code -- 'hardbrut*.css'
+
+      - name: Validate CSS syntax
+        # No style rules configured (see .stylelintrc.json) — this only
+        # catches things that fail to parse (unbalanced braces, invalid
+        # values, etc.), it doesn't enforce formatting.
+        run: npx --yes stylelint@16 --config .stylelintrc.json 'src/hardbrut.css' 'hardbrut*.css'
+
+  android:
+    name: Android/Compose compile check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Compile Hardbrut.kt against a real Compose classpath
+        # ci/android/ is a throwaway Gradle module that points its Kotlin
+        # source set at the real Hardbrut.kt in the repo root — nothing is
+        # duplicated. See ci/android/README.md.
+        working-directory: ci/android
+        run: gradle :app:compileDebugKotlin --stacktrace
