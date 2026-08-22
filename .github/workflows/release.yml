@@ -1,0 +1,49 @@
+name: Release
+
+# Cuts a new HARDBRUT release on every push to main: tags the version that
+# was just merged, archives it into index.html's "Previous versions" lists,
+# bumps src/hardbrut.css to the next version, and updates every place that
+# version number (or a download size) is displayed. See scripts/cut_release.py
+# for the full logic.
+#
+# Pushes made here use the default GITHUB_TOKEN, which — per GitHub's own
+# loop-prevention rule — does not trigger another workflow run, so this
+# can't recurse into itself.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'Release v')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Cut release
+        run: python3 scripts/cut_release.py
+
+      - name: Validate the regenerated CSS
+        run: npx --yes stylelint@16 --config .stylelintrc.json 'src/hardbrut.css' 'hardbrut*.css'
+
+      - name: Push commit and tags
+        run: |
+          git push origin HEAD:main
+          git push origin --tags
