@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="yellow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARDBRUT for Android — Jetpack Compose</title>
+<meta name="description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Same rules: zero corner radius, hard shadows, two button kinds.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://supernihil.github.io/hardbrut/android.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HARDBRUT for Android — Jetpack Compose">
+<meta property="og:description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Same rules: zero corner radius, hard shadows, two button kinds.">
+<meta property="og:url" content="https://supernihil.github.io/hardbrut/android.html">
+<meta property="og:image" content="https://supernihil.github.io/hardbrut/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="hardbrut.css">
+<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}</style>
+<script>
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  function updateThemeToggle(){
+    var btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    var isDark = h.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '☀' : '☾';
+    btn.setAttribute('aria-pressed', String(isDark));
+  }
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', function(e){
+    if (!localStorage.getItem('theme')) {
+      h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      updateThemeToggle();
+    }
+  });
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+    updateThemeToggle();
+  };
+  var a = localStorage.getItem('accent') || 'yellow';
+  h.setAttribute('data-accent', a);
+  window.setAccent = function(c){
+    h.setAttribute('data-accent', c);
+    localStorage.setItem('accent', c);
+    document.querySelectorAll('.accent-swatch').forEach(function(s){
+      s.classList.toggle('active', s.getAttribute('data-accent') === c);
+    });
+  };
+  window.addEventListener('DOMContentLoaded', function(){
+    var sw = document.querySelector('.accent-swatch[data-accent="' + a + '"]');
+    if (sw) sw.classList.add('active');
+  });
+  window.hbSelectTab = function(btn, panelId){
+    btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
+      t.setAttribute('aria-selected', String(t === btn));
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = (panel.id !== panelId);
+    });
+  };
+})();
+</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<nav class="navbar">
+  <a href="./" class="navbar-brand">HARDBRUT</a>
+  <ul class="navbar-links" id="navbar-links">
+    <li><a href="index.html#start">Start</a></li>
+    <li><a href="elements.html">Elements</a></li>
+    <li><a href="android.html" aria-current="page">Android</a></li>
+    <li><a href="playbook.html">Playbook</a></li>
+  </ul>
+  <div class="cluster">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
+    <button class="navbar-toggle" aria-label="Menu" onclick="document.getElementById('navbar-links').classList.toggle('open')">MENU</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>ANDROID</h1>
+  <p>HARDBRUT for Jetpack Compose — drop <code>Hardbrut.kt</code> into your project. For usage recipes, see <a href="playbook.html">Playbook</a>.</p>
+</header>
+
+<main class="container" id="main-content">
+
+<section class="section" id="android">
+  <p>HARDBRUT translates directly to Jetpack Compose. Drop <code>Hardbrut.kt</code> into your Android project — one file, one dependency (Compose). Same rules: zero corner radius, hard shadows, two button kinds, always-shadow rule, single accent color.</p>
+
+  <div class="card" style="margin-bottom:var(--space)">
+    <div class="card-body">
+      <h4>Download for Android</h4>
+      <p class="text-muted text-sm">One Kotlin file. Drop it in. Import and use.</p>
+      <div class="cluster" style="margin-top:var(--space-sm)">
+        <a href="Hardbrut.kt" class="btn" download>Hardbrut.kt (11KB)</a>
+        <a href="https://raw.githubusercontent.com/supernihil/hardbrut/main/Hardbrut.kt" class="btn btn-cancel">Raw</a>
+      </div>
+      <details style="margin-top:var(--space-sm)">
+        <summary>Previous versions</summary>
+        <div class="stack">
+          <div class="cluster">
+            <span class="badge">v0.11</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/Hardbrut.kt" download>Hardbrut.kt</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.10</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/Hardbrut.kt" download>Hardbrut.kt</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.8</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/Hardbrut.kt" download>Hardbrut.kt</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <h3>Quick start</h3>
+  <pre><code>// Your Activity / Composable
+val (accent, accentInk) = HardbrutTokens.AccentYellow
+
+HardbrutButton(
+    onClick = { /* do something */ },
+    accent = accent,
+    accentInk = accentInk
+) { Text("CLICK ME") }
+
+HardbrutButton(
+    onClick = { /* dismiss */ },
+    accent = accent,
+    accentInk = accentInk,
+    kind = ButtonKind.Cancel
+) { Text("CANCEL") }
+
+HardbrutCard {
+    Text("Hello from HARDBRUT")
+}</code></pre>
+
+  <h3>Token mapping</h3>
+  <table>
+    <thead><tr><th>CSS token</th><th>CSS value</th><th>Compose</th></tr></thead>
+    <tbody>
+      <tr><td><code>--ink</code></td><td>#000000</td><td><code>HardbrutTokens.Ink</code></td></tr>
+      <tr><td><code>--paper</code></td><td>#FFFFFF</td><td><code>HardbrutTokens.Paper</code></td></tr>
+      <tr><td><code>--bg</code></td><td>#FDFAF2</td><td><code>HardbrutTokens.Background</code></td></tr>
+      <tr><td><code>--accent</code></td><td>varies</td><td><code>HardbrutTokens.AccentYellow.first</code></td></tr>
+      <tr><td><code>--border</code></td><td>3px solid</td><td><code>BorderStroke(3.dp, Ink)</code></td></tr>
+      <tr><td><code>--shadow</code></td><td>5px 5px 0</td><td><code>.hardShadow(5.dp)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Hard shadow helper</h3>
+  <pre><code>fun Modifier.hardShadow(size: Dp, color: Color = Color.Black): Modifier = this.then(
+    drawBehind {
+        drawRect(color = color, topLeft = Offset(size.toPx(), size.toPx()),
+            size = Size(this.size.width, this.size.height))
+    }
+)</code></pre>
+
+  <h3 id="all-composables">All composables</h3>
+  <details><summary>HardbrutButton</summary>
+  <pre><code>@Composable
+fun HardbrutButton(onClick: () -> Unit, accent: Color, accentInk: Color,
+    kind: ButtonKind = ButtonKind.Default, enabled: Boolean = true,
+    modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit)
+enum class ButtonKind { Default, Cancel }</code></pre></details>
+
+  <details><summary>HardbrutCard</summary>
+  <pre><code>@Composable
+fun HardbrutCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit)</code></pre></details>
+
+  <details><summary>HardbrutTextField</summary>
+  <pre><code>@Composable
+fun HardbrutTextField(value: String, onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier, label: String = "", placeholder: String = "")</code></pre></details>
+
+  <details><summary>HardbrutCheckbox / HardbrutRadio / HardbrutSwitch</summary>
+  <pre><code>@Composable
+fun HardbrutCheckbox(checked: Boolean, onCheckedChange: (Boolean) -> Unit)
+@Composable
+fun HardbrutRadio(selected: Boolean, onClick: () -> Unit)
+@Composable
+fun HardbrutSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit,
+    accent: Color, accentInk: Color)</code></pre></details>
+
+  <details><summary>HardbrutBadge / HardbrutChip / HardbrutCallout</summary>
+  <pre><code>@Composable
+fun HardbrutBadge(text: String, accent: Color, accentInk: Color)
+@Composable
+fun HardbrutChip(text: String, selected: Boolean, onClick: () -> Unit,
+    accent: Color, accentInk: Color)
+@Composable
+fun HardbrutCallout(text: String, accent: Color, accentInk: Color)</code></pre></details>
+
+  <details><summary>HardbrutListRow</summary>
+  <pre><code>@Composable
+fun HardbrutListRow(title: String, subtitle: String? = null,
+    avatarText: String? = null, onClick: (() -> Unit)? = null,
+    trailing: @Composable (RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier)</code></pre></details>
+
+  <details><summary>HardbrutTabRow</summary>
+  <pre><code>@Composable
+fun HardbrutTabRow(tabs: List&lt;String&gt;, selected: Int, onSelect: (Int) -> Unit,
+    accent: Color, accentInk: Color)</code></pre></details>
+
+  <details><summary>HardbrutDialog</summary>
+  <pre><code>@Composable
+fun HardbrutDialog(onDismissRequest: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit)</code></pre></details>
+
+  <details><summary>HardbrutProgressBar / HardbrutSpinner</summary>
+  <pre><code>@Composable
+fun HardbrutProgressBar(progress: Float, modifier: Modifier = Modifier,
+    segments: Int = 12, accent: Color)
+@Composable
+fun HardbrutSpinner(modifier: Modifier = Modifier)</code></pre></details>
+
+  <details><summary>HardbrutDetails</summary>
+  <pre><code>@Composable
+fun HardbrutDetails(summary: String, expanded: Boolean,
+    onToggle: () -> Unit, content: @Composable () -> Unit)</code></pre></details>
+
+  <h3>Spacing</h3>
+  <p>All spacing uses: <code>HardbrutTokens.SpaceSm</code> (12dp), <code>.Space</code> (24dp), <code>.SpaceLg</code> (40dp).</p>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.13">v0.13</a> — zero dependencies, no build step. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Kotlin</a> · <a href="playbook.html">Playbook</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
+</footer>
+
+</body>
+</html>
