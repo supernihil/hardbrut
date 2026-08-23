@@ -1,5 +1,5 @@
-# GitHub Pages (Jekyll) config — this site is two plain HTML files
-# (index.html, playbook.html); nothing here needs Jekyll processing.
+# GitHub Pages (Jekyll) config — this site is plain HTML files
+# (index.html, css.html, android.html, 404.html); nothing here needs Jekyll processing.
 # `exclude` keeps repo-internal files out of the published site so they
 # don't show up as stray unstyled pages (e.g. supernihil.github.io/hardbrut/README.md).
 exclude:
