@@ -4,4 +4,4 @@ An opinionated neubrutalist CSS framework. Zero border-radius. Hard shadows. Two
 
 → [supernihil.github.io/hardbrut](https://supernihil.github.io/hardbrut/)
 
-Current version: **v0.13** — see [tags](https://github.com/supernihil/hardbrut/tags) for release history and prior versions of `hardbrut.css` / `Hardbrut.kt`.
+Current version: **v0.14** — see [tags](https://github.com/supernihil/hardbrut/tags) for release history and prior versions of `hardbrut.css` / `Hardbrut.kt`.
