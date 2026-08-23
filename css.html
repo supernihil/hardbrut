@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="yellow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HARDBRUT CSS — download, guide, full element catalog</title>
+<meta name="description" content="Download HARDBRUT CSS, wire it up, and browse every element live: cards, buttons, list rows, chat, forms, typography, tabs, dialog, progress, and more — each with its HTML.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://supernihil.github.io/hardbrut/css.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HARDBRUT CSS — download, guide, full element catalog">
+<meta property="og:description" content="Download HARDBRUT CSS, wire it up, and browse every element live: cards, buttons, list rows, chat, forms, typography, tabs, dialog, progress, and more — each with its HTML.">
+<meta property="og:url" content="https://supernihil.github.io/hardbrut/css.html">
+<meta property="og:image" content="https://supernihil.github.io/hardbrut/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="hardbrut.css">
+<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}.recipe-demo{margin-bottom:var(--space-sm)}</style>
+<script>
+(function(){
+  var h = document.documentElement;
+  var t = localStorage.getItem('theme');
+  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  h.setAttribute('data-theme', t);
+  function updateThemeToggle(){
+    var btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    var isDark = h.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '☀' : '☾';
+    btn.setAttribute('aria-pressed', String(isDark));
+  }
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', function(e){
+    if (!localStorage.getItem('theme')) {
+      h.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      updateThemeToggle();
+    }
+  });
+  window.toggleTheme = function(){
+    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    h.setAttribute('data-theme', cur);
+    localStorage.setItem('theme', cur);
+    updateThemeToggle();
+  };
+  var a = localStorage.getItem('accent') || 'yellow';
+  h.setAttribute('data-accent', a);
+  window.setAccent = function(c){
+    h.setAttribute('data-accent', c);
+    localStorage.setItem('accent', c);
+    document.querySelectorAll('.accent-swatch').forEach(function(s){
+      s.classList.toggle('active', s.getAttribute('data-accent') === c);
+    });
+  };
+  window.addEventListener('DOMContentLoaded', function(){
+    var sw = document.querySelector('.accent-swatch[data-accent="' + a + '"]');
+    if (sw) sw.classList.add('active');
+  });
+  window.hbSelectTab = function(btn, panelId){
+    btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
+      t.setAttribute('aria-selected', String(t === btn));
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = (panel.id !== panelId);
+    });
+  };
+})();
+</script>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+<nav class="navbar">
+  <a href="./" class="navbar-brand">HARDBRUT</a>
+  <ul class="navbar-links" id="navbar-links">
+    <li><a href="index.html#start">Start</a></li>
+    <li><a href="css.html" aria-current="page">CSS</a></li>
+    <li><a href="android.html">Android</a></li>
+  </ul>
+  <div class="cluster">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
+    <button class="navbar-toggle" aria-label="Menu" onclick="document.getElementById('navbar-links').classList.toggle('open')">MENU</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>CSS</h1>
+  <p>Download, wire it up, browse every element live — each with the HTML behind it. For Jetpack Compose, see <a href="android.html">Android</a>.</p>
+</header>
+
+<main class="container" id="main-content">
+
+<section class="section" id="css">
+
+  <h3>Download</h3>
+  <div class="card" style="margin-bottom:var(--space)">
+    <div class="card-body">
+      <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
+      <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
+      <div class="cluster" style="margin-top:var(--space-sm)">
+        <a href="hardbrut.css" class="btn" download>hardbrut.css (53KB, with font)</a>
+        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (50KB, minified)</a>
+      </div>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900, latin subset) is embedded as base64 — ~31KB of the total (23.9KB of binary font inflates to base64 text). CSS rules alone: ~21KB unminified, ~18KB minified — that's exactly what <code>hardbrut.nofont.css</code> below is. Once loaded, the file makes zero further network requests: no @import, no Google Fonts, no CDN.</p>
+      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (21KB)</a> — same rules, system font stack only. Its own <code>.min.css</code> is ~19KB; minification only meaningfully shrinks the rules, since the embedded font is already binary and can't shrink further.</p>
+      <details style="margin-top:var(--space-sm)">
+        <summary>Previous versions</summary>
+        <div class="stack">
+          <div class="cluster">
+            <span class="badge">v0.13</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.min.css" download>hardbrut.min.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.12</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.min.css" download>hardbrut.min.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.11</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.min.css" download>hardbrut.min.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.10</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.min.css" download>hardbrut.min.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.9</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.min.css" download>hardbrut.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.8</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/hardbrut.min.css" download>hardbrut.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.7</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.7/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.7/hardbrut.min.css" download>hardbrut.min.css</a>
+          </div>
+          <div class="cluster">
+            <span class="badge">v0.6</span>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.6/hardbrut.css" download>hardbrut.css</a>
+            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.6/hardbrut.min.css" download>hardbrut.min.css</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <h3>Getting started</h3>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en" data-accent="yellow"&gt;
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello World&lt;/h1&gt;
+  &lt;button&gt;Click me&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  <p>Accent color: set <code>data-accent</code> on <code>&lt;html&gt;</code> to <code>yellow</code>/<code>red</code>/<code>blue</code>/<code>green</code>/<code>pink</code>/<code>purple</code> (default <code>yellow</code>). Dark mode: set <code>data-theme</code> to <code>light</code>/<code>dark</code> — both persist via a few lines of vanilla JS, no framework:</p>
+  <pre><code>&lt;button class="theme-toggle" onclick="toggleTheme()"&gt;☾&lt;/button&gt;
+&lt;button class="accent-swatch" data-accent="red" onclick="setAccent('red')"&gt;&lt;/button&gt;
+&lt;script&gt;
+var h = document.documentElement;
+h.setAttribute('data-theme', localStorage.getItem('theme')
+  || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
+h.setAttribute('data-accent', localStorage.getItem('accent') || 'yellow');
+window.toggleTheme = function(){
+  var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', cur);
+  localStorage.setItem('theme', cur);
+};
+window.setAccent = function(c){
+  h.setAttribute('data-accent', c);
+  localStorage.setItem('accent', c);
+};
+&lt;/script&gt;</code></pre>
+  <p class="text-sm text-muted">Full wiring (button glyph sync, <code>prefers-color-scheme</code> listener, swatch active-state) is in the page source of every page on this site — view-source works fine, there's no build step to peek behind.</p>
+
+  <h3>Elements</h3>
+  <p>Every element below is live — try it, then open <strong>Show code</strong> for the HTML.</p>
+  <nav aria-label="Elements sections" class="cluster" style="margin-bottom:var(--space)"><a href="#cards" class="chip">Cards</a><a href="#buttons" class="chip">Buttons</a><a href="#list-rows" class="chip">List rows</a><a href="#chat" class="chip">Chat</a><a href="#details-summary" class="chip">Details / Summary</a><a href="#forms" class="chip">Forms</a><a href="#typography" class="chip">Typography</a><a href="#code" class="chip">Code</a><a href="#lists" class="chip">Lists</a><a href="#table" class="chip">Table</a><a href="#callout-message-badge" class="chip">Callout, Message, Badge</a><a href="#chips" class="chip">Chips</a><a href="#tabs" class="chip">Tabs</a><a href="#dialog" class="chip">Dialog</a><a href="#progress-loading" class="chip">Progress &amp; Loading</a><a href="#utilities" class="chip">Utilities</a><a href="#grid" class="chip">Grid</a></nav>
+
+  <h4 id="cards">Cards</h4>
+  <div class="grid">
+    <div class="col-4"><div class="card"><div class="card-body"><h4>Simple Card</h4><p class="text-muted text-sm">One card. No variants. Shadow always.</p><span class="badge">badge</span></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><h4>With Footer</h4><p class="text-muted text-sm">Footer puts actions at the bottom.</p></div><div class="card-footer"><button>Save</button><button class="cancel">Dismiss</button></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><h4>Just Body</h4><p class="text-muted text-sm">Content only. Border. Shadow.</p></div></div></div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h4&gt;Simple Card&lt;/h4&gt;
+    &lt;p class="text-muted text-sm"&gt;One card. No variants. Shadow always.&lt;/p&gt;
+    &lt;span class="badge"&gt;badge&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- add a footer for actions --&gt;
+&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;&lt;h4&gt;With Footer&lt;/h4&gt;&lt;/div&gt;
+  &lt;div class="card-footer"&gt;
+    &lt;button&gt;Save&lt;/button&gt;
+    &lt;button class="cancel"&gt;Dismiss&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4 id="buttons">Buttons</h4>
+  <p>Two kinds. Bare <code>&lt;button&gt;</code> uses the accent color; add <code>.btn-cancel</code> for the white one — <code>.btn.btn-cancel</code> is the canonical pattern, works on any tag. On a bare <code>&lt;button&gt;</code> the shorter <code>.cancel</code> alias does the same thing. Every button-like control — including icon toggles — shares one height token (<code>--control-h</code>), so mixed rows always line up.</p>
+  <div class="cluster" style="margin-bottom:1rem">
+    <button>Submit</button>
+    <button class="btn btn-cancel">Cancel</button>
+    <button class="cancel">Cancel (alias)</button>
+    <a href="#" class="btn">Link Btn</a>
+    <a href="#" class="btn btn-cancel">Link Cancel</a>
+    <button disabled>Disabled</button>
+    <button class="theme-toggle" aria-label="Example icon button" title="Icon button — same height as the rest">☾</button>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;button&gt;Submit&lt;/button&gt;
+&lt;button class="btn btn-cancel"&gt;Cancel&lt;/button&gt;
+&lt;button class="cancel"&gt;Cancel (alias)&lt;/button&gt;
+&lt;a href="#" class="btn"&gt;Link Btn&lt;/a&gt;
+&lt;a href="#" class="btn btn-cancel"&gt;Link Cancel&lt;/a&gt;
+&lt;button disabled&gt;Disabled&lt;/button&gt;</code></pre>
+  </details>
+
+  <h4 id="list-rows">List rows</h4>
+  <p>For a list of clickable rows — conversations, notifications, search results. Truncates gracefully; no configuration.</p>
+  <div style="max-width:32rem">
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">JD</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Jane Doe</span>
+        <span class="list-row-subtitle">Sounds good, see you at the shadow — no blur, remember?</span>
+      </span>
+      <span class="list-row-meta"><span>14:02</span><span class="badge">3</span></span>
+    </a>
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">MK</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Mo Khan</span>
+        <span class="list-row-subtitle">Pushed the border-radius audit. Found zero, as expected.</span>
+      </span>
+      <span class="list-row-meta"><span>Yesterday</span></span>
+    </a>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;a href="/thread/1" class="list-row"&gt;
+  &lt;span class="list-row-avatar"&gt;JD&lt;/span&gt;
+  &lt;span class="list-row-body"&gt;
+    &lt;span class="list-row-title"&gt;Jane Doe&lt;/span&gt;
+    &lt;span class="list-row-subtitle"&gt;Sounds good, see you at the shadow&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="list-row-meta"&gt;
+    &lt;span&gt;14:02&lt;/span&gt;
+    &lt;span class="badge"&gt;3&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/a&gt;</code></pre>
+  </details>
+
+  <h4 id="chat">Chat</h4>
+  <p>Two-sided message view. Add <code>.chat-msg-self</code> for outgoing messages — the bubble switches to the accent color automatically, in both themes.</p>
+  <div class="chat" style="max-width:32rem">
+    <div class="chat-msg">
+      <span class="chat-avatar">MK</span>
+      <div>
+        <div class="chat-bubble">Ship it with hard shadows only, right?</div>
+        <span class="chat-time">14:00</span>
+      </div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <span class="chat-avatar">JD</span>
+      <div>
+        <div class="chat-bubble">Always. Zero blur, zero radius.</div>
+        <span class="chat-time">14:02</span>
+      </div>
+    </div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="chat"&gt;
+  &lt;div class="chat-msg"&gt;
+    &lt;span class="chat-avatar"&gt;MK&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Ship it with hard shadows only, right?&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:00&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="chat-msg chat-msg-self"&gt;
+    &lt;span class="chat-avatar"&gt;JD&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Always. Zero blur, zero radius.&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:02&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4 id="details-summary">Details / Summary</h4>
+  <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
+  <details open><summary>Features (pre-opened)</summary><ul><li>Two button kinds: default + cancel</li><li>Cards with hard shadows + hover lift</li><li>List rows + chat bubbles for conversation UIs</li><li>Switches, chips, tabs, a styled native dialog, progress bar + spinner</li><li>Details/summary accordion (zero JS)</li><li>Full markdown element coverage</li><li>12-column responsive grid</li><li>Sticky navbar</li><li>Auto dark mode + toggle</li><li>6 accent color presets</li></ul></details>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;details&gt;
+  &lt;summary&gt;What is HARDBRUT&lt;/summary&gt;
+  &lt;p&gt;An opinionated neubrutalist CSS framework.&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;!-- pre-opened --&gt;
+&lt;details open&gt;
+  &lt;summary&gt;Features&lt;/summary&gt;
+  &lt;ul&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;
+&lt;/details&gt;</code></pre>
+  </details>
+
+  <h4 id="forms">Forms</h4>
+  <div class="grid">
+    <div class="col-6"><div class="field"><label for="name">Name</label><input type="text" id="name" placeholder="Your name"><div class="field-hint">Required.</div></div></div>
+    <div class="col-6"><div class="field"><label for="email">Email</label><input type="email" id="email" placeholder="you@example.com"></div></div>
+    <div class="col-12"><div class="field"><label for="msg">Message</label><textarea id="msg" placeholder="Write something..."></textarea></div></div>
+    <div class="col-6"><div class="field"><label><input type="checkbox"> I agree to the terms</label></div></div>
+    <div class="col-6"><div class="field"><label><input type="radio" name="opt" checked> Option A</label><label><input type="radio" name="opt"> Option B</label></div></div>
+    <div class="col-6"><div class="field"><label><input type="checkbox" class="switch" checked> Notifications</label></div></div>
+    <div class="col-6"><div class="field"><label for="role">Role</label><select id="role"><option>Admin</option><option>Editor</option><option>Viewer</option></select></div></div>
+    <div class="col-12"><div class="cluster"><button>Submit</button><button class="cancel">Reset</button></div></div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="field"&gt;
+  &lt;label for="name"&gt;Name&lt;/label&gt;
+  &lt;input type="text" id="name" placeholder="Your name"&gt;
+  &lt;div class="field-hint"&gt;Required.&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="field"&gt;
+  &lt;label&gt;&lt;input type="checkbox" class="switch" checked&gt; Notifications&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class="field"&gt;
+  &lt;label for="role"&gt;Role&lt;/label&gt;
+  &lt;select id="role"&gt;&lt;option&gt;Admin&lt;/option&gt;&lt;option&gt;Editor&lt;/option&gt;&lt;/select&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4 id="typography">Typography</h4>
+  <p class="text-h1">Heading 1</p><p class="text-h2">Heading 2</p><p class="text-h3">Heading 3</p><p class="text-h4">Heading 4</p><p class="text-h5">Heading 5</p><p class="text-h6">Heading 6</p>
+  <p class="text-sm text-muted">Shown here as <code>.text-h1</code>…<code>.text-h6</code> (visual only) so this specimen doesn't inject a second real <code>&lt;h1&gt;</code> into the page outline — use the real <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code> tags for actual headings, same styles either way.</p>
+  <p>Paragraph with <strong>bold</strong> (or <b>b</b>), <em>italic</em> (or <i>i</i>), <del>strikethrough</del> (or <s>s</s>), <u>underline</u> and <ins>ins</ins>, <mark>highlight</mark>, <small>small</small>, H<sub>2</sub>O, E=mc<sup>2</sup>, <abbr title="abbreviation">abbr</abbr>.</p>
+  <p>A <a href="#">link</a> in a sentence. Inline <code>code</code>, <kbd>Ctrl+K</kbd>, and <samp>program output</samp>.</p>
+  <blockquote>Blockquote with 6px black left border and italic text. Perfect for pull quotes.</blockquote>
+  <hr>
+  <figure>
+    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27400%27%20height%3D%27160%27%3E%3Cdefs%3E%3Cpattern%20id%3D%27p%27%20width%3D%2728%27%20height%3D%2728%27%20patternTransform%3D%27rotate%2845%29%27%20patternUnits%3D%27userSpaceOnUse%27%3E%3Crect%20width%3D%2728%27%20height%3D%2728%27%20fill%3D%27%23e8e8e8%27/%3E%3Crect%20width%3D%2714%27%20height%3D%2728%27%20fill%3D%27%23d4d4d4%27/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width%3D%27400%27%20height%3D%27160%27%20fill%3D%27url%28%23p%29%27/%3E%3Ctext%20x%3D%27200%27%20y%3D%2786%27%20font-family%3D%27Arial%2C%20sans-serif%27%20font-weight%3D%27900%27%20font-size%3D%2720%27%20letter-spacing%3D%271%27%20fill%3D%27%23000%27%20text-anchor%3D%27middle%27%3EYOUR%20IMAGE%20HERE%3C/text%3E%3C/svg%3E" alt="Diagonal-striped placeholder reading &quot;your image here&quot;" width="400" height="160">
+    <figcaption>Figure caption — muted, small, sits below the border+shadow image.</figcaption>
+  </figure>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;h2&gt;Heading&lt;/h2&gt;
+&lt;p&gt;Paragraph with &lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;,
+  &lt;mark&gt;highlight&lt;/mark&gt;, and &lt;code&gt;inline code&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;Pull quote text.&lt;/blockquote&gt;</code></pre>
+  </details>
+
+  <h4 id="code">Code</h4>
+  <pre><code>&lt;html data-accent="yellow"&gt;
+&lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;button&gt;Click me&lt;/button&gt;</code></pre>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;pre&gt;&lt;code&gt;your code here&lt;/code&gt;&lt;/pre&gt;</code></pre>
+  </details>
+
+  <h4 id="lists">Lists</h4>
+  <ul><li>Unordered one</li><li>Unordered two<ul><li>Nested</li></ul></li></ul>
+  <ol><li>Ordered one</li><li>Ordered two</li></ol>
+  <dl><dt>Term</dt><dd>Definition. Simple definition list.</dd></dl>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;ul&gt;&lt;li&gt;Unordered one&lt;/li&gt;&lt;li&gt;Unordered two
+  &lt;ul&gt;&lt;li&gt;Nested&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;ol&gt;&lt;li&gt;Ordered one&lt;/li&gt;&lt;li&gt;Ordered two&lt;/li&gt;&lt;/ol&gt;
+&lt;dl&gt;&lt;dt&gt;Term&lt;/dt&gt;&lt;dd&gt;Definition.&lt;/dd&gt;&lt;/dl&gt;</code></pre>
+  </details>
+
+  <h4 id="table">Table</h4>
+  <table>
+    <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Border</td><td>3px solid</td><td>Always black/ink</td></tr>
+      <tr><td>Shadow</td><td>5px 5px 0</td><td>Hard. No blur.</td></tr>
+      <tr><td>Radius</td><td>0</td><td>Zero. Always.</td></tr>
+    </tbody>
+  </table>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;table&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Token&lt;/th&gt;&lt;th&gt;Value&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;Border&lt;/td&gt;&lt;td&gt;3px solid&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+  </details>
+
+  <h4 id="callout-message-badge">Callout, Message, Badge</h4>
+  <div class="callout">Callout. Bold. Accent color. Shadow always.</div>
+  <div class="message">Message. Same accent. Smaller padding.</div>
+  <p>Status: <span class="badge">active</span></p>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="callout"&gt;Callout. Bold. Accent color.&lt;/div&gt;
+&lt;div class="message"&gt;Message. Smaller padding.&lt;/div&gt;
+&lt;span class="badge"&gt;active&lt;/span&gt;</code></pre>
+  </details>
+
+  <h4 id="chips">Chips</h4>
+  <p>Selectable pills — filter presets, topic tags. Toggle <code>aria-pressed</code>, CSS does the rest.</p>
+  <div class="cluster">
+    <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">All</button>
+    <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Open</button>
+    <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Archived</button>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;button class="chip" aria-pressed="true"
+  onclick="this.setAttribute('aria-pressed',
+    this.getAttribute('aria-pressed')==='true'?'false':'true')"&gt;All&lt;/button&gt;</code></pre>
+  </details>
+
+  <h4 id="tabs">Tabs</h4>
+  <p>Panel switching is left to you — toggle each panel's <code>hidden</code> attribute. <code>.tab</code> uses the same accent-fill-means-selected rule as buttons/chips.</p>
+  <div class="tab-list" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="tab-panel-a" id="tab-a" onclick="hbSelectTab(this,'tab-panel-a')">Overview</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-panel-b" id="tab-b" onclick="hbSelectTab(this,'tab-panel-b')">Details</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-panel-c" id="tab-c" onclick="hbSelectTab(this,'tab-panel-c')">History</button>
+  </div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-a" aria-labelledby="tab-a">Overview panel. Plain content — no required wrapper.</div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-b" aria-labelledby="tab-b" hidden>Details panel.</div>
+  <div class="tab-panel" role="tabpanel" id="tab-panel-c" aria-labelledby="tab-c" hidden>History panel.</div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="tab-list" role="tablist"&gt;
+  &lt;button class="tab" role="tab" aria-selected="true"
+    aria-controls="panel-a" id="tab-a" onclick="hbSelectTab(this,'panel-a')"&gt;One&lt;/button&gt;
+  &lt;button class="tab" role="tab" aria-selected="false"
+    aria-controls="panel-b" id="tab-b" onclick="hbSelectTab(this,'panel-b')"&gt;Two&lt;/button&gt;
+&lt;/div&gt;
+&lt;div class="tab-panel" role="tabpanel" id="panel-a" aria-labelledby="tab-a"&gt;...&lt;/div&gt;
+&lt;div class="tab-panel" role="tabpanel" id="panel-b" aria-labelledby="tab-b" hidden&gt;...&lt;/div&gt;
+
+&lt;script&gt;
+function hbSelectTab(btn, panelId){
+  btn.closest('.tab-list').querySelectorAll('.tab').forEach(function(t){
+    t.setAttribute('aria-selected', String(t === btn));
+    var panel = document.getElementById(t.getAttribute('aria-controls'));
+    if (panel) panel.hidden = (panel.id !== panelId);
+  });
+}
+&lt;/script&gt;</code></pre>
+  </details>
+
+  <h4 id="dialog">Dialog</h4>
+  <p>The native <code>&lt;dialog&gt;</code> element, styled — <code>showModal()</code>/<code>close()</code>/backdrop/Esc-to-dismiss all come free from the browser.</p>
+  <button onclick="document.getElementById('demo-dialog').showModal()">Open dialog</button>
+  <dialog id="demo-dialog">
+    <h4>Delete conversation?</h4>
+    <p class="text-sm text-muted">This can't be undone.</p>
+    <div class="cluster">
+      <button onclick="document.getElementById('demo-dialog').close()">Delete</button>
+      <button class="cancel" onclick="document.getElementById('demo-dialog').close()">Cancel</button>
+    </div>
+  </dialog>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;button onclick="document.getElementById('d').showModal()"&gt;Open&lt;/button&gt;
+&lt;dialog id="d"&gt;
+  &lt;h4&gt;Delete conversation?&lt;/h4&gt;
+  &lt;div class="cluster"&gt;
+    &lt;button onclick="document.getElementById('d').close()"&gt;Delete&lt;/button&gt;
+    &lt;button class="cancel" onclick="document.getElementById('d').close()"&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+  </details>
+
+  <h4 id="progress-loading">Progress &amp; Loading</h4>
+  <p>Determinate: <code>.progress</code> + <code>.progress-fill</code>, width set by you (percent, or drive it from a value/max pair). Segmented look via a repeating background — no discrete DOM elements needed.</p>
+  <div class="stack" style="margin-bottom:var(--space-sm)">
+    <div class="progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" style="width:70%"></div>
+    </div>
+    <div class="progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" style="width:25%"></div>
+    </div>
+  </div>
+  <p>Indeterminate: <code>.spinner</code> — hard opacity steps, not a smooth spin, to match the zero-blur motion language. Fully static under <code>prefers-reduced-motion</code>.</p>
+  <div class="spinner" role="status" aria-label="Loading"><span></span><span></span><span></span><span></span></div>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"&gt;
+  &lt;div class="progress-fill" style="width:70%"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="spinner" role="status" aria-label="Loading"&gt;
+  &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4 id="utilities">Utilities</h4>
+  <p><code>.text-center</code>, <code>.text-uppercase</code>, <code>.text-muted</code>, <code>.text-sm</code> — text helpers. <code>.stack</code> (column flex) and <code>.cluster</code> (wrapping row flex) — the layout helpers used throughout this page. <code>.sr-only</code> hides content visually while keeping it readable to screen readers.</p>
+  <p class="text-center text-uppercase text-sm">Centered · uppercase · small</p>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;p class="text-center text-uppercase text-sm"&gt;Centered · uppercase · small&lt;/p&gt;
+&lt;div class="cluster"&gt;...&lt;/div&gt; &lt;!-- wrapping row --&gt;
+&lt;div class="stack"&gt;...&lt;/div&gt; &lt;!-- column --&gt;</code></pre>
+  </details>
+
+  <h4 id="grid">Grid</h4>
+  <div class="grid" style="margin-bottom:var(--space-sm)">
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+  </div>
+  <p class="text-sm text-muted">12-column grid. 6-col at 768px, stacks at 480px.</p>
+  <details><summary>Show code</summary>
+  <pre><code>&lt;div class="grid"&gt;
+  &lt;div class="col-4"&gt;&lt;div class="card"&gt;&lt;div class="card-body"&gt;.col-4&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;!-- repeat .col-4 for each tile --&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h3>Recipes</h3>
+  <p>Composing the primitives above into real screens. Copy-pasteable — no build step, no config.</p>
+
+  <h4>Conversation list</h4>
+  <p><code>.list-row</code> stacked directly — no wrapper needed. Title and subtitle truncate on their own; give the container a <code>max-width</code> if you want a fixed-width panel.</p>
+  <div class="recipe-demo" style="max-width:28rem">
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">JD</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Jane Doe</span>
+        <span class="list-row-subtitle">Let's ship it Thursday</span>
+      </span>
+      <span class="list-row-meta"><span>14:02</span><span class="badge">2</span></span>
+    </a>
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">MK</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Mo Khan</span>
+        <span class="list-row-subtitle">Sounds good to me</span>
+      </span>
+      <span class="list-row-meta"><span>Yesterday</span></span>
+    </a>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;a href="/thread/1" class="list-row"&gt;
+  &lt;span class="list-row-avatar"&gt;JD&lt;/span&gt;
+  &lt;span class="list-row-body"&gt;
+    &lt;span class="list-row-title"&gt;Jane Doe&lt;/span&gt;
+    &lt;span class="list-row-subtitle"&gt;Let's ship it Thursday&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="list-row-meta"&gt;
+    &lt;span&gt;14:02&lt;/span&gt;
+    &lt;span class="badge"&gt;2&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/a&gt;</code></pre>
+  </details>
+
+  <h4>Chat view</h4>
+  <p>Wrap messages in <code>.chat</code>. Add <code>.chat-msg-self</code> to flip a message to the right and switch its bubble to the accent color — no dark-mode CSS needed, it reuses the same accent/accent-ink pairing as buttons and badges.</p>
+  <div class="recipe-demo chat" style="max-width:28rem">
+    <div class="chat-msg">
+      <span class="chat-avatar">MK</span>
+      <div><div class="chat-bubble">Ready when you are</div><span class="chat-time">14:00</span></div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <span class="chat-avatar">JD</span>
+      <div><div class="chat-bubble">Shipping now</div><span class="chat-time">14:02</span></div>
+    </div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="chat"&gt;
+  &lt;div class="chat-msg"&gt;
+    &lt;span class="chat-avatar"&gt;MK&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Ready when you are&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:00&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="chat-msg chat-msg-self"&gt;
+    &lt;span class="chat-avatar"&gt;JD&lt;/span&gt;
+    &lt;div&gt;
+      &lt;div class="chat-bubble"&gt;Shipping now&lt;/div&gt;
+      &lt;span class="chat-time"&gt;14:02&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4>Settings screen</h4>
+  <p>A card holding a form. Switches for on/off preferences, chips for a filter row, two button kinds for save/cancel — never more than that.</p>
+  <div class="recipe-demo card">
+    <div class="card-body">
+      <h4>Notifications</h4>
+      <div class="field"><label><input type="checkbox" class="switch" checked> Email me about replies</label></div>
+      <div class="field"><label><input type="checkbox" class="switch"> Weekly digest</label></div>
+      <div class="field">
+        <label>Mute topics</label>
+        <div class="cluster">
+          <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Billing</button>
+          <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Marketing</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button>Save</button>
+      <button class="cancel">Cancel</button>
+    </div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="card"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h4&gt;Notifications&lt;/h4&gt;
+    &lt;div class="field"&gt;
+      &lt;label&gt;&lt;input type="checkbox" class="switch" checked&gt; Email me about replies&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="field"&gt;
+      &lt;label&gt;Mute topics&lt;/label&gt;
+      &lt;div class="cluster"&gt;
+        &lt;button class="chip" aria-pressed="true"&gt;Billing&lt;/button&gt;
+        &lt;button class="chip" aria-pressed="false"&gt;Marketing&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-footer"&gt;
+    &lt;button&gt;Save&lt;/button&gt;
+    &lt;button class="cancel"&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h4>Dashboard tiles</h4>
+  <p>The 12-column <code>.grid</code> plus <code>.card</code>. Stacks to 6 columns at 768px, 1 column at 480px — automatically, no extra markup.</p>
+  <div class="recipe-demo grid">
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Open threads</p><h3 style="margin:0">128</h3></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Avg. response</p><h3 style="margin:0">4m</h3></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><p class="text-sm text-muted text-uppercase">Unread</p><h3 style="margin:0">7</h3></div></div></div>
+  </div>
+  <details>
+    <summary>Show code</summary>
+    <pre><code>&lt;div class="grid"&gt;
+  &lt;div class="col-4"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;p class="text-sm text-muted text-uppercase"&gt;Open threads&lt;/p&gt;
+        &lt;h3 style="margin:0"&gt;128&lt;/h3&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- repeat .col-4 for each tile --&gt;
+&lt;/div&gt;</code></pre>
+  </details>
+
+  <h3>Rules of thumb</h3>
+  <ul>
+    <li>Reach for <code>.list-row</code> and <code>.chat</code> as-is — don't wrap them in <code>.card</code>, they already carry their own border/shadow.</li>
+    <li><code>.list-row-title</code> / <code>.list-row-subtitle</code> truncate to one line by design. If you need full text, use plain text inside <code>.list-row-body</code> instead.</li>
+    <li>Selected/toggled state always means "filled with <code>--accent</code>, text in <code>--accent-ink</code>" — <code>.chip[aria-pressed="true"]</code>, <code>.switch:checked</code>, buttons, badges all follow the same rule. Don't invent a second "selected" color.</li>
+    <li>Every shadow-bearing element keeps its shadow always — it only disappears on <code>:active</code>. Don't strip shadows for a "flatter" look; that's a different framework.</li>
+    <li>Motion is hard-edged, never smooth — button press is a translate + shadow snap, not an ease; <code>.spinner</code> steps opacity, it doesn't rotate.</li>
+  </ul>
+</section>
+
+</main>
+
+</body>
+</html>

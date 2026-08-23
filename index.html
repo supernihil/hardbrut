@@ -71,9 +71,8 @@
   <a href="./" class="navbar-brand">HARDBRUT</a>
   <ul class="navbar-links" id="navbar-links">
     <li><a href="#start" aria-current="page">Start</a></li>
-    <li><a href="elements.html">Elements</a></li>
+    <li><a href="css.html">CSS</a></li>
     <li><a href="android.html">Android</a></li>
-    <li><a href="playbook.html">Playbook</a></li>
   </ul>
   <div class="cluster">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
@@ -128,131 +127,7 @@
     <button class="accent-swatch" data-accent="purple" onclick="setAccent('purple')" aria-label="Purple"></button>
   </div>
 
-  <h3>Get it</h3>
-  <div class="card">
-    <div class="card-body">
-      <h4>CSS — drop it in. Zero build step. Font embedded inline.</h4>
-      <pre><code>&lt;link rel="stylesheet" href="https://supernihil.github.io/hardbrut/hardbrut.css"&gt;</code></pre>
-      <div class="cluster" style="margin-top:var(--space-sm)">
-        <a href="hardbrut.css" class="btn" download>hardbrut.css (53KB, with font)</a>
-        <a href="hardbrut.min.css" class="btn btn-cancel" download>hardbrut.min.css (50KB, minified)</a>
-      </div>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">The font (Inter 900, latin subset) is embedded as base64 — ~31KB of the total (23.9KB of binary font inflates to base64 text). CSS rules alone: ~21KB unminified, ~18KB minified — that's exactly what <code>hardbrut.nofont.css</code> below is. Once loaded, the file makes zero further network requests: no @import, no Google Fonts, no CDN.</p>
-      <p class="text-sm text-muted" style="margin-top:var(--space-sm)">Don't want the font? <a href="hardbrut.nofont.css" download>hardbrut.nofont.css (21KB)</a> — same rules, system font stack only. Its own <code>.min.css</code> is ~19KB; minification only meaningfully shrinks the rules, since the embedded font is already binary and can't shrink further.</p>
-      <details style="margin-top:var(--space-sm)">
-        <summary>Previous versions</summary>
-        <div class="stack">
-          <div class="cluster">
-            <span class="badge">v0.13</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.min.css" download>hardbrut.min.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.13/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.12</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.min.css" download>hardbrut.min.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.12/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.11</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.min.css" download>hardbrut.min.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.11/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.10</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.min.css" download>hardbrut.min.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.nofont.css" download>hardbrut.nofont.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.10/hardbrut.nofont.min.css" download>hardbrut.nofont.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.9</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.9/hardbrut.min.css" download>hardbrut.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.8</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.8/hardbrut.min.css" download>hardbrut.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.7</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.7/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.7/hardbrut.min.css" download>hardbrut.min.css</a>
-          </div>
-          <div class="cluster">
-            <span class="badge">v0.6</span>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.6/hardbrut.css" download>hardbrut.css</a>
-            <a href="https://raw.githubusercontent.com/supernihil/hardbrut/v0.6/hardbrut.min.css" download>hardbrut.min.css</a>
-          </div>
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <h3>Quick start</h3>
-  <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en" data-accent="yellow"&gt;
-&lt;head&gt;
-  &lt;meta charset="utf-8"&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
-  &lt;link rel="stylesheet" href="hardbrut.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;nav class="navbar"&gt;
-    &lt;a href="./" class="navbar-brand"&gt;Site&lt;/a&gt;
-    &lt;ul class="navbar-links"&gt;
-      &lt;li&gt;&lt;a href="#" aria-current="page"&gt;Home&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/nav&gt;
-  &lt;main class="container"&gt;
-    &lt;h1&gt;Hello World&lt;/h1&gt;
-    &lt;p&gt;This is HARDBRUT.&lt;/p&gt;
-    &lt;button&gt;Click me&lt;/button&gt;
-  &lt;/main&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-
-  <h3>Accent colors</h3>
-  <p>Set <code>data-accent</code> on <code>&lt;html&gt;</code> to: <code>yellow</code>, <code>red</code>, <code>blue</code>, <code>green</code>, <code>pink</code>, <code>purple</code>. Default is <code>yellow</code>.</p>
-
-  <h3>Theme toggle</h3>
-  <p>Sets <code>data-theme</code> on <code>&lt;html&gt;</code>. The button glyph flips with it, so it always shows the mode you'd switch <em>to</em>.</p>
-  <pre><code>&lt;button class="theme-toggle" onclick="toggleTheme()"&gt;☾&lt;/button&gt;
-&lt;script&gt;
-(function(){
-  var h = document.documentElement;
-  var t = localStorage.getItem('theme');
-  if (!t) t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-  h.setAttribute('data-theme', t);
-  function updateToggle(){
-    var btn = document.querySelector('.theme-toggle');
-    var isDark = h.getAttribute('data-theme') === 'dark';
-    btn.textContent = isDark ? '☀' : '☾';
-  }
-  window.toggleTheme = function(){
-    var cur = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    h.setAttribute('data-theme', cur);
-    localStorage.setItem('theme', cur);
-    updateToggle();
-  };
-  window.addEventListener('DOMContentLoaded', updateToggle);
-})();
-&lt;/script&gt;</code></pre>
-
-  <h3>Accent picker</h3>
-  <pre><code>&lt;button class="accent-swatch" data-accent="red" onclick="setAccent('red')"&gt;&lt;/button&gt;
-&lt;script&gt;
-window.setAccent = function(c){
-  document.documentElement.setAttribute('data-accent', c);
-  localStorage.setItem('accent', c);
-};
-&lt;/script&gt;</code></pre>
+  <p class="text-sm text-muted">Download, full getting-started guide, and every element live with copy-pasteable code: <a href="css.html">CSS</a> · <a href="android.html">Android</a> (Jetpack Compose).</p>
 </section>
 
 </main>

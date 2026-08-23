@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HARDBRUT for Android — Jetpack Compose</title>
-<meta name="description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Same rules: zero corner radius, hard shadows, two button kinds.">
+<meta name="description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Every element, live (CSS render) with the Compose code behind it.">
 <meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://supernihil.github.io/hardbrut/android.html">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="HARDBRUT for Android — Jetpack Compose">
-<meta property="og:description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Same rules: zero corner radius, hard shadows, two button kinds.">
+<meta property="og:description" content="HARDBRUT translates directly to Jetpack Compose. One Kotlin file, one dependency. Every element, live (CSS render) with the Compose code behind it.">
 <meta property="og:url" content="https://supernihil.github.io/hardbrut/android.html">
 <meta property="og:image" content="https://supernihil.github.io/hardbrut/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="hardbrut.css">
-<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}</style>
+<style>body{padding-bottom:4rem}section.section>h2{border-bottom:var(--border);padding-bottom:var(--space-sm);margin-bottom:var(--space)}.recipe-demo{margin-bottom:var(--space-sm)}</style>
 <script>
 (function(){
   var h = document.documentElement;
@@ -72,9 +72,8 @@
   <a href="./" class="navbar-brand">HARDBRUT</a>
   <ul class="navbar-links" id="navbar-links">
     <li><a href="index.html#start">Start</a></li>
-    <li><a href="elements.html">Elements</a></li>
+    <li><a href="css.html">CSS</a></li>
     <li><a href="android.html" aria-current="page">Android</a></li>
-    <li><a href="playbook.html">Playbook</a></li>
   </ul>
   <div class="cluster">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">☀</button><script>(function(){var b=document.currentScript.previousElementSibling;var d=document.documentElement.getAttribute('data-theme')==='dark';b.textContent=d?'☀':'☾';b.setAttribute('aria-pressed',String(d));})();</script>
@@ -84,7 +83,7 @@
 
 <header class="hero">
   <h1>ANDROID</h1>
-  <p>HARDBRUT for Jetpack Compose — drop <code>Hardbrut.kt</code> into your project. For usage recipes, see <a href="playbook.html">Playbook</a>.</p>
+  <p>HARDBRUT for Jetpack Compose — drop <code>Hardbrut.kt</code> into your project. Every element below renders the CSS version live; the Kotlin is in <strong>Show code</strong>. For the web version, see <a href="css.html">CSS</a>.</p>
 </header>
 
 <main class="container" id="main-content">
@@ -92,6 +91,7 @@
 <section class="section" id="android">
   <p>HARDBRUT translates directly to Jetpack Compose. Drop <code>Hardbrut.kt</code> into your Android project — one file, one dependency (Compose). Same rules: zero corner radius, hard shadows, two button kinds, always-shadow rule, single accent color.</p>
 
+  <h3>Download</h3>
   <div class="card" style="margin-bottom:var(--space)">
     <div class="card-body">
       <h4>Download for Android</h4>
@@ -120,28 +120,15 @@
     </div>
   </div>
 
-  <h3>Quick start</h3>
-  <pre><code>// Your Activity / Composable
+  <h3>Getting started</h3>
+  <pre><code>// Drop Hardbrut.kt into your project (one file, one dependency: Compose)
 val (accent, accentInk) = HardbrutTokens.AccentYellow
 
-HardbrutButton(
-    onClick = { /* do something */ },
-    accent = accent,
-    accentInk = accentInk
-) { Text("CLICK ME") }
-
-HardbrutButton(
-    onClick = { /* dismiss */ },
-    accent = accent,
-    accentInk = accentInk,
-    kind = ButtonKind.Cancel
-) { Text("CANCEL") }
-
-HardbrutCard {
-    Text("Hello from HARDBRUT")
+HardbrutButton(onClick = { /* do something */ }, accent = accent, accentInk = accentInk) {
+    Text("CLICK ME")
 }</code></pre>
+  <p class="text-sm text-muted">Compose has no CSS-like text-transform — every composable that takes a raw <code>String</code> (badge, chip, list row) uppercases it internally. If you build custom content with <code>Text()</code> yourself, uppercase the label at the call site.</p>
 
-  <h3>Token mapping</h3>
   <table>
     <thead><tr><th>CSS token</th><th>CSS value</th><th>Compose</th></tr></thead>
     <tbody>
@@ -153,78 +140,421 @@ HardbrutCard {
       <tr><td><code>--shadow</code></td><td>5px 5px 0</td><td><code>.hardShadow(5.dp)</code></td></tr>
     </tbody>
   </table>
-
-  <h3>Hard shadow helper</h3>
+  <details><summary>Hard shadow helper</summary>
   <pre><code>fun Modifier.hardShadow(size: Dp, color: Color = Color.Black): Modifier = this.then(
     drawBehind {
         drawRect(color = color, topLeft = Offset(size.toPx(), size.toPx()),
             size = Size(this.size.width, this.size.height))
     }
-)</code></pre>
+)</code></pre></details>
 
-  <h3 id="all-composables">All composables</h3>
-  <details><summary>HardbrutButton</summary>
+  <h3>Elements</h3>
+  <p>Every element below is the CSS render, live — Compose doesn't run in a browser, so this is the closest live preview until a Compose Multiplatform build exists. Open <strong>Show code</strong> for the Kotlin.</p>
+  <nav aria-label="Elements sections" class="cluster" style="margin-bottom:var(--space)"><a href="#cards" class="chip">Cards</a><a href="#buttons" class="chip">Buttons</a><a href="#list-rows" class="chip">List rows</a><a href="#chat" class="chip">Chat</a><a href="#details-summary" class="chip">Details / Summary</a><a href="#forms" class="chip">Forms</a><a href="#typography" class="chip">Typography</a><a href="#code" class="chip">Code</a><a href="#lists" class="chip">Lists</a><a href="#table" class="chip">Table</a><a href="#callout-message-badge" class="chip">Callout, Message, Badge</a><a href="#chips" class="chip">Chips</a><a href="#tabs" class="chip">Tabs</a><a href="#dialog" class="chip">Dialog</a><a href="#progress-loading" class="chip">Progress &amp; Loading</a><a href="#utilities" class="chip">Utilities</a><a href="#grid" class="chip">Grid</a></nav>
+
+  <h4 id="cards">Cards</h4>
+  <div class="grid">
+    <div class="col-4"><div class="card"><div class="card-body"><h4>Simple Card</h4><p class="text-muted text-sm">One card. No variants. Shadow always.</p><span class="badge">badge</span></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><h4>With Footer</h4><p class="text-muted text-sm">Footer puts actions at the bottom.</p></div><div class="card-footer"><button>Save</button><button class="cancel">Dismiss</button></div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body"><h4>Just Body</h4><p class="text-muted text-sm">Content only. Border. Shadow.</p></div></div></div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>@Composable
+fun HardbrutCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit)
+
+HardbrutCard {
+    Text("SIMPLE CARD", fontWeight = FontWeight.ExtraBold)
+    Text("One card. No variants. Shadow always.",
+        color = HardbrutTokens.Muted, fontSize = 14.sp)
+    HardbrutBadge("badge", accent = accent, accentInk = accentInk)
+}</code></pre></details>
+
+  <h4 id="buttons">Buttons</h4>
+  <p>Two kinds, same call either way — a <code>kind</code> parameter, not a second composable.</p>
+  <div class="cluster" style="margin-bottom:1rem">
+    <button>Submit</button>
+    <button class="btn btn-cancel">Cancel</button>
+    <button disabled>Disabled</button>
+  </div>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
 fun HardbrutButton(onClick: () -> Unit, accent: Color, accentInk: Color,
     kind: ButtonKind = ButtonKind.Default, enabled: Boolean = true,
     modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit)
-enum class ButtonKind { Default, Cancel }</code></pre></details>
+enum class ButtonKind { Default, Cancel }
 
-  <details><summary>HardbrutCard</summary>
+HardbrutButton(onClick = { }, accent = accent, accentInk = accentInk) { Text("SUBMIT") }
+HardbrutButton(onClick = { }, accent = accent, accentInk = accentInk,
+    kind = ButtonKind.Cancel) { Text("CANCEL") }
+HardbrutButton(onClick = { }, accent = accent, accentInk = accentInk,
+    enabled = false) { Text("DISABLED") }</code></pre></details>
+
+  <h4 id="list-rows">List rows</h4>
+  <div style="max-width:32rem">
+    <a href="#" class="list-row">
+      <span class="list-row-avatar">JD</span>
+      <span class="list-row-body">
+        <span class="list-row-title">Jane Doe</span>
+        <span class="list-row-subtitle">Sounds good, see you at the shadow — no blur, remember?</span>
+      </span>
+      <span class="list-row-meta"><span>14:02</span><span class="badge">3</span></span>
+    </a>
+  </div>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
-fun HardbrutCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit)</code></pre></details>
+fun HardbrutListRow(title: String, subtitle: String? = null,
+    avatarText: String? = null, onClick: (() -> Unit)? = null,
+    trailing: @Composable (RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier)
 
-  <details><summary>HardbrutTextField</summary>
+HardbrutListRow(
+    title = "Jane Doe",
+    subtitle = "Sounds good, see you at the shadow",
+    avatarText = "JD",
+    onClick = { openThread(id) },
+    trailing = { Text("14:02", fontSize = 12.sp, color = HardbrutTokens.Muted) }
+)</code></pre></details>
+
+  <h4 id="chat">Chat</h4>
+  <div class="chat" style="max-width:32rem">
+    <div class="chat-msg">
+      <span class="chat-avatar">MK</span>
+      <div>
+        <div class="chat-bubble">Ship it with hard shadows only, right?</div>
+        <span class="chat-time">14:00</span>
+      </div>
+    </div>
+    <div class="chat-msg chat-msg-self">
+      <span class="chat-avatar">JD</span>
+      <div>
+        <div class="chat-bubble">Always. Zero blur, zero radius.</div>
+        <span class="chat-time">14:02</span>
+      </div>
+    </div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated chat-bubble composable yet — compose one from a Box using
+// hardShadow(), same accent-flip rule ("self" message = filled accent) as
+// everything else:
+@Composable
+fun ChatBubble(text: String, self: Boolean, accent: Color, accentInk: Color) {
+    Box(
+        Modifier
+            .hardShadow(3.dp)
+            .border(2.dp, HardbrutTokens.Ink)
+            .background(if (self) accent else HardbrutTokens.Paper)
+            .padding(HardbrutTokens.SpaceSm)
+    ) {
+        Text(text, color = if (self) accentInk else HardbrutTokens.Ink)
+    }
+}</code></pre></details>
+
+  <h4 id="details-summary">Details / Summary</h4>
+  <details><summary>What is HARDBRUT</summary><p>An opinionated neubrutalist CSS framework. Every shadow-bearing element keeps its shadow — only gone during a press animation.</p></details>
+  <details><summary>Show code</summary>
+  <pre><code>@Composable
+fun HardbrutDetails(summary: String, expanded: Boolean,
+    onToggle: () -> Unit, content: @Composable () -> Unit)
+
+var expanded by remember { mutableStateOf(false) }
+HardbrutDetails(
+    summary = "What is HARDBRUT",
+    expanded = expanded,
+    onToggle = { expanded = !expanded }
+) {
+    Text("An opinionated neubrutalist design system.")
+}</code></pre></details>
+
+  <h4 id="forms">Forms</h4>
+  <div class="grid">
+    <div class="col-6"><div class="field"><label for="name2">Name</label><input type="text" id="name2" placeholder="Your name"><div class="field-hint">Required.</div></div></div>
+    <div class="col-6"><div class="field"><label><input type="checkbox" class="switch" checked> Notifications</label></div></div>
+  </div>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
 fun HardbrutTextField(value: String, onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier, label: String = "", placeholder: String = "")</code></pre></details>
-
-  <details><summary>HardbrutCheckbox / HardbrutRadio / HardbrutSwitch</summary>
-  <pre><code>@Composable
+    modifier: Modifier = Modifier, label: String = "", placeholder: String = "")
+@Composable
 fun HardbrutCheckbox(checked: Boolean, onCheckedChange: (Boolean) -> Unit)
 @Composable
 fun HardbrutRadio(selected: Boolean, onClick: () -> Unit)
 @Composable
 fun HardbrutSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit,
-    accent: Color, accentInk: Color)</code></pre></details>
+    accent: Color, accentInk: Color)
 
-  <details><summary>HardbrutBadge / HardbrutChip / HardbrutCallout</summary>
+var name by remember { mutableStateOf("") }
+HardbrutTextField(value = name, onValueChange = { name = it },
+    label = "Name", placeholder = "Your name")
+
+var notifications by remember { mutableStateOf(true) }
+HardbrutSwitch(notifications, { notifications = it }, accent, accentInk)
+
+// No dropdown/select composable yet — style Compose's ExposedDropdownMenuBox
+// with the same border/shadow tokens as HardbrutTextField.</code></pre></details>
+
+  <h4 id="typography">Typography</h4>
+  <p class="text-h2">Heading</p>
+  <p>Paragraph with <strong>bold</strong>, <em>italic</em>, <mark>highlight</mark>, and <code>inline code</code>.</p>
+  <blockquote>Pull quote text.</blockquote>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated typography composables — Text() plus these tokens covers it.
+Text("HEADING", fontWeight = FontWeight.Black, fontSize = 28.sp,
+    letterSpacing = (-0.5).sp)
+Text("Paragraph with bold and italic.", fontSize = 17.sp, lineHeight = 24.sp)
+Text(
+    "Pull quote text.",
+    fontStyle = FontStyle.Italic,
+    modifier = Modifier
+        .drawBehind { drawRect(Color.Black, size = Size(6.dp.toPx(), size.height)) }
+        .padding(start = HardbrutTokens.SpaceSm)
+)</code></pre></details>
+
+  <h4 id="code">Code</h4>
+  <pre><code>&lt;html data-accent="yellow"&gt;
+&lt;link rel="stylesheet" href="hardbrut.css"&gt;
+&lt;button&gt;Click me&lt;/button&gt;</code></pre>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated code-block composable — a bordered, shadowed Box with a
+// monospace Text() reproduces &lt;pre&gt;&lt;code&gt;:
+Box(
+    Modifier.border(2.dp, HardbrutTokens.Ink).hardShadow(5.dp)
+        .background(HardbrutTokens.Paper).padding(HardbrutTokens.Space)
+) {
+    Text(codeString, fontFamily = FontFamily.Monospace, fontSize = 14.sp)
+}</code></pre></details>
+
+  <h4 id="lists">Lists</h4>
+  <ul><li>Unordered one</li><li>Unordered two</li></ul>
+  <ol><li>Ordered one</li><li>Ordered two</li></ol>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated list composable — a Column of Rows reproduces bullets:
+Column {
+    listOf("Unordered one", "Unordered two").forEach { item ->
+        Row { Text("•  "); Text(item) }
+    }
+}
+// Ordered: swap "•" for the 1-based index string instead.</code></pre></details>
+
+  <h4 id="table">Table</h4>
+  <table>
+    <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Border</td><td>3px solid</td><td>Always black/ink</td></tr>
+      <tr><td>Shadow</td><td>5px 5px 0</td><td>Hard. No blur.</td></tr>
+    </tbody>
+  </table>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated table composable — a header Row (ink background, paper
+// text) plus body Rows reproduces the CSS table look:
+Column(Modifier.border(2.dp, HardbrutTokens.Ink)) {
+    Row(Modifier.background(HardbrutTokens.Ink).padding(8.dp)) {
+        Text("TOKEN", color = HardbrutTokens.Paper, fontWeight = FontWeight.Black)
+        Text("VALUE", color = HardbrutTokens.Paper, fontWeight = FontWeight.Black)
+    }
+    Row(Modifier.padding(8.dp)) { Text("Border"); Text("3px solid") }
+}</code></pre></details>
+
+  <h4 id="callout-message-badge">Callout, Message, Badge</h4>
+  <div class="callout">Callout. Bold. Accent color. Shadow always.</div>
+  <div class="message">Message. Same accent. Smaller padding.</div>
+  <p>Status: <span class="badge">active</span></p>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
-fun HardbrutBadge(text: String, accent: Color, accentInk: Color)
+fun HardbrutCallout(text: String, accent: Color, accentInk: Color)
 @Composable
+fun HardbrutBadge(text: String, accent: Color, accentInk: Color)
+
+HardbrutCallout("Heads up — this can't be undone.", accent = accent, accentInk = accentInk)
+HardbrutBadge("active", accent = accent, accentInk = accentInk)
+// Message: same as Callout with tighter padding — no separate composable
+// yet, wrap the callout content in a Box with less vertical padding.</code></pre></details>
+
+  <h4 id="chips">Chips</h4>
+  <div class="cluster">
+    <button class="chip" aria-pressed="true" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">All</button>
+    <button class="chip" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed')==='true'?'false':'true')">Open</button>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>@Composable
 fun HardbrutChip(text: String, selected: Boolean, onClick: () -> Unit,
     accent: Color, accentInk: Color)
-@Composable
-fun HardbrutCallout(text: String, accent: Color, accentInk: Color)</code></pre></details>
 
-  <details><summary>HardbrutListRow</summary>
-  <pre><code>@Composable
-fun HardbrutListRow(title: String, subtitle: String? = null,
-    avatarText: String? = null, onClick: (() -> Unit)? = null,
-    trailing: @Composable (RowScope.() -> Unit)? = null,
-    modifier: Modifier = Modifier)</code></pre></details>
+var selected by remember { mutableStateOf("all") }
+HardbrutChip("All", selected = selected == "all",
+    onClick = { selected = "all" }, accent = accent, accentInk = accentInk)
+HardbrutChip("Open", selected = selected == "open",
+    onClick = { selected = "open" }, accent = accent, accentInk = accentInk)</code></pre></details>
 
-  <details><summary>HardbrutTabRow</summary>
+  <h4 id="tabs">Tabs</h4>
+  <div class="tab-list" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="a-tab-panel-a" id="a-tab-a" onclick="hbSelectTab(this,'a-tab-panel-a')">Overview</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="a-tab-panel-b" id="a-tab-b" onclick="hbSelectTab(this,'a-tab-panel-b')">Details</button>
+  </div>
+  <div class="tab-panel" role="tabpanel" id="a-tab-panel-a" aria-labelledby="a-tab-a">Overview panel.</div>
+  <div class="tab-panel" role="tabpanel" id="a-tab-panel-b" aria-labelledby="a-tab-b" hidden>Details panel.</div>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
 fun HardbrutTabRow(tabs: List&lt;String&gt;, selected: Int, onSelect: (Int) -> Unit,
-    accent: Color, accentInk: Color)</code></pre></details>
+    accent: Color, accentInk: Color)
 
-  <details><summary>HardbrutDialog</summary>
+var tab by remember { mutableStateOf(0) }
+HardbrutTabRow(tabs = listOf("Overview", "Details"), selected = tab,
+    onSelect = { tab = it }, accent = accent, accentInk = accentInk)
+when (tab) {
+    0 -> Text("Overview panel")
+    1 -> Text("Details panel")
+}</code></pre></details>
+
+  <h4 id="dialog">Dialog</h4>
+  <button onclick="document.getElementById('demo-dialog').showModal()">Open dialog</button>
+  <dialog id="demo-dialog">
+    <h4>Delete conversation?</h4>
+    <p class="text-sm text-muted">This can't be undone.</p>
+    <div class="cluster">
+      <button onclick="document.getElementById('demo-dialog').close()">Delete</button>
+      <button class="cancel" onclick="document.getElementById('demo-dialog').close()">Cancel</button>
+    </div>
+  </dialog>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
 fun HardbrutDialog(onDismissRequest: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit)</code></pre></details>
+    content: @Composable ColumnScope.() -> Unit)
 
-  <details><summary>HardbrutProgressBar / HardbrutSpinner</summary>
+var showDialog by remember { mutableStateOf(false) }
+if (showDialog) {
+    HardbrutDialog(onDismissRequest = { showDialog = false }) {
+        Text("Delete conversation?", fontWeight = FontWeight.ExtraBold)
+        Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+        HardbrutButton(onClick = { showDialog = false },
+            accent = accent, accentInk = accentInk) { Text("DELETE") }
+    }
+}</code></pre></details>
+
+  <h4 id="progress-loading">Progress &amp; Loading</h4>
+  <div class="stack" style="margin-bottom:var(--space-sm)">
+    <div class="progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" style="width:70%"></div>
+    </div>
+  </div>
+  <div class="spinner" role="status" aria-label="Loading"><span></span><span></span><span></span><span></span></div>
+  <details><summary>Show code</summary>
   <pre><code>@Composable
 fun HardbrutProgressBar(progress: Float, modifier: Modifier = Modifier,
     segments: Int = 12, accent: Color)
 @Composable
-fun HardbrutSpinner(modifier: Modifier = Modifier)</code></pre></details>
+fun HardbrutSpinner(modifier: Modifier = Modifier)
 
-  <details><summary>HardbrutDetails</summary>
-  <pre><code>@Composable
-fun HardbrutDetails(summary: String, expanded: Boolean,
-    onToggle: () -> Unit, content: @Composable () -> Unit)</code></pre></details>
+HardbrutProgressBar(progress = 0.7f, accent = accent)
+HardbrutSpinner()</code></pre></details>
+
+  <h4 id="utilities">Utilities</h4>
+  <p class="text-center text-uppercase text-sm">Centered · uppercase · small</p>
+  <details><summary>Show code</summary>
+  <pre><code>// .stack / .cluster have no dedicated composables — use Column /
+// Row(horizontalArrangement = Arrangement.spacedBy(...)) directly.
+Text("CENTERED · UPPERCASE · SMALL", textAlign = TextAlign.Center, fontSize = 13.sp)</code></pre></details>
+
+  <h4 id="grid">Grid</h4>
+  <div class="grid" style="margin-bottom:var(--space-sm)">
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+    <div class="col-4"><div class="card"><div class="card-body">.col-4</div></div></div>
+  </div>
+  <details><summary>Show code</summary>
+  <pre><code>// No dedicated grid composable — Row/Column with Modifier.weight(), or
+// LazyVerticalGrid(columns = GridCells.Fixed(3)) for scrolling grids.
+Row(horizontalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    repeat(3) { HardbrutCard(modifier = Modifier.weight(1f)) { Text(".col-4") } }
+}</code></pre></details>
+
+  <h3>Recipes</h3>
+  <p>Composing composables into real screens.</p>
+
+  <h4>Primary + cancel buttons</h4>
+  <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
+
+Row(horizontalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    HardbrutButton(onClick = { /* save */ }, accent = accent, accentInk = accentInk) {
+        Text("SAVE")
+    }
+    HardbrutButton(
+        onClick = { /* dismiss */ },
+        accent = accent, accentInk = accentInk,
+        kind = ButtonKind.Cancel
+    ) { Text("CANCEL") }
+}</code></pre>
+
+  <h4>Conversation list</h4>
+  <p><code>HardbrutListRow</code> mirrors the CSS <code>.list-row</code> — avatar, title, subtitle (single-line, ellipsized), and a trailing slot for a timestamp or badge.</p>
+  <pre><code>LazyColumn(verticalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    items(threads) { thread ->
+        HardbrutListRow(
+            title = thread.name,
+            subtitle = thread.lastMessage,
+            avatarText = thread.initials,
+            onClick = { openThread(thread.id) },
+            trailing = {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(thread.time, fontSize = 12.sp, color = HardbrutTokens.Muted)
+                    if (thread.unread > 0) {
+                        HardbrutBadge(thread.unread.toString(), accent = accent, accentInk = accentInk)
+                    }
+                }
+            }
+        )
+    }
+}</code></pre>
+
+  <h4>Settings screen</h4>
+  <p>Switches and chips read the same accent pair as everything else — pass it down once.</p>
+  <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
+var emailOn by remember { mutableStateOf(true) }
+var mutedTopic by remember { mutableStateOf&lt;String?&gt;(null) }
+
+HardbrutCard {
+    Text("NOTIFICATIONS", fontWeight = FontWeight.ExtraBold)
+    Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        HardbrutSwitch(emailOn, { emailOn = it }, accent, accentInk)
+        Spacer(Modifier.width(8.dp))
+        Text("Email me about replies")
+    }
+    Spacer(Modifier.height(HardbrutTokens.SpaceSm))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        HardbrutChip("Billing", selected = mutedTopic == "billing",
+            onClick = { mutedTopic = "billing" }, accent = accent, accentInk = accentInk)
+        HardbrutChip("Marketing", selected = mutedTopic == "marketing",
+            onClick = { mutedTopic = "marketing" }, accent = accent, accentInk = accentInk)
+    }
+}</code></pre>
+
+  <h4>Dashboard tiles</h4>
+  <pre><code>Row(horizontalArrangement = Arrangement.spacedBy(HardbrutTokens.SpaceSm)) {
+    listOf("Open threads" to "128", "Avg. response" to "4m", "Unread" to "7")
+        .forEach { (label, value) ->
+            HardbrutCard(modifier = Modifier.weight(1f)) {
+                Text(label.uppercase(), fontSize = 12.sp, color = HardbrutTokens.Muted)
+                Text(value, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
+            }
+        }
+}</code></pre>
+
+  <h4>Dark mode</h4>
+  <p><code>Hardbrut.kt</code> ships light-only tokens today — there's no <code>HardbrutTokens</code> dark variant yet. If your app supports dark mode, branch on <code>isSystemInDarkTheme()</code> and swap the three theme-dependent tokens, mirroring the CSS <code>[data-theme="dark"]</code> block:</p>
+  <pre><code>val isDark = isSystemInDarkTheme()
+val ink = if (isDark) Color(0xFFF0F0E8) else HardbrutTokens.Ink
+val paper = if (isDark) Color(0xFF1A1A18) else HardbrutTokens.Paper
+val background = if (isDark) Color(0xFF121210) else HardbrutTokens.Background
+// accent / accentInk stay the same in both themes — same as the web version</code></pre>
+  <p class="text-sm text-muted">Every composable takes <code>accent</code>/<code>accentInk</code> as parameters rather than reading a global, so swapping ink/paper/background at the call site is enough — nothing internal needs to change.</p>
+
+  <h3>Rules of thumb</h3>
+  <ul>
+    <li>Every composable takes <code>accent</code>/<code>accentInk</code> explicitly — there's no global theme object to reach for. Pick a <code>HardbrutTokens.Accent*</code> pair once per screen and thread it through.</li>
+    <li><code>HardbrutButton</code> uses a custom black-15%-alpha ripple, not the platform default — don't override <code>indication</code> yourself unless you're deliberately deviating from the spec in <code>ANDROID.md</code>.</li>
+    <li>Android's <code>Modifier.shadow()</code> can't do zero blur — every HARDBRUT composable uses <code>Modifier.hardShadow()</code> instead (drawn as a flat offset rect). Don't mix in <code>Modifier.shadow()</code>; the blur will look inconsistent next to everything else.</li>
+    <li><code>HardbrutTabRow</code> and <code>HardbrutDialog</code> only handle chrome — panel switching (tabs) and dismiss wiring (dialog) are yours, same division of labor as the CSS versions.</li>
+  </ul>
 
   <h3>Spacing</h3>
   <p>All spacing uses: <code>HardbrutTokens.SpaceSm</code> (12dp), <code>.Space</code> (24dp), <code>.SpaceLg</code> (40dp).</p>
