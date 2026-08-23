@@ -4,16 +4,16 @@ Cut a HARDBRUT release. Run from the repo root on every push to main:
 
   1. Reads the current version from the src/hardbrut.css banner.
   2. Tags HEAD as that version (vX.Y), if not already tagged.
-  3. Archives it into index.html's "Previous versions" lists (CSS side:
-     hardbrut.css/.min.css, plus .nofont.css/.nofont.min.css if those
-     exist at this tag; Android side: Hardbrut.kt) — but only if that
-     artifact's content actually changed since the last archived entry,
-     so an unrelated doc/CI-only merge doesn't spam a redundant entry
-     pointing at byte-identical files.
+  3. Archives it into "Previous versions" lists: CSS side in index.html
+     (hardbrut.css/.min.css, plus .nofont.css/.nofont.min.css if those
+     exist at this tag), Android side in android.html (Hardbrut.kt) — but
+     only if that artifact's content actually changed since the last
+     archived entry, so an unrelated doc/CI-only merge doesn't spam a
+     redundant entry pointing at byte-identical files.
   4. Bumps the banner to the next version (vX.(Y+1)), rebuilds every CSS
      variant via ./build.sh, and updates every place the version number
-     or a download size is displayed: index.html (hero badge, footer,
-     download sizes) and README.md.
+     or a download size is displayed: index.html's hero badge and
+     download sizes, and README.md.
   5. Commits everything and leaves the new tag ready to push.
 
 Idempotent: safe to re-run (won't double-tag, won't double-archive).
@@ -57,15 +57,15 @@ def replace_exactly_one(text, pattern, repl, label):
     return new_text
 
 
-def find_prev_versions_block(html, start=0):
-    """Locate the next 'Previous versions' <div class="stack">...</details> block
-    starting the search at `start`. Returns (marker_start, marker_end, block_end)."""
-    marker_at = html.find(PREV_VERSIONS_MARKER, start)
+def find_prev_versions_block(html):
+    """Locate the 'Previous versions' <div class="stack">...</details> block
+    in the given HTML. Returns (marker_end, block_end)."""
+    marker_at = html.find(PREV_VERSIONS_MARKER)
     if marker_at == -1:
-        sys.exit(f"error: could not find a 'Previous versions' block after offset {start}")
+        sys.exit("error: could not find a 'Previous versions' block")
     marker_end = marker_at + len(PREV_VERSIONS_MARKER)
     block_end = html.find("</details>", marker_end)
-    return marker_at, marker_end, block_end
+    return marker_end, block_end
 
 
 def most_recent_archived_version(html, marker_end, block_end):
@@ -92,14 +92,14 @@ def main():
     else:
         print(f"{tag} already tagged, skipping (points at whatever commit first reached v{current})")
 
-    html = read("index.html")
+    index_html = read("index.html")
+    android_html = read("android.html")
 
-    # ---- locate the two "Previous versions" blocks (CSS first, then Android) ----
-    _, css_marker_end, css_block_end = find_prev_versions_block(html, 0)
-    _, android_marker_end, android_block_end = find_prev_versions_block(html, css_block_end)
+    css_marker_end, css_block_end = find_prev_versions_block(index_html)
+    android_marker_end, android_block_end = find_prev_versions_block(android_html)
 
-    css_last = most_recent_archived_version(html, css_marker_end, css_block_end)
-    android_last = most_recent_archived_version(html, android_marker_end, android_block_end)
+    css_last = most_recent_archived_version(index_html, css_marker_end, css_block_end)
+    android_last = most_recent_archived_version(android_html, android_marker_end, android_block_end)
 
     def changed_since(last_version, path):
         if last_version is None:
@@ -115,7 +115,6 @@ def main():
     def raw(path):
         return f"https://raw.githubusercontent.com/{REPO}/{tag}/{path}"
 
-    # Android goes first: inserting into it doesn't shift the CSS block's offsets.
     if archive_android:
         entry = (
             f'          <div class="cluster">\n'
@@ -124,10 +123,11 @@ def main():
             f'          </div>\n'
         )
         insert_at = android_marker_end + 1
-        html = html[:insert_at] + entry + html[insert_at:]
+        android_html = android_html[:insert_at] + entry + android_html[insert_at:]
         print(f"archived Android {tag}")
     else:
         print("Hardbrut.kt unchanged (or already archived), skipping")
+    write("android.html", android_html)
 
     if archive_css:
         variants = [("hardbrut.css", "hardbrut.css"), ("hardbrut.min.css", "hardbrut.min.css")]
@@ -143,7 +143,7 @@ def main():
             f'          </div>\n'
         )
         insert_at = css_marker_end + 1
-        html = html[:insert_at] + entry + html[insert_at:]
+        index_html = index_html[:insert_at] + entry + index_html[insert_at:]
         print(f"archived CSS {tag} ({len(variants)} variant(s))")
     else:
         print("CSS unchanged (or already archived), skipping")
@@ -155,33 +155,17 @@ def main():
 
     sizes = {"css": kb("hardbrut.css"), "min": kb("hardbrut.min.css"), "nofont": kb("hardbrut.nofont.css")}
 
-    # ---- update every current-version reference ----
-    html = replace_exactly_one(
-        html,
+    # ---- index.html: hero badge + download sizes ----
+    index_html = replace_exactly_one(
+        index_html,
         rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}" class="badge">v{re.escape(current)}<',
         f'href="https://github.com/{REPO}/tree/v{next_ver}" class="badge">v{next_ver}<',
         "hero badge",
     )
-    html = replace_exactly_one(
-        html,
-        rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}">v{re.escape(current)}<',
-        f'href="https://github.com/{REPO}/tree/v{next_ver}">v{next_ver}<',
-        "footer badge",
-    )
-    html = re.sub(r"hardbrut\.css \(\d+KB, with font\)", f'hardbrut.css ({sizes["css"]}KB, with font)', html)
-    html = re.sub(r"hardbrut\.min\.css \(\d+KB, minified\)", f'hardbrut.min.css ({sizes["min"]}KB, minified)', html)
-    html = re.sub(r"hardbrut\.nofont\.css \(\d+KB\)", f'hardbrut.nofont.css ({sizes["nofont"]}KB)', html)
-    write("index.html", html)
-
-    # playbook.html shares the same footer component (same markup) — same version link.
-    playbook = read("playbook.html")
-    playbook = replace_exactly_one(
-        playbook,
-        rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}">v{re.escape(current)}<',
-        f'href="https://github.com/{REPO}/tree/v{next_ver}">v{next_ver}<',
-        "playbook footer badge",
-    )
-    write("playbook.html", playbook)
+    index_html = re.sub(r"hardbrut\.css \(\d+KB, with font\)", f'hardbrut.css ({sizes["css"]}KB, with font)', index_html)
+    index_html = re.sub(r"hardbrut\.min\.css \(\d+KB, minified\)", f'hardbrut.min.css ({sizes["min"]}KB, minified)', index_html)
+    index_html = re.sub(r"hardbrut\.nofont\.css \(\d+KB\)", f'hardbrut.nofont.css ({sizes["nofont"]}KB)', index_html)
+    write("index.html", index_html)
 
     readme = read("README.md")
     readme = re.sub(r"Current version: \*\*v[\d.]+\*\*", f"Current version: **v{next_ver}**", readme)

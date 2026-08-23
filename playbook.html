@@ -54,8 +54,8 @@
   <a href="./" class="navbar-brand">HARDBRUT</a>
   <ul class="navbar-links" id="navbar-links">
     <li><a href="index.html#start">Start</a></li>
-    <li><a href="index.html#elements">Elements</a></li>
-    <li><a href="index.html#android">Android</a></li>
+    <li><a href="elements.html">Elements</a></li>
+    <li><a href="android.html">Android</a></li>
     <li><a href="playbook.html" aria-current="page">Playbook</a></li>
   </ul>
   <div class="cluster">
@@ -66,7 +66,7 @@
 
 <header class="hero">
   <h1>PLAYBOOK</h1>
-  <p>Dev guide for building real screens with HARDBRUT — web and Android. For the full element catalog, see <a href="index.html#elements">Elements</a>.</p>
+  <p>Dev guide for building real screens with HARDBRUT — web and Android. For the full element catalog, see <a href="elements.html">Elements</a>.</p>
 </header>
 
 <main class="container" id="main-content">
@@ -227,7 +227,7 @@
   </ul>
 
   <h3>Reference: every element, in one place</h3>
-  <p>Live demos with full markup live under <a href="index.html#elements">Elements</a> — this is the copy-paste version, grouped by kind, nothing skipped.</p>
+  <p>Live demos with full markup live under <a href="elements.html">Elements</a> — this is the copy-paste version, grouped by kind, nothing skipped.</p>
 
   <h4>Typography</h4>
   <dl>
@@ -287,7 +287,7 @@
   </dl>
 
   <h4>Interactive: tabs &amp; dialog</h4>
-  <p>Both shown live under <a href="index.html#elements">Elements</a>. Minimal wiring:</p>
+  <p>Both shown live under <a href="elements.html">Elements</a>. Minimal wiring:</p>
   <pre><code>&lt;div class="tab-list" role="tablist"&gt;
   &lt;button class="tab" role="tab" aria-selected="true"
     aria-controls="panel-a" id="tab-a" onclick="hbSelectTab(this,'panel-a')"&gt;One&lt;/button&gt;
@@ -334,7 +334,7 @@ function hbSelectTab(btn, panelId){
 <!-- ===== ANDROID ===== -->
 <section class="section" id="android">
   <h2>ANDROID</h2>
-  <p>Same rules, Jetpack Compose. For the full composable list and token mapping, see <a href="index.html#android">Android</a> on the main site.</p>
+  <p>Same rules, Jetpack Compose. For the full composable list and token mapping, see <a href="android.html">Android</a> on the main site.</p>
 
   <h3>Setup</h3>
   <pre><code>// 1. Drop Hardbrut.kt into your project (one file, one dependency: Compose)
@@ -430,7 +430,7 @@ val background = if (isDark) Color(0xFF121210) else HardbrutTokens.Background
   </ul>
 
   <h3>Reference: every composable, in one place</h3>
-  <p>Signatures live under <a href="index.html#android">Android → All composables</a> — this is the usage version, one minimal call per composable.</p>
+  <p>Signatures live under <a href="android.html#all-composables">Android → All composables</a> — this is the usage version, one minimal call per composable.</p>
   <pre><code>val (accent, accentInk) = HardbrutTokens.AccentYellow
 
 // Button — two kinds, same call either way
@@ -493,10 +493,6 @@ HardbrutSpinner()</code></pre>
 </section>
 
 </main>
-
-<footer class="site-footer">
-  <p>HARDBRUT <a href="https://github.com/supernihil/hardbrut/tree/v0.13">v0.13</a> — zero dependencies, no build step. <a href="hardbrut.css">Download CSS</a> · <a href="Hardbrut.kt">Download Kotlin</a> · <a href="playbook.html">Playbook</a> · <a href="https://github.com/supernihil/hardbrut">GitHub</a> · <a href="https://buymeacoffee.com/sloev">Donate</a></p>
-</footer>
 
 </body>
 </html>
