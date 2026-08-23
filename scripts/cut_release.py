@@ -13,9 +13,7 @@ Cut a HARDBRUT release. Run from the repo root on every push to main:
   4. Bumps the banner to the next version (vX.(Y+1)), rebuilds every CSS
      variant via ./build.sh, and updates every place the version number
      or a download size is displayed: index.html's hero badge and
-     download sizes, the footer version link on every page (index.html,
-     elements.html, android.html, playbook.html all share the same
-     footer component), and README.md.
+     download sizes, and README.md.
   5. Commits everything and leaves the new tag ready to push.
 
 Idempotent: safe to re-run (won't double-tag, won't double-archive).
@@ -28,7 +26,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "supernihil/hardbrut"
 PREV_VERSIONS_MARKER = '<summary>Previous versions</summary>\n        <div class="stack">'
-PAGES_WITH_FOOTER = ["index.html", "elements.html", "android.html", "playbook.html"]
 
 
 def run(*args, check=True):
@@ -75,15 +72,6 @@ def most_recent_archived_version(html, marker_end, block_end):
     block = html[marker_end:block_end]
     versions = [tuple(map(int, v.split("."))) for v in re.findall(r'class="badge">v(\d+\.\d+)<', block)]
     return max(versions) if versions else None
-
-
-def bump_footer(html, current, next_ver, label):
-    return replace_exactly_one(
-        html,
-        rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}">v{re.escape(current)}<',
-        f'href="https://github.com/{REPO}/tree/v{next_ver}">v{next_ver}<',
-        label,
-    )
 
 
 def main():
@@ -167,7 +155,7 @@ def main():
 
     sizes = {"css": kb("hardbrut.css"), "min": kb("hardbrut.min.css"), "nofont": kb("hardbrut.nofont.css")}
 
-    # ---- index.html: hero badge + download sizes + footer ----
+    # ---- index.html: hero badge + download sizes ----
     index_html = replace_exactly_one(
         index_html,
         rf'href="https://github\.com/{re.escape(REPO)}/tree/v{re.escape(current)}" class="badge">v{re.escape(current)}<',
@@ -177,14 +165,7 @@ def main():
     index_html = re.sub(r"hardbrut\.css \(\d+KB, with font\)", f'hardbrut.css ({sizes["css"]}KB, with font)', index_html)
     index_html = re.sub(r"hardbrut\.min\.css \(\d+KB, minified\)", f'hardbrut.min.css ({sizes["min"]}KB, minified)', index_html)
     index_html = re.sub(r"hardbrut\.nofont\.css \(\d+KB\)", f'hardbrut.nofont.css ({sizes["nofont"]}KB)', index_html)
-    index_html = bump_footer(index_html, current, next_ver, "index.html footer")
     write("index.html", index_html)
-
-    # ---- every other page sharing the same footer component ----
-    for page in PAGES_WITH_FOOTER[1:]:
-        html = read(page)
-        html = bump_footer(html, current, next_ver, f"{page} footer")
-        write(page, html)
 
     readme = read("README.md")
     readme = re.sub(r"Current version: \*\*v[\d.]+\*\*", f"Current version: **v{next_ver}**", readme)
